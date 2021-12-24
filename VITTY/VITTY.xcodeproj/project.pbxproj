@@ -7,16 +7,61 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */; };
+		31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */; };
+		31128CFB2772F57E0084C9EA /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF52772F57E0084C9EA /* OFL.txt */; };
+		31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */; };
+		31128CFD2772F57E0084C9EA /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */; };
+		31128CFE2772F57E0084C9EA /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */; };
+		31128D012772F8370084C9EA /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D002772F8370084C9EA /* SplashScreen.swift */; };
+		31128D042772F8E90084C9EA /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D032772F8E90084C9EA /* CustomButton.swift */; };
+		31128D072772FA120084C9EA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D062772FA120084C9EA /* Colors.swift */; };
+		31128D09277300130084C9EA /* SplashScreenIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D08277300130084C9EA /* SplashScreenIllustration.swift */; };
+		31128D0C277300470084C9EA /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D0B277300470084C9EA /* StringConstants.swift */; };
+		31128D0E277302AC0084C9EA /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */; };
+		31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */; };
+		31128D1627730C460084C9EA /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D1527730C460084C9EA /* CustomTextField.swift */; };
 		314A408F27383BEC0058082F /* VITTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A408E27383BEC0058082F /* VITTYApp.swift */; };
 		314A409127383BEC0058082F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A409027383BEC0058082F /* ContentView.swift */; };
 		314A409327383BEE0058082F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409227383BEE0058082F /* Assets.xcassets */; };
 		314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409527383BEE0058082F /* Preview Assets.xcassets */; };
 		314A409827383BEE0058082F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A409727383BEE0058082F /* Persistence.swift */; };
 		314A409B27383BEE0058082F /* VITTY.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 314A409927383BEE0058082F /* VITTY.xcdatamodeld */; };
+		3168511F277319480046A9AC /* SignupOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3168511E277319480046A9AC /* SignupOR.swift */; };
+		316A1EE62776222F00CC1DE8 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EE52776222F00CC1DE8 /* FirebaseAnalytics */; };
+		316A1EE82776222F00CC1DE8 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EE72776222F00CC1DE8 /* FirebaseAuth */; };
+		316A1EEA2776222F00CC1DE8 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EE92776222F00CC1DE8 /* FirebaseCrashlytics */; };
+		316A1EEC2776222F00CC1DE8 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EEB2776222F00CC1DE8 /* FirebaseFirestore */; };
+		316A1EEE2776222F00CC1DE8 /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EED2776222F00CC1DE8 /* FirebaseMessaging */; };
+		316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EF02776238500CC1DE8 /* GoogleSignIn */; };
+		317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1922775B819008AEB31 /* InstructionsCards.swift */; };
+		317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1942775C555008AEB31 /* LogoutPopup.swift */; };
+		317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */; };
+		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
+		31900F01277467460014A58D /* InstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F00277467460014A58D /* InstructionsView.swift */; };
+		31900F03277468790014A58D /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F02277468790014A58D /* HomePage.swift */; };
+		31900F0527746A400014A58D /* HomePageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0427746A400014A58D /* HomePageHeader.swift */; };
+		31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0727746B3A0014A58D /* HomeTabBarView.swift */; };
+		31900F0A27759DB60014A58D /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0927759DB60014A58D /* Gradient.swift */; };
+		31900F0C2775A6080014A58D /* ClassCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0B2775A6080014A58D /* ClassCards.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		31128CF02772F0210084C9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		31128CF52772F57E0084C9EA /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
+		31128D002772F8370084C9EA /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		31128D032772F8E90084C9EA /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		31128D062772FA120084C9EA /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		31128D08277300130084C9EA /* SplashScreenIllustration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenIllustration.swift; sourceTree = "<group>"; };
+		31128D0B277300470084C9EA /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
+		31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenTabIndicator.swift; sourceTree = "<group>"; };
+		31128D1527730C460084C9EA /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		314A408B27383BEC0058082F /* VITTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VITTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		314A408E27383BEC0058082F /* VITTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VITTYApp.swift; sourceTree = "<group>"; };
 		314A409027383BEC0058082F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -24,6 +69,17 @@
 		314A409527383BEE0058082F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		314A409727383BEE0058082F /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		314A409A27383BEE0058082F /* VITTY.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VITTY.xcdatamodel; sourceTree = "<group>"; };
+		3168511E277319480046A9AC /* SignupOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupOR.swift; sourceTree = "<group>"; };
+		317EE1922775B819008AEB31 /* InstructionsCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsCards.swift; sourceTree = "<group>"; };
+		317EE1942775C555008AEB31 /* LogoutPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopup.swift; sourceTree = "<group>"; };
+		317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamHolidayMode.swift; sourceTree = "<group>"; };
+		317EE1982775D3C6008AEB31 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		31900F00277467460014A58D /* InstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsView.swift; sourceTree = "<group>"; };
+		31900F02277468790014A58D /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
+		31900F0427746A400014A58D /* HomePageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageHeader.swift; sourceTree = "<group>"; };
+		31900F0727746B3A0014A58D /* HomeTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarView.swift; sourceTree = "<group>"; };
+		31900F0927759DB60014A58D /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
+		31900F0B2775A6080014A58D /* ClassCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCards.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,12 +87,77 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				316A1EEA2776222F00CC1DE8 /* FirebaseCrashlytics in Frameworks */,
+				316A1EEC2776222F00CC1DE8 /* FirebaseFirestore in Frameworks */,
+				316A1EEE2776222F00CC1DE8 /* FirebaseMessaging in Frameworks */,
+				316A1EE62776222F00CC1DE8 /* FirebaseAnalytics in Frameworks */,
+				316A1EE82776222F00CC1DE8 /* FirebaseAuth in Frameworks */,
+				316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		31128CF12772F55D0084C9EA /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				31128CF22772F57E0084C9EA /* Poppins */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		31128CF22772F57E0084C9EA /* Poppins */ = {
+			isa = PBXGroup;
+			children = (
+				31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */,
+				31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */,
+				31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */,
+				31128CF52772F57E0084C9EA /* OFL.txt */,
+				31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */,
+				31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */,
+				31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */,
+			);
+			path = Poppins;
+			sourceTree = "<group>";
+		};
+		31128CFF2772F81E0084C9EA /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				31128D08277300130084C9EA /* SplashScreenIllustration.swift */,
+				31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */,
+			);
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
+		31128D022772F8DA0084C9EA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				31128D032772F8E90084C9EA /* CustomButton.swift */,
+				31128D1527730C460084C9EA /* CustomTextField.swift */,
+				317EE1942775C555008AEB31 /* LogoutPopup.swift */,
+				317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		31128D052772FA030084C9EA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				31128D062772FA120084C9EA /* Colors.swift */,
+				31900F0927759DB60014A58D /* Gradient.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		31128D0A2773003C0084C9EA /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				31128D0B277300470084C9EA /* StringConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
@@ -84,6 +205,9 @@
 		314A40A127383C0A0058082F /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
+				31128D0A2773003C0084C9EA /* Constants */,
+				31128D052772FA030084C9EA /* Extensions */,
+				31128CF12772F55D0084C9EA /* Fonts */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
@@ -105,6 +229,11 @@
 		314A40A427383C370058082F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				31900F0627746B130014A58D /* HomePage */,
+				31128D022772F8DA0084C9EA /* Common */,
+				31128CFF2772F81E0084C9EA /* SplashScreen */,
+				3168511E277319480046A9AC /* SignupOR.swift */,
+				317EE1922775B819008AEB31 /* InstructionsCards.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -119,8 +248,22 @@
 		314A40A627383C540058082F /* App */ = {
 			isa = PBXGroup;
 			children = (
+				31128D002772F8370084C9EA /* SplashScreen.swift */,
+				31900F00277467460014A58D /* InstructionsView.swift */,
+				31900F02277468790014A58D /* HomePage.swift */,
+				317EE1982775D3C6008AEB31 /* SettingsView.swift */,
 			);
 			path = App;
+			sourceTree = "<group>";
+		};
+		31900F0627746B130014A58D /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				31900F0427746A400014A58D /* HomePageHeader.swift */,
+				31900F0727746B3A0014A58D /* HomeTabBarView.swift */,
+				31900F0B2775A6080014A58D /* ClassCards.swift */,
+			);
+			path = HomePage;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,6 +282,14 @@
 			dependencies = (
 			);
 			name = VITTY;
+			packageProductDependencies = (
+				316A1EE52776222F00CC1DE8 /* FirebaseAnalytics */,
+				316A1EE72776222F00CC1DE8 /* FirebaseAuth */,
+				316A1EE92776222F00CC1DE8 /* FirebaseCrashlytics */,
+				316A1EEB2776222F00CC1DE8 /* FirebaseFirestore */,
+				316A1EED2776222F00CC1DE8 /* FirebaseMessaging */,
+				316A1EF02776238500CC1DE8 /* GoogleSignIn */,
+			);
 			productName = VITTY;
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
 			productType = "com.apple.product-type.application";
@@ -167,6 +318,10 @@
 				Base,
 			);
 			mainGroup = 314A408227383BEC0058082F;
+			packageReferences = (
+				316A1EE42776222E00CC1DE8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+			);
 			productRefGroup = 314A408C27383BEC0058082F /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -181,6 +336,13 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				31128CFB2772F57E0084C9EA /* OFL.txt in Resources */,
+				31128D0E277302AC0084C9EA /* Poppins-Bold.ttf in Resources */,
+				31128CFE2772F57E0084C9EA /* Poppins-MediumItalic.ttf in Resources */,
+				31128CFD2772F57E0084C9EA /* Poppins-SemiBold.ttf in Resources */,
+				31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */,
+				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
+				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
 			);
@@ -193,10 +355,28 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
+				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
+				31128D012772F8370084C9EA /* SplashScreen.swift in Sources */,
+				31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */,
+				317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */,
 				314A409827383BEE0058082F /* Persistence.swift in Sources */,
+				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
+				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
+				3168511F277319480046A9AC /* SignupOR.swift in Sources */,
+				31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */,
+				31128D072772FA120084C9EA /* Colors.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
+				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
+				31900F03277468790014A58D /* HomePage.swift in Sources */,
 				314A409B27383BEE0058082F /* VITTY.xcdatamodeld in Sources */,
+				31900F01277467460014A58D /* InstructionsView.swift in Sources */,
+				31128D09277300130084C9EA /* SplashScreenIllustration.swift in Sources */,
+				31900F0527746A400014A58D /* HomePageHeader.swift in Sources */,
+				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
+				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,
+				31900F0A27759DB60014A58D /* Gradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -401,6 +581,58 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		316A1EE42776222E00CC1DE8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 8.10.0;
+			};
+		};
+		316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		316A1EE52776222F00CC1DE8 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 316A1EE42776222E00CC1DE8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		316A1EE72776222F00CC1DE8 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 316A1EE42776222E00CC1DE8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		316A1EE92776222F00CC1DE8 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 316A1EE42776222E00CC1DE8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		316A1EEB2776222F00CC1DE8 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 316A1EE42776222E00CC1DE8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		316A1EED2776222F00CC1DE8 /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 316A1EE42776222E00CC1DE8 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		316A1EF02776238500CC1DE8 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		314A409927383BEE0058082F /* VITTY.xcdatamodeld */ = {
