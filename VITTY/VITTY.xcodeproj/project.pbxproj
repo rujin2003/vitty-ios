@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3109637E2782245D0009A29C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3109637D2782245D0009A29C /* GoogleService-Info.plist */; };
+		31096381278227730009A29C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31096380278227730009A29C /* AuthService.swift */; };
+		3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109639E27824F6F0009A29C /* AppStorageConstants.swift */; };
 		31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */; };
 		31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */; };
 		31128CFB2772F57E0084C9EA /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF52772F57E0084C9EA /* OFL.txt */; };
@@ -47,6 +50,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3109637D2782245D0009A29C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		31096380278227730009A29C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		3109639E27824F6F0009A29C /* AppStorageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageConstants.swift; sourceTree = "<group>"; };
 		31128CF02772F0210084C9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
 		31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
@@ -99,6 +105,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3109637F278227580009A29C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				31096380278227730009A29C /* AuthService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		31128CF12772F55D0084C9EA /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
@@ -154,6 +168,7 @@
 			isa = PBXGroup;
 			children = (
 				31128D0B277300470084C9EA /* StringConstants.swift */,
+				3109639E27824F6F0009A29C /* AppStorageConstants.swift */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -177,12 +192,13 @@
 		314A408D27383BEC0058082F /* VITTY */ = {
 			isa = PBXGroup;
 			children = (
+				3109637F278227580009A29C /* Services */,
+				3109637D2782245D0009A29C /* GoogleService-Info.plist */,
 				31128CF02772F0210084C9EA /* Info.plist */,
 				314A40A627383C540058082F /* App */,
 				314A40A527383C3F0058082F /* Model */,
 				314A40A427383C370058082F /* View */,
 				314A40A327383C280058082F /* ViewModel */,
-				314A40A227383C230058082F /* API */,
 				314A40A127383C0A0058082F /* Utilities */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
 				314A409027383BEC0058082F /* ContentView.swift */,
@@ -210,13 +226,6 @@
 				31128CF12772F55D0084C9EA /* Fonts */,
 			);
 			path = Utilities;
-			sourceTree = "<group>";
-		};
-		314A40A227383C230058082F /* API */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = API;
 			sourceTree = "<group>";
 		};
 		314A40A327383C280058082F /* ViewModel */ = {
@@ -343,6 +352,7 @@
 				31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */,
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
+				3109637E2782245D0009A29C /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
 			);
@@ -356,6 +366,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
+				31096381278227730009A29C /* AuthService.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
 				31128D012772F8370084C9EA /* SplashScreen.swift in Sources */,
 				31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */,
@@ -363,6 +374,7 @@
 				314A409827383BEE0058082F /* Persistence.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
+				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				3168511F277319480046A9AC /* SignupOR.swift in Sources */,
 				31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
@@ -504,6 +516,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
@@ -521,8 +534,9 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = gdsc.VITTY;
+				PRODUCT_BUNDLE_IDENTIFIER = aeg.VITTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -551,7 +565,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = gdsc.VITTY;
+				PRODUCT_BUNDLE_IDENTIFIER = aeg.VITTY;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

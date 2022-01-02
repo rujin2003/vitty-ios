@@ -16,12 +16,19 @@ struct CustomButton: View {
     var fgroundColor: Color = Color.white
     var cornerRad: CGFloat = 10.0
     var minLength: CGFloat = 20
+    var imageString: String? = nil
     var action: () -> Void = {}
     var body: some View {
         HStack(spacing:0) {
             Button(action: action) {
                 HStack {
                     Spacer()
+                    if let imageString = imageString {
+                        Image(imageString)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(height: 25)
+                    }
                     Text(buttonText)
                         .font(Font.custom("Poppins-SemiBold",size:fontSize))
                         .lineLimit(1)

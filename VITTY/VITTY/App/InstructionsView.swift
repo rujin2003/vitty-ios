@@ -8,23 +8,37 @@
 import SwiftUI
 
 struct InstructionsView: View {
+    @EnvironmentObject var authState: AuthService
+    @State var displayLogout: Bool = false
     var body: some View {
-        VStack {
-            HStack {
-                Text("Sync Timetable")
+        ZStack {
+            VStack {
+                HStack {
+                    Text("Sync Timetable")
+                    Spacer()
+                    // add logout button functionality
+                    Image(systemName: "arrow.right.square")
+                        .onTapGesture {
+                           displayLogout = true
+                        }
+                }
+                .font(Font.custom("Poppins-Bold", size: 24))
+                .foregroundColor(Color.white)
+                ScrollView {
+                    InstructionsCards()
+                        .padding(.vertical)
+                }
                 Spacer()
-                // add logout button functionality
-                Image(systemName: "arrow.right.square")
+                CustomButton(buttonText: "Done") {
+                }
             }
-            .font(Font.custom("Poppins-Bold", size: 24))
-            .foregroundColor(Color.white)
-            InstructionsCards()
-            Spacer()
-            CustomButton(buttonText: "Done") {
+            .padding()
+        .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
+            
+            if displayLogout {
+                LogoutPopup(showLogout: $displayLogout)
             }
         }
-        .padding()
-        .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
     }
 }
 

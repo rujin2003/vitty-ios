@@ -32,7 +32,8 @@ struct StringConstants {
     // MARK: INSTRUCTIONS PAGE
     // dummy arrays
     static let instructionsHeaders = ["Account Details", "Setup Instructions"]
-    static let accDetails = ["Name: Ryan Ross","Email: blinkexists182@aol.com"]
+    static let accData = ["Name: ","Signed in with: ","Email: "]
+    static let sampleData = ["Name: Ryan Ross","Email: blinkexists182@aol.com"]
     static let setupInstructions = [
         "1. Download the Chrome Extension from: https://dscv.it/vitty-extension", // make the link tappable
         "2. Log in with the same Google/Apple Account as shown above",
