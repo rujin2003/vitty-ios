@@ -29,6 +29,7 @@ struct LogoutPopup: View {
                 Spacer()
                 // create function to log out
                 CustomButton(buttonText: "Logout", fontSize: fontSizeButton, cornerRad: cornerRadius) {
+                    print("signing out")
                     authState.signOut()
                 }
             }

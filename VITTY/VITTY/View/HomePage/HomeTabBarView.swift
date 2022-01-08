@@ -10,30 +10,24 @@ import SwiftUI
 struct HomeTabBarView: View {
     @Binding var tabSelected: Int
     var body: some View {
-        HStack(spacing:0) {
-            ForEach(0..<StringConstants.daysOfTheWeek.count) { i in
-                ZStack {
-                    if tabSelected == i {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(LinearGradient.secGrad)
+        VStack {
+            ScrollView(.horizontal, showsIndicators: false) {
+                ScrollViewReader { scrollView in
+                    HStack(spacing:0) {
+                        ForEach(0..<StringConstants.daysOfTheWeek.count) { i in
+                            TabBarDay(tabSelected: $tabSelected, i: i)
+                                .id(i)
+                        }
                     }
-                    HStack {
-                        Spacer()
-                        Button(action: {
-                            tabSelected = i
-                        }, label: {
-                            Text(StringConstants.daysOfTheWeek[i])
-                                .font(Font.custom("Poppins-Medium", size: 15))
-                                .foregroundColor(tabSelected==i ? Color.white : Color.vprimary)
-                        })
-                        Spacer()
+                    .onAppear {
+                        scrollView.scrollTo(tabSelected)
                     }
                 }
             }
-        }
-        .padding(.horizontal,5)
-        .frame(height: 50)
+            .padding(.horizontal,5)
+            .frame(height: 50)
         .background(Color.darkbg)
+        }
     }
 }
 

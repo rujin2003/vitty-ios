@@ -21,13 +21,13 @@ struct StringConstants {
     ]
     // MARK: HOME PAGE CONSTANTS
     static let daysOfTheWeek = [
+        "Sun",
         "Mon",
         "Tue",
         "Wed",
         "Thu",
         "Fri",
         "Sat",
-        "Sun",
     ]
     // MARK: INSTRUCTIONS PAGE
     // dummy arrays
@@ -42,4 +42,25 @@ struct StringConstants {
         "5. When done, click on Upload."
     ]
     static let setupFinalText = "BRAVO! That's it. You did it!"
+    
+    // MARK: CLASS DATA
+    static let sampleClassDate = Classes(courseType: "Theory", courseCode: "MAT3004", courseName: "Applied Linear Algebra", location: "SJT112", slot: "A1", startTime: Date(), endTime: Date(timeIntervalSinceNow: 3600))
+    
+    // MARK: RANDOM STRINGS
+    static let noClassQuotesOnline = [
+        "Up for some Valorant Grind?",
+        "Don't you have a quiz coming up?",
+        "Finish your DAs!",
+        "Read a book!",
+        "Catch up on some sleep!"
+    ]
+    
+    static let noClassQuotesOffline = [
+        "Don't you have a quiz coming up?",
+        "Finish your DAs!",
+        "Chill and relax in hostel",
+        "Let's chill at Foodys!",
+        "Ready to run to Tarama?",
+        "Do grocery shopping at Allmart"
+    ]
 }

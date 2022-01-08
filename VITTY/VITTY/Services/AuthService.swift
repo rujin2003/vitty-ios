@@ -93,6 +93,7 @@ class AuthService: NSObject, ObservableObject {
                 UserDefaults.standard.set(user.providerData[0].providerID, forKey: "providerId")
                 UserDefaults.standard.set(user.displayName, forKey: "userName")
                 UserDefaults.standard.set(user.email, forKey: "userEmail")
+                UserDefaults.standard.set(false, forKey:"instructionsComplete")
                 print("signed in!")
                 print("Name: \(UserDefaults.standard.string(forKey: "userName"))")
                 print("ProviderId: \(UserDefaults.standard.string(forKey: "providerId"))")
@@ -111,6 +112,7 @@ class AuthService: NSObject, ObservableObject {
             UserDefaults.standard.removeObject(forKey: "providerId")
             UserDefaults.standard.removeObject(forKey: "userName")
             UserDefaults.standard.removeObject(forKey: "userEmail")
+            UserDefaults.standard.removeObject(forKey: "instructionsComplete")
         } catch let signOutError as NSError {
             print("Error signing out: \(signOutError)")
         }

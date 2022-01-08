@@ -9,6 +9,8 @@ import SwiftUI
 
 struct InstructionsView: View {
     @EnvironmentObject var authState: AuthService
+    @EnvironmentObject var ttVM: TimetableViewModel
+    @State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
     @State var displayLogout: Bool = false
     var body: some View {
         ZStack {
@@ -30,6 +32,16 @@ struct InstructionsView: View {
                 }
                 Spacer()
                 CustomButton(buttonText: "Done") {
+                    if ttVM.timetable.isEmpty {
+                        ttVM.getData()
+                    } else {
+                        print("time table is populated")
+                        UserDefaults.standard.set(true, forKey:"instructionsComplete")
+                        goToHomeScreen = true
+                    }
+                }
+                NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState), isActive: $goToHomeScreen) {
+                    EmptyView()
                 }
             }
             .padding()
@@ -38,6 +50,9 @@ struct InstructionsView: View {
             if displayLogout {
                 LogoutPopup(showLogout: $displayLogout)
             }
+        }
+        .onAppear {
+            ttVM.getData()
         }
     }
 }

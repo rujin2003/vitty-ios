@@ -9,28 +9,29 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var timeTableExists = false
     @StateObject var authState: AuthService = AuthService()
+    @StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
     var body: some View {
         NavigationView {
             if authState.loggedInUser != nil {
-                if timeTableExists {
-                    HomePage()
-                        .navigationTitle("")
-                        .navigationBarHidden(true)
-                } else {
+//                if  UserDefaults.standard.bool(forKey: "instructionsComplete"){
+//                    HomePage()
+//                        .navigationTitle("")
+//                        .navigationBarHidden(true)
+//                } else {
                     InstructionsView()
                         .navigationTitle("")
                         .navigationBarHidden(true)
-                }
+//                }
             } else {
             SplashScreen()
                 .navigationTitle("")
                 .navigationBarHidden(true)
             }
         }
-        .animation(.easeInOut)
+        .animation(.default)
         .environmentObject(authState)
+        .environmentObject(timeTableVM)
     }
 }
 

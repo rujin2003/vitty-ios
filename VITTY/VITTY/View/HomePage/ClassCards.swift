@@ -8,7 +8,14 @@
 import SwiftUI
 
 struct ClassCards: View {
-    @State var currentClass: Bool =  true
+    var classInfo: Classes
+    
+    private var localStart: String {
+        let formatter = DateFormatter()
+        formatter.timeStyle = .short
+        return formatter.string(from: classInfo.startTime ?? Date())
+    }
+    @State var currentClass: Bool =  false
     @State var hideDescription: Bool = true
     var body: some View {
         ZStack {
@@ -20,11 +27,15 @@ struct ClassCards: View {
             VStack {
                 HStack {
                     VStack(alignment:.leading) {
-                        Text("Class Name")
-                            .font(Font.custom("Poppins-SemiBold",size:16))
+                        Text(classInfo.courseName ?? "Course Name")
+                            .font(Font.custom("Poppins-SemiBold",size:15))
                             .foregroundColor(Color.white)
-                        Text("Time")
-                            .font(Font.custom("Poppins-Regular",size:15))
+                        HStack(spacing: 0) {
+                            Text(classInfo.startTime ?? Date(), style: .time)
+                            Text(" - ")
+                            Text(classInfo.endTime ?? Date(), style: .time)
+                        }
+                            .font(Font.custom("Poppins-Regular",size:14))
                     }
                     .padding()
                     Spacer()
@@ -37,26 +48,11 @@ struct ClassCards: View {
                 }
                 if !hideDescription {
                     HStack {
-                        Text("Slot")
-                            .font(Font.custom("Poppins-Regular",size:15))
+                        Text("\(classInfo.slot ?? "Slot")")
+                            .font(Font.custom("Poppins-Regular",size:14))
                         Spacer()
-                        Button(action: {
-                        }
-                               , label: {
-                            HStack(spacing:3) {
-                                Text("Room No")
-                                    .padding(.leading,3)
-                                Image(systemName: "arrow.up.right.diamond.fill")
-                            }
-                            .font(Font.custom("Poppins-Regular",size:15))
-                                .cornerRadius(20)
-                                .padding(3)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.vprimary, lineWidth: 1.2)
-                            )
-                        }
-                        )
+                        Text("\(classInfo.location ?? "Location")")
+                            .font(Font.custom("Poppins-Regular",size:14))
                     }
                     .padding(.horizontal)
                     .padding(.bottom)
@@ -72,6 +68,6 @@ struct ClassCards: View {
 
 struct ClassCards_Previews: PreviewProvider {
     static var previews: some View {
-        ClassCards()
+        ClassCards(classInfo: StringConstants.sampleClassDate)
     }
 }
