@@ -19,11 +19,6 @@ struct ClassCards: View {
     @State var hideDescription: Bool = true
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.darkbg)
-            RoundedRectangle(cornerRadius: 12)
-                .fill(LinearGradient.secGrad)
-                .opacity(currentClass ? 1 : 0)
             VStack {
                 HStack {
                     VStack(alignment:.leading) {

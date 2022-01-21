@@ -53,6 +53,7 @@
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946C27893F9000EA07BE /* Confidential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946B27893F9000EA07BE /* Confidential.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
+		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -97,6 +98,8 @@
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946B27893F9000EA07BE /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Confidential.swift; path = VITTY/Confidential.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
+		31F9B731279A907D006D1012 /* VITTYDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTYDebug.entitlements; sourceTree = "<group>"; };
+		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -205,6 +208,7 @@
 		314A408D27383BEC0058082F /* VITTY */ = {
 			isa = PBXGroup;
 			children = (
+				31F9B731279A907D006D1012 /* VITTYDebug.entitlements */,
 				3109637F278227580009A29C /* Services */,
 				3109637D2782245D0009A29C /* GoogleService-Info.plist */,
 				31128CF02772F0210084C9EA /* Info.plist */,
@@ -288,6 +292,7 @@
 				31900F0727746B3A0014A58D /* HomeTabBarView.swift */,
 				31900F0B2775A6080014A58D /* ClassCards.swift */,
 				31A2A4A727899EE3005679EB /* TabBarDay.swift */,
+				31F9B732279AA342006D1012 /* TimeTableScrollView.swift */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -410,6 +415,7 @@
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,
+				31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */,
 				31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */,
 				31900F0A27759DB60014A58D /* Gradient.swift in Sources */,
 			);
@@ -542,11 +548,12 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VITTY/VITTYDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = 6D98G6WZSC;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;

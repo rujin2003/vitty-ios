@@ -24,19 +24,7 @@ struct HomePage: View {
                 }
                 if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]] {
                     if !selectedTT.isEmpty {
-                        ScrollView {
-                            ScrollViewReader { scrollView in
-                                ForEach(0..<selectedTT.count, id:\.self) { ind in
-                                    ClassCards(classInfo: selectedTT[ind], currentClass: timetableViewModel.classesCompleted == ind && tabSelected == (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1)
-                                        .padding(.vertical,5)
-                                        .id(ind)
-                                }
-                                .onAppear {
-                                    timetableViewModel.updateClassCompleted()
-                                    scrollView.scrollTo(timetableViewModel.classesCompleted)
-                            }
-                            }
-                        }
+                        TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
                     }
                     else {
                         Spacer()
@@ -65,6 +53,7 @@ struct HomePage: View {
         .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
         .onAppear {
             timetableViewModel.getData()
+            timetableViewModel.updateClassCompleted()
         }
         .animation(.default)
     }
