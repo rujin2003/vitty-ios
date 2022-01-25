@@ -13,6 +13,7 @@ struct HomePage: View {
     @State var showLogout: Bool = false
     @EnvironmentObject var timetableViewModel: TimetableViewModel
     @EnvironmentObject var authVM: AuthService
+    @EnvironmentObject var notifVM: NotificationsViewModel
     @AppStorage("examMode") var examModeOn: Bool = false
     var body: some View {
         ZStack {
@@ -38,12 +39,15 @@ struct HomePage: View {
                         Spacer()
                     }
                 }
-                NavigationLink(destination: SettingsView(), isActive: $goToSettings) {
+                NavigationLink(destination: SettingsView().environmentObject(timetableViewModel).environmentObject(authVM).environmentObject(notifVM), isActive: $goToSettings) {
                     EmptyView()
                 }
                 if examModeOn {
                     ExamHolidayMode()
                 }
+            }
+            .onAppear {
+                tabSelected = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
             }
             if showLogout {
                 LogoutPopup(showLogout: $showLogout).environmentObject(authVM)
@@ -52,8 +56,13 @@ struct HomePage: View {
         .padding(.top)
         .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
         .onAppear {
-            timetableViewModel.getData()
+            timetableViewModel.getData {
+                notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
+                print("Notifications set up")
+            }
+            LocalNotificationsManager.shared.getAllNotificationRequests()
             timetableViewModel.updateClassCompleted()
+            notifVM.getNotifPrefs()
         }
         .animation(.default)
     }

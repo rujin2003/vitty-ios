@@ -32,6 +32,9 @@
 		314A409B27383BEE0058082F /* VITTY.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 314A409927383BEE0058082F /* VITTY.xcdatamodeld */; };
 		3168511F277319480046A9AC /* SignupOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3168511E277319480046A9AC /* SignupOR.swift */; };
 		316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EF02776238500CC1DE8 /* GoogleSignIn */; };
+		317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DB279F0426009A532E /* CustomNotificationsLabel.swift */; };
+		317715DE279F1431009A532E /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DD279F1431009A532E /* IndexedCollection.swift */; };
+		317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DF279FE778009A532E /* CustomNotificationButton.swift */; };
 		317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1922775B819008AEB31 /* InstructionsCards.swift */; };
 		317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1942775C555008AEB31 /* LogoutPopup.swift */; };
 		317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */; };
@@ -50,6 +53,12 @@
 		31A2A4A227894C16005679EB /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A4A127894C16005679EB /* FirebaseMessaging */; };
 		31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2A4A327894E96005679EB /* TimeTableInformation.swift */; };
 		31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2A4A727899EE3005679EB /* TabBarDay.swift */; };
+		31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB527279AD8CA008E20BB /* SettingsHeader.swift */; };
+		31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB529279AE34B008E20BB /* NotificationsView.swift */; };
+		31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */; };
+		31BAB52F279BCC7D008E20BB /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */; };
+		31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */; };
+		31BAB533279D3F49008E20BB /* LocalNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */; };
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946C27893F9000EA07BE /* Confidential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946B27893F9000EA07BE /* Confidential.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
@@ -83,6 +92,9 @@
 		314A409727383BEE0058082F /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		314A409A27383BEE0058082F /* VITTY.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VITTY.xcdatamodel; sourceTree = "<group>"; };
 		3168511E277319480046A9AC /* SignupOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupOR.swift; sourceTree = "<group>"; };
+		317715DB279F0426009A532E /* CustomNotificationsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationsLabel.swift; sourceTree = "<group>"; };
+		317715DD279F1431009A532E /* IndexedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
+		317715DF279FE778009A532E /* CustomNotificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationButton.swift; sourceTree = "<group>"; };
 		317EE1922775B819008AEB31 /* InstructionsCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsCards.swift; sourceTree = "<group>"; };
 		317EE1942775C555008AEB31 /* LogoutPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopup.swift; sourceTree = "<group>"; };
 		317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamHolidayMode.swift; sourceTree = "<group>"; };
@@ -95,6 +107,12 @@
 		31900F0B2775A6080014A58D /* ClassCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCards.swift; sourceTree = "<group>"; };
 		31A2A4A327894E96005679EB /* TimeTableInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableInformation.swift; sourceTree = "<group>"; };
 		31A2A4A727899EE3005679EB /* TabBarDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDay.swift; sourceTree = "<group>"; };
+		31BAB527279AD8CA008E20BB /* SettingsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeader.swift; sourceTree = "<group>"; };
+		31BAB529279AE34B008E20BB /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewHeader.swift; sourceTree = "<group>"; };
+		31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
+		31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsModel.swift; sourceTree = "<group>"; };
+		31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsManager.swift; sourceTree = "<group>"; };
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946B27893F9000EA07BE /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Confidential.swift; path = VITTY/Confidential.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
@@ -124,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				31096380278227730009A29C /* AuthService.swift */,
+				31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -175,6 +194,7 @@
 			children = (
 				31128D062772FA120084C9EA /* Colors.swift */,
 				31900F0927759DB60014A58D /* Gradient.swift */,
+				317715DD279F1431009A532E /* IndexedCollection.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -249,6 +269,7 @@
 			isa = PBXGroup;
 			children = (
 				31EC946D2789409D00EA07BE /* TimetableViewModel.swift */,
+				31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -256,6 +277,8 @@
 		314A40A427383C370058082F /* View */ = {
 			isa = PBXGroup;
 			children = (
+				31BAB52B279AE36D008E20BB /* NotificationsView */,
+				31BAB526279AD8B5008E20BB /* Settings */,
 				31900F0627746B130014A58D /* HomePage */,
 				31128D022772F8DA0084C9EA /* Common */,
 				31128CFF2772F81E0084C9EA /* SplashScreen */,
@@ -270,6 +293,7 @@
 			children = (
 				31EC94692788BCDF00EA07BE /* Classes.swift */,
 				31A2A4A327894E96005679EB /* TimeTableInformation.swift */,
+				31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -281,6 +305,7 @@
 				31900F00277467460014A58D /* InstructionsView.swift */,
 				31900F02277468790014A58D /* HomePage.swift */,
 				317EE1982775D3C6008AEB31 /* SettingsView.swift */,
+				31BAB529279AE34B008E20BB /* NotificationsView.swift */,
 			);
 			path = App;
 			sourceTree = "<group>";
@@ -295,6 +320,24 @@
 				31F9B732279AA342006D1012 /* TimeTableScrollView.swift */,
 			);
 			path = HomePage;
+			sourceTree = "<group>";
+		};
+		31BAB526279AD8B5008E20BB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				31BAB527279AD8CA008E20BB /* SettingsHeader.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		31BAB52B279AE36D008E20BB /* NotificationsView */ = {
+			isa = PBXGroup;
+			children = (
+				31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */,
+				317715DB279F0426009A532E /* CustomNotificationsLabel.swift */,
+				317715DF279FE778009A532E /* CustomNotificationButton.swift */,
+			);
+			path = NotificationsView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -390,22 +433,29 @@
 			files = (
 				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
 				31096381278227730009A29C /* AuthService.swift in Sources */,
+				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
+				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
 				31128D012772F8370084C9EA /* SplashScreen.swift in Sources */,
 				31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */,
 				31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */,
+				31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */,
 				317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */,
 				314A409827383BEE0058082F /* Persistence.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
+				31BAB533279D3F49008E20BB /* LocalNotificationsManager.swift in Sources */,
+				317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */,
 				3168511F277319480046A9AC /* SignupOR.swift in Sources */,
 				31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */,
+				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
 				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
 				31900F03277468790014A58D /* HomePage.swift in Sources */,
 				314A409B27383BEE0058082F /* VITTY.xcdatamodeld in Sources */,
+				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				31EC946C27893F9000EA07BE /* Confidential.swift in Sources */,
 				31900F01277467460014A58D /* InstructionsView.swift in Sources */,
 				31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */,
@@ -416,7 +466,9 @@
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,
 				31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */,
+				31BAB52F279BCC7D008E20BB /* NotificationsViewModel.swift in Sources */,
 				31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */,
+				317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */,
 				31900F0A27759DB60014A58D /* Gradient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -553,7 +605,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 6D98G6WZSC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;

@@ -57,7 +57,7 @@ class TimetableViewModel: ObservableObject {
             }
     }
     
-    func fetchTimetable(){
+    func fetchTimetable(onCompletion: @escaping ()->Void){
         print("fetching timetable")
         for i in (0..<7) {
             db.collection("users")
@@ -77,15 +77,19 @@ class TimetableViewModel: ObservableObject {
                     } ?? []
                     
                     print("timetable now: \(self.timetable)")
+                    onCompletion()
                 }
         }
+        
     }
     
-    func getData(){
+    func getData(onCompletion: @escaping ()->Void){
         self.fetchInfo {
             if self.timetable.isEmpty || self.versionChanged {
                 self.timetable = [:]
-                self.fetchTimetable()
+                self.fetchTimetable {
+                    onCompletion()
+                }
                 self.versionChanged = false
                 print("version changed?: \(self.versionChanged)")
             }

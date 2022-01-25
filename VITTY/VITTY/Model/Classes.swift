@@ -15,18 +15,7 @@ struct Classes: Hashable, Codable {
     var slot: String?
     var startTime: Date?
     var endTime: Date?
-//    var startLocal: Date? {
-//        if let startTime = startTime {
-//            return utcToLocal(date: startTime)
-//        }
-//        return nil
-//    }
-//    var endLocal: Date? {
-//        if let endTime = endTime {
-//            return utcToLocal(date: endTime)
-//        }
-//        return nil
-//    }
+
     private enum CodingKeys: String, CodingKey {
         
         case courseType = "Course_type"

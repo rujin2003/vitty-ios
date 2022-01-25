@@ -63,4 +63,7 @@ struct StringConstants {
         "Ready to run to Tarama?",
         "Do grocery shopping at Allmart"
     ]
+    
+    // MARK: NOTIFICATIONS
+    static let notificationTitle = "Join your next class!"
 }

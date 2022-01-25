@@ -109,10 +109,7 @@ class AuthService: NSObject, ObservableObject {
         do {
             try auth.signOut()
             //TODO: create method to reset all UserDefaults
-            UserDefaults.standard.removeObject(forKey: "providerId")
-            UserDefaults.standard.removeObject(forKey: "userName")
-            UserDefaults.standard.removeObject(forKey: "userEmail")
-            UserDefaults.standard.removeObject(forKey: "instructionsComplete")
+            UserDefaults.resetDefaults()
         } catch let signOutError as NSError {
             print("Error signing out: \(signOutError)")
         }
@@ -221,3 +218,11 @@ extension AuthService: ASAuthorizationControllerDelegate {
     
 }
 
+
+extension UserDefaults {
+    static func resetDefaults() {
+        if let bundleID = Bundle.main.bundleIdentifier {
+            UserDefaults.standard.removePersistentDomain(forName: bundleID)
+        }
+    }
+}

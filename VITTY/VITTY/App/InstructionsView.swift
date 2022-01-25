@@ -12,6 +12,7 @@ struct InstructionsView: View {
     @EnvironmentObject var ttVM: TimetableViewModel
     @State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
     @State var displayLogout: Bool = false
+    @EnvironmentObject var notifVM: NotificationsViewModel
     var body: some View {
         ZStack {
             VStack {
@@ -33,14 +34,16 @@ struct InstructionsView: View {
                 Spacer()
                 CustomButton(buttonText: "Done") {
                     if ttVM.timetable.isEmpty {
-                        ttVM.getData()
+                        ttVM.getData {
+                            notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+                        }
                     } else {
                         print("time table is populated")
                         UserDefaults.standard.set(true, forKey:"instructionsComplete")
                         goToHomeScreen = true
                     }
                 }
-                NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState), isActive: $goToHomeScreen) {
+                NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM), isActive: $goToHomeScreen) {
                     EmptyView()
                 }
             }
@@ -52,7 +55,8 @@ struct InstructionsView: View {
             }
         }
         .onAppear {
-            ttVM.getData()
+            ttVM.getData { notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+            }
         }
     }
 }

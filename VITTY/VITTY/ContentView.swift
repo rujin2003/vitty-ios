@@ -11,27 +11,40 @@ struct ContentView: View {
     
     @StateObject var authState: AuthService = AuthService()
     @StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
+    // may not need this at all
+    @StateObject var localNotificationsManager = LocalNotificationsManager()
+    @StateObject var notifVM = NotificationsViewModel.shared
     var body: some View {
         NavigationView {
             if authState.loggedInUser != nil {
-//                if  UserDefaults.standard.bool(forKey: "instructionsComplete"){
-//                    HomePage()
-//                        .navigationTitle("")
-//                        .navigationBarHidden(true)
-//                } else {
-                    InstructionsView()
-                        .navigationTitle("")
-                        .navigationBarHidden(true)
-//                }
+                InstructionsView()
+                    .navigationTitle("")
+                    .navigationBarHidden(true)
             } else {
-            SplashScreen()
-                .navigationTitle("")
-                .navigationBarHidden(true)
+                SplashScreen()
+                    .navigationTitle("")
+                    .navigationBarHidden(true)
             }
         }
         .animation(.default)
+        .onAppear(perform: LocalNotificationsManager.shared.getNotificationSettings)
+        .onChange(of: LocalNotificationsManager.shared.authStatus) { authorizationStat in
+            
+            switch authorizationStat {
+            case .notDetermined:
+                LocalNotificationsManager.shared.requestPermission()
+                break
+            default:
+                break
+            }
+            
+        }
+        .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
+            LocalNotificationsManager.shared.getNotificationSettings()
+        }
         .environmentObject(authState)
         .environmentObject(timeTableVM)
+        .environmentObject(notifVM)
     }
 }
 

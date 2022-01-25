@@ -13,10 +13,13 @@ import GoogleSignIn
 struct VITTYApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     
+    let notifCenter = UNUserNotificationCenter.current()
+    
 
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .preferredColorScheme(.dark)
         }
     }
 }
