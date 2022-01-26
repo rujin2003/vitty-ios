@@ -57,7 +57,7 @@ struct SettingsView: View {
                 }
                 
                 if !examModeOn {
-                    NavigationLink(destination: NotificationsView().environmentObject(authVM).environmentObject(ttVM).environmentObject(notifVM)) {
+                    NavigationLink(destination: NotificationsView( notifPrefs: $notifVM.notifSettings).environmentObject(authVM).environmentObject(ttVM)) {
                         HStack {
                             VStack(alignment: .leading) {
                                 Text("Notification Settings")
@@ -131,8 +131,11 @@ struct SettingsView: View {
             if examMode {
                 LocalNotificationsManager.shared.removeAllNotificationRequests()
             } else {
-                notifVM.updateNotificationPreferences(timetable: ttVM.timetable)
+                notifVM.updateNotifs(timetable: ttVM.timetable)
             }
+        }
+        .onAppear {
+            notifVM.updateNotifs(timetable: ttVM.timetable)
         }
         //        .navigationTitle("Settings")
         //        .navigationBarTitleDisplayMode(.inline)

@@ -15,6 +15,7 @@ struct HomePage: View {
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var notifVM: NotificationsViewModel
     @AppStorage("examMode") var examModeOn: Bool = false
+    @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
     var body: some View {
         ZStack {
             VStack {
@@ -57,12 +58,18 @@ struct HomePage: View {
         .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
         .onAppear {
             timetableViewModel.getData {
-                notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
-                print("Notifications set up")
+                if !notifsSetup {
+                    notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
+                    print("Notifications set up")
+                }
+                
             }
-            LocalNotificationsManager.shared.getAllNotificationRequests()
+            //            LocalNotificationsManager.shared.getAllNotificationRequests()
+            notifVM.updateNotifs(timetable: timetableViewModel.timetable)
             timetableViewModel.updateClassCompleted()
             notifVM.getNotifPrefs()
+            
+            print(goToSettings)
         }
         .animation(.default)
     }

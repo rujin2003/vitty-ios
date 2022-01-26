@@ -35,6 +35,7 @@
 		317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DB279F0426009A532E /* CustomNotificationsLabel.swift */; };
 		317715DE279F1431009A532E /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DD279F1431009A532E /* IndexedCollection.swift */; };
 		317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DF279FE778009A532E /* CustomNotificationButton.swift */; };
+		317715E227A0427B009A532E /* CustomNotifsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715E127A0427B009A532E /* CustomNotifsListView.swift */; };
 		317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1922775B819008AEB31 /* InstructionsCards.swift */; };
 		317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1942775C555008AEB31 /* LogoutPopup.swift */; };
 		317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */; };
@@ -95,6 +96,7 @@
 		317715DB279F0426009A532E /* CustomNotificationsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationsLabel.swift; sourceTree = "<group>"; };
 		317715DD279F1431009A532E /* IndexedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
 		317715DF279FE778009A532E /* CustomNotificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationButton.swift; sourceTree = "<group>"; };
+		317715E127A0427B009A532E /* CustomNotifsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotifsListView.swift; sourceTree = "<group>"; };
 		317EE1922775B819008AEB31 /* InstructionsCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsCards.swift; sourceTree = "<group>"; };
 		317EE1942775C555008AEB31 /* LogoutPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopup.swift; sourceTree = "<group>"; };
 		317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamHolidayMode.swift; sourceTree = "<group>"; };
@@ -336,6 +338,7 @@
 				31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */,
 				317715DB279F0426009A532E /* CustomNotificationsLabel.swift */,
 				317715DF279FE778009A532E /* CustomNotificationButton.swift */,
+				317715E127A0427B009A532E /* CustomNotifsListView.swift */,
 			);
 			path = NotificationsView;
 			sourceTree = "<group>";
@@ -465,6 +468,7 @@
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,
+				317715E227A0427B009A532E /* CustomNotifsListView.swift in Sources */,
 				31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */,
 				31BAB52F279BCC7D008E20BB /* NotificationsViewModel.swift in Sources */,
 				31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */,

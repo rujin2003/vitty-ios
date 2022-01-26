@@ -65,5 +65,5 @@ struct StringConstants {
     ]
     
     // MARK: NOTIFICATIONS
-    static let notificationTitle = "Join your next class!"
+    static let notificationTitle = "Up next!"
 }

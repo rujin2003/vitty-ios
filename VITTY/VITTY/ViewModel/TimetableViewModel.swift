@@ -27,11 +27,14 @@ class TimetableViewModel: ObservableObject {
         "sunday","monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
     ]
     
+    static let timetableVersionKey: String = "timetableVersionKey"
+    
     var timetableInfo = TimeTableInformation()
     
     private var db = Firestore.firestore()
     
     func fetchInfo(onCompletion: @escaping ()->Void){
+        var timetableVersion = UserDefaults.standard.object(forKey: TimetableViewModel.timetableVersionKey)
         print("fetching user-timetable information")
         db.collection("users")
             .document(Confidential.uid)
@@ -46,9 +49,16 @@ class TimetableViewModel: ObservableObject {
                     print("couldn't decode timetable information")
                     return
                 }
-                if self.timetableInfo.timetableVersion != nil {
-                    if data?.timetableVersion != self.timetableInfo.timetableVersion {
+//                if self.timetableInfo.timetableVersion != nil {
+//                    if data?.timetableVersion != self.timetableInfo.timetableVersion {
+//                        self.versionChanged = true
+//                    }
+//                }
+                if data?.timetableVersion != nil {
+                    if data?.timetableVersion != (timetableVersion as? Int) {
                         self.versionChanged = true
+                        UserDefaults.standard.set(data?.timetableVersion, forKey: TimetableViewModel.timetableVersionKey)
+                        UserDefaults.standard.set(false, forKey: AuthService.notifsSetupKey)
                     }
                 }
                 self.timetableInfo = data ?? TimeTableInformation(isTimetableAvailable: nil, isUpdated: nil, timetableVersion: nil)
@@ -59,6 +69,7 @@ class TimetableViewModel: ObservableObject {
     
     func fetchTimetable(onCompletion: @escaping ()->Void){
         print("fetching timetable")
+        var countt = 0
         for i in (0..<7) {
             db.collection("users")
                 .document(Confidential.uid)
@@ -67,6 +78,7 @@ class TimetableViewModel: ObservableObject {
                 .collection("periods")
                 .getDocuments { (documents, error) in
                     
+                    countt += 1
                     if let error = error {
                         print("error fetching timetable: \(error.localizedDescription)")
                         return
@@ -77,7 +89,10 @@ class TimetableViewModel: ObservableObject {
                     } ?? []
                     
                     print("timetable now: \(self.timetable)")
-                    onCompletion()
+                    if countt == 7 {
+                        print("Notif completion handler")
+                        onCompletion()
+                    }
                 }
         }
         

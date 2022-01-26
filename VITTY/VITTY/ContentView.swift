@@ -13,7 +13,7 @@ struct ContentView: View {
     @StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
     // may not need this at all
     @StateObject var localNotificationsManager = LocalNotificationsManager()
-    @StateObject var notifVM = NotificationsViewModel.shared
+    @StateObject var notifVM = NotificationsViewModel()
     var body: some View {
         NavigationView {
             if authState.loggedInUser != nil {

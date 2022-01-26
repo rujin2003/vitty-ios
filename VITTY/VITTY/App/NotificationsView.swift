@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import CoreMedia
 
 struct NotificationsView: View {
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var ttVM: TimetableViewModel
-    
-    @EnvironmentObject var notifVM: NotificationsViewModel
+//    @StateObject var notifVM = NotificationsViewModel.shared
+    @Binding var notifPrefs: [NotificationsSettingsModel]
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -22,14 +21,7 @@ struct NotificationsView: View {
                         VStack(alignment: .leading) {
                             Text(TimetableViewModel.daysOfTheWeek[day].capitalized)
                                 .font(.custom("Poppins-Semibold", size: 16))
-                            ForEach($notifVM.notifSettings, id: \.self) { $notifsetting in
-                                if $notifsetting.wrappedValue.day == day+1 {
-                                    //                                    CustomNotificationButton(enabled: $notifsetting.enabled, dayoftheweek: day, timetable: ttVM.timetable, period: notifsetting.wrappedValue.period)
-                                    
-                                    Toggle(isOn: $notifsetting.enabled, label: {
-                                        CustomNotificationsLabel(dayoftheweek: day, timetable: ttVM.timetable, period: $notifsetting.wrappedValue.period)})
-                                }
-                            }
+                            CustomNotifsListView(notifPrefs: $notifPrefs, timetable: ttVM.timetable, day: day)
                         }
                     }
                 }
@@ -43,17 +35,17 @@ struct NotificationsView: View {
         //        .navigationBarHidden(true)
         .navigationTitle("Notifications")
         .navigationBarTitleDisplayMode(.inline)
-        //        .navigationTitle("")
-        .onDisappear {
-            notifVM.updateNotificationPreferences(timetable: ttVM.timetable)
-            
-        }
+                .navigationTitle("")
+//        .onDisappear {
+//            NotificationsViewModel.shared.updateNotifs(timetable: ttVM.timetable)
+//        }
+        
     }
 }
 
 
-struct NotificationsView_Previews: PreviewProvider {
-    static var previews: some View {
-        NotificationsView()
-    }
-}
+//struct NotificationsView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        NotificationsView()
+//    }
+//}

@@ -30,6 +30,13 @@ class AuthService: NSObject, ObservableObject {
     private let auth = Auth.auth()
     fileprivate var currentNonce: String?
     
+    // MARK: UserDefault keys
+    static let providerIdKey = "providerId"
+    static let usernameKey = "userName"
+    static let useremailKey = "userEmail"
+    static let instructionsCompleteKey = "instructionsComplete"
+    static let notifsSetupKey = "notifsSetupKey"
+    
     override init(){
         loggedInUser = auth.currentUser
         super.init()
@@ -90,14 +97,15 @@ class AuthService: NSObject, ObservableObject {
             self.isAuthenticating = false
             if let user = auth?.user {
                 self.loggedInUser = user
-                UserDefaults.standard.set(user.providerData[0].providerID, forKey: "providerId")
-                UserDefaults.standard.set(user.displayName, forKey: "userName")
-                UserDefaults.standard.set(user.email, forKey: "userEmail")
-                UserDefaults.standard.set(false, forKey:"instructionsComplete")
+                UserDefaults.standard.set(user.providerData[0].providerID, forKey: AuthService.providerIdKey)
+                UserDefaults.standard.set(user.displayName, forKey: AuthService.usernameKey)
+                UserDefaults.standard.set(user.email, forKey: AuthService.useremailKey)
+                UserDefaults.standard.set(false, forKey:AuthService.instructionsCompleteKey)
+                UserDefaults.standard.set(false, forKey:AuthService.notifsSetupKey)
                 print("signed in!")
-                print("Name: \(UserDefaults.standard.string(forKey: "userName"))")
-                print("ProviderId: \(UserDefaults.standard.string(forKey: "providerId"))")
-                print("Email: \(UserDefaults.standard.string(forKey: "userEmail"))")
+                print("Name: \(UserDefaults.standard.string(forKey: AuthService.usernameKey) ?? "uname")")
+                print("ProviderId: \(UserDefaults.standard.string(forKey: AuthService.providerIdKey) ?? "provider")")
+                print("Email: \(UserDefaults.standard.string(forKey: AuthService.useremailKey) ?? "email")")
             } else if let error = error {
                 self.error = error as NSError
             }

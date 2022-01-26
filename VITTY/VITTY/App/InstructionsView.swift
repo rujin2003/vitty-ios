@@ -13,6 +13,8 @@ struct InstructionsView: View {
     @State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
     @State var displayLogout: Bool = false
     @EnvironmentObject var notifVM: NotificationsViewModel
+    // notifsSetup is true when notifications don't need to be setup and false when they do
+    @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
     var body: some View {
         ZStack {
             VStack {
@@ -22,7 +24,7 @@ struct InstructionsView: View {
                     // add logout button functionality
                     Image(systemName: "arrow.right.square")
                         .onTapGesture {
-                           displayLogout = true
+                            displayLogout = true
                         }
                 }
                 .font(Font.custom("Poppins-Bold", size: 24))
@@ -35,7 +37,9 @@ struct InstructionsView: View {
                 CustomButton(buttonText: "Done") {
                     if ttVM.timetable.isEmpty {
                         ttVM.getData {
-                            notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+                            if !notifsSetup {
+                                notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+                            }
                         }
                     } else {
                         print("time table is populated")
@@ -48,15 +52,19 @@ struct InstructionsView: View {
                 }
             }
             .padding()
-        .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
+            .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
             
             if displayLogout {
                 LogoutPopup(showLogout: $displayLogout)
             }
         }
         .onAppear {
-            ttVM.getData { notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+            ttVM.getData {
+                if !notifsSetup {
+                    notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+                }
             }
+            notifVM.getNotifPrefs()
         }
     }
 }

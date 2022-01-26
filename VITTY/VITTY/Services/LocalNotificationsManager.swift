@@ -48,12 +48,23 @@ class LocalNotificationsManager: ObservableObject {
         }
     }
     
-    func addNotifications(id: String, hour: Int, minute: Int, day: Int, courseCode: String, courseName: String) {
+    func addNotifications(id: String, date: Date, day: Int, courseCode: String, courseName: String) {
+        
+        let notifTime = Calendar.current.date(byAdding: .minute, value: -5, to: date ?? Date()) ?? Date()
+        
+        let components = Calendar.current.dateComponents([.hour,.minute], from: notifTime)
+        let hour = components.hour ?? 0
+        let minute = components.minute ?? 0
         
         print("Creating notification for hour: \(hour), minute: \(minute), day: \(day), courseCode: \(courseCode) and name: \(courseName)")
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .none
+        dateFormatter.timeStyle = .short
+        
         let content = UNMutableNotificationContent()
         content.title = StringConstants.notificationTitle
-        content.body = "\(courseCode) \(courseName)"
+        content.body = "You have \(courseCode) \(courseName) at \(dateFormatter.string(from: date))"
         content.sound = .default
         
         var dateComponents = DateComponents()

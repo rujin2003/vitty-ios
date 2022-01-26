@@ -14,6 +14,8 @@ struct CustomNotificationButton: View {
     var period: Int
     var body: some View {
         Button(action: {
+            print("notif button for \(dayoftheweek) \(period)")
+            print(enabled)
            enabled.toggle()
         }, label: {
             CustomNotificationsLabel(dayoftheweek: dayoftheweek, timetable: timetable, period: period)
