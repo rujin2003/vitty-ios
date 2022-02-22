@@ -5,6 +5,8 @@
 //  Created by Ananya George on 1/21/22.
 //
 
+// TODO: fix custom notifications
+
 import SwiftUI
 
 struct NotificationsView: View {

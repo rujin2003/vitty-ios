@@ -21,7 +21,7 @@ struct TimeTableScrollView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LinearGradient.secGrad)
                             .opacity((tabSelected == (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1) && timetableViewModel.classesCompleted == ind ? 1 : 0)
-                        ClassCards(classInfo: selectedTT[ind])
+                        ClassCards(classInfo: selectedTT[ind], onlineMode: false)
                             .id(ind)
                     }
                     .padding(.bottom,5)
@@ -30,8 +30,6 @@ struct TimeTableScrollView: View {
                     print((Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1)
                     print(tabSelected)
                     scrollView.scrollTo(timetableViewModel.classesCompleted)
-                    
-                    
                 }
             }
             .padding(.top, 5)

@@ -33,6 +33,7 @@ struct HomePage: View {
                         VStack(alignment: .center) {
                             Text("No class today!")
                                 .font(Font.custom("Poppins-Bold", size: 24))
+//                        TODO: remote config
                             Text(StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!")
                                 .font(Font.custom("Poppins-Regular",size:20))
                         }
@@ -47,6 +48,7 @@ struct HomePage: View {
                     ExamHolidayMode()
                 }
             }
+            .blur(radius: showLogout ? 10 : 0)
             .onAppear {
                 tabSelected = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
             }

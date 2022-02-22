@@ -12,6 +12,8 @@ class LocalNotificationsManager: ObservableObject {
     
     static let shared = LocalNotificationsManager()
     
+    // TODO: handle notifications
+    
     //    @Published var authStatus: Bool = false
     @Published var authStatus: UNAuthorizationStatus?
     
@@ -71,6 +73,8 @@ class LocalNotificationsManager: ObservableObject {
         dateComponents.hour = hour
         dateComponents.minute = minute
         dateComponents.weekday = day
+        
+//        TODO: add action to notification
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         

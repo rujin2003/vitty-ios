@@ -56,29 +56,30 @@ struct SettingsView: View {
                     }
                 }
                 
-                if !examModeOn {
-                    NavigationLink(destination: NotificationsView( notifPrefs: $notifVM.notifSettings).environmentObject(authVM).environmentObject(ttVM)) {
-                        HStack {
-                            VStack(alignment: .leading) {
-                                Text("Notification Settings")
-                                    .font(.custom("Poppins-Medium", size: 16))
-                                Text("Turn on/off individual class notifications")
-                                    .font(.custom("Poppins-Regular", size: 14))
-                                    .foregroundColor(Color.vprimary)
-                            }
-                            Spacer()
-                            Image(systemName: "chevron.right")
-                        }
-                    }
-                } else {
-                    VStack(alignment: .leading) {
-                        Text("Exam mode on")
-                            .font(.custom("Poppins-Medium", size: 16))
-                        Text("Turn off exam mode to customize notifications!")
-                            .font(.custom("Poppins-Regular", size: 14))
-                            .foregroundColor(Color.vprimary)
-                    }
-                }
+                // TODO: fix custom notifications
+//                if !examModeOn {
+//                    NavigationLink(destination: NotificationsView( notifPrefs: $notifVM.notifSettings).environmentObject(authVM).environmentObject(ttVM)) {
+//                        HStack {
+//                            VStack(alignment: .leading) {
+//                                Text("Notification Settings")
+//                                    .font(.custom("Poppins-Medium", size: 16))
+//                                Text("Turn on/off individual class notifications")
+//                                    .font(.custom("Poppins-Regular", size: 14))
+//                                    .foregroundColor(Color.vprimary)
+//                            }
+//                            Spacer()
+//                            Image(systemName: "chevron.right")
+//                        }
+//                    }
+//                } else {
+//                    VStack(alignment: .leading) {
+//                        Text("Exam mode on")
+//                            .font(.custom("Poppins-Medium", size: 16))
+//                        Text("Turn off exam mode to customize notifications!")
+//                            .font(.custom("Poppins-Regular", size: 14))
+//                            .foregroundColor(Color.vprimary)
+//                    }
+//                }
             }
             .padding(.vertical)
             

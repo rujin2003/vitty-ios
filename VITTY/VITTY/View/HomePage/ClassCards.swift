@@ -9,14 +9,9 @@ import SwiftUI
 
 struct ClassCards: View {
     var classInfo: Classes
-    
-    private var localStart: String {
-        let formatter = DateFormatter()
-        formatter.timeStyle = .short
-        return formatter.string(from: classInfo.startTime ?? Date())
-    }
     @State var currentClass: Bool =  false
     @State var hideDescription: Bool = true
+    @State var onlineMode: Bool
     var body: some View {
         ZStack {
             VStack {
@@ -46,8 +41,22 @@ struct ClassCards: View {
                         Text("\(classInfo.slot ?? "Slot")")
                             .font(Font.custom("Poppins-Regular",size:14))
                         Spacer()
+//                        TODO: remote config
+                        if onlineMode {
                         Text("\(classInfo.location ?? "Location")")
                             .font(Font.custom("Poppins-Regular",size:14))
+                        } else {
+                            HStack {
+                                Text("\(classInfo.location ?? "Location")")
+                                    .font(Font.custom("Poppins-Regular",size:14))
+                                Image(systemName: "mappin.and.ellipse")
+                            }
+                            .padding(5)
+                            .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 1).foregroundColor(Color.vprimary))
+                            .onTapGesture {
+                                ClassCardViewModel.classCardVM.navigateToClass(at: classInfo.location ?? "SJT")
+                            }
+                        }
                     }
                     .padding(.horizontal)
                     .padding(.bottom)
@@ -63,6 +72,6 @@ struct ClassCards: View {
 
 struct ClassCards_Previews: PreviewProvider {
     static var previews: some View {
-        ClassCards(classInfo: StringConstants.sampleClassDate)
+        ClassCards(classInfo: StringConstants.sampleClassDate, onlineMode: false)
     }
 }

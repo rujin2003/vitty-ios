@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3105871B27A3ECBB00C2FC41 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */; };
+		3105871D27A3ECBB00C2FC41 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
+		3105872027A3ECBB00C2FC41 /* vitty_widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105871F27A3ECBB00C2FC41 /* vitty_widget.swift */; };
+		3105872227A3ECBD00C2FC41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3105872127A3ECBD00C2FC41 /* Assets.xcassets */; };
+		3105872627A3ECBD00C2FC41 /* vitty-widgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		3109637E2782245D0009A29C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 3109637D2782245D0009A29C /* GoogleService-Info.plist */; };
 		31096381278227730009A29C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31096380278227730009A29C /* AuthService.swift */; };
 		3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109639E27824F6F0009A29C /* AppStorageConstants.swift */; };
@@ -24,6 +29,7 @@
 		31128D0E277302AC0084C9EA /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */; };
 		31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */; };
 		31128D1627730C460084C9EA /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D1527730C460084C9EA /* CustomTextField.swift */; };
+		313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313E6AFC27BEAED9006F5944 /* ClassCardViewModel.swift */; };
 		314A408F27383BEC0058082F /* VITTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A408E27383BEC0058082F /* VITTYApp.swift */; };
 		314A409127383BEC0058082F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A409027383BEC0058082F /* ContentView.swift */; };
 		314A409327383BEE0058082F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409227383BEE0058082F /* Assets.xcassets */; };
@@ -60,13 +66,45 @@
 		31BAB52F279BCC7D008E20BB /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */; };
 		31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */; };
 		31BAB533279D3F49008E20BB /* LocalNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */; };
+		31D2F80027BA6592000C0308 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 31D2F7FF27BA6592000C0308 /* FirebaseRemoteConfig */; };
+		31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */; };
 		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
 		31EC946C27893F9000EA07BE /* Confidential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946B27893F9000EA07BE /* Confidential.swift */; };
 		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
 		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		3105872427A3ECBD00C2FC41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314A408327383BEC0058082F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3105871727A3ECBB00C2FC41;
+			remoteInfo = "vitty-widgetExtension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3105872727A3ECBD00C2FC41 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3105872627A3ECBD00C2FC41 /* vitty-widgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "vitty-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		3105871F27A3ECBB00C2FC41 /* vitty_widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vitty_widget.swift; sourceTree = "<group>"; };
+		3105872127A3ECBD00C2FC41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3105872327A3ECBD00C2FC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3109637D2782245D0009A29C /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		31096380278227730009A29C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
 		3109639E27824F6F0009A29C /* AppStorageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageConstants.swift; sourceTree = "<group>"; };
@@ -85,6 +123,7 @@
 		31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
 		31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenTabIndicator.swift; sourceTree = "<group>"; };
 		31128D1527730C460084C9EA /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		313E6AFC27BEAED9006F5944 /* ClassCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCardViewModel.swift; sourceTree = "<group>"; };
 		314A408B27383BEC0058082F /* VITTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VITTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		314A408E27383BEC0058082F /* VITTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VITTYApp.swift; sourceTree = "<group>"; };
 		314A409027383BEC0058082F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -115,6 +154,7 @@
 		31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
 		31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsModel.swift; sourceTree = "<group>"; };
 		31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsManager.swift; sourceTree = "<group>"; };
+		31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
 		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
 		31EC946B27893F9000EA07BE /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Confidential.swift; path = VITTY/Confidential.swift; sourceTree = "<group>"; };
 		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
@@ -123,6 +163,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		3105871527A3ECBB00C2FC41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3105871D27A3ECBB00C2FC41 /* SwiftUI.framework in Frameworks */,
+				3105871B27A3ECBB00C2FC41 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		314A408827383BEC0058082F /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -134,17 +183,38 @@
 				31A2A4A027894C16005679EB /* FirebaseFirestoreSwift-Beta in Frameworks */,
 				31A2A49E27894C16005679EB /* FirebaseFirestore in Frameworks */,
 				316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */,
+				31D2F80027BA6592000C0308 /* FirebaseRemoteConfig in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3105871927A3ECBB00C2FC41 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */,
+				3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3105871E27A3ECBB00C2FC41 /* vitty-widget */ = {
+			isa = PBXGroup;
+			children = (
+				3105871F27A3ECBB00C2FC41 /* vitty_widget.swift */,
+				3105872127A3ECBD00C2FC41 /* Assets.xcassets */,
+				3105872327A3ECBD00C2FC41 /* Info.plist */,
+			);
+			path = "vitty-widget";
+			sourceTree = "<group>";
+		};
 		3109637F278227580009A29C /* Services */ = {
 			isa = PBXGroup;
 			children = (
 				31096380278227730009A29C /* AuthService.swift */,
 				31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */,
+				31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -215,6 +285,8 @@
 			children = (
 				31EC946B27893F9000EA07BE /* Confidential.swift */,
 				314A408D27383BEC0058082F /* VITTY */,
+				3105871E27A3ECBB00C2FC41 /* vitty-widget */,
+				3105871927A3ECBB00C2FC41 /* Frameworks */,
 				314A408C27383BEC0058082F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -223,6 +295,7 @@
 			isa = PBXGroup;
 			children = (
 				314A408B27383BEC0058082F /* VITTY.app */,
+				3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -272,6 +345,7 @@
 			children = (
 				31EC946D2789409D00EA07BE /* TimetableViewModel.swift */,
 				31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */,
+				313E6AFC27BEAED9006F5944 /* ClassCardViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -346,6 +420,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		3105871727A3ECBB00C2FC41 /* vitty-widgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3105872A27A3ECBD00C2FC41 /* Build configuration list for PBXNativeTarget "vitty-widgetExtension" */;
+			buildPhases = (
+				3105871427A3ECBB00C2FC41 /* Sources */,
+				3105871527A3ECBB00C2FC41 /* Frameworks */,
+				3105871627A3ECBB00C2FC41 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "vitty-widgetExtension";
+			productName = "vitty-widgetExtension";
+			productReference = 3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		314A408A27383BEC0058082F /* VITTY */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 314A409E27383BEE0058082F /* Build configuration list for PBXNativeTarget "VITTY" */;
@@ -353,10 +444,12 @@
 				314A408727383BEC0058082F /* Sources */,
 				314A408827383BEC0058082F /* Frameworks */,
 				314A408927383BEC0058082F /* Resources */,
+				3105872727A3ECBD00C2FC41 /* Embed App Extensions */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				3105872527A3ECBD00C2FC41 /* PBXTargetDependency */,
 			);
 			name = VITTY;
 			packageProductDependencies = (
@@ -367,6 +460,7 @@
 				31A2A49D27894C16005679EB /* FirebaseFirestore */,
 				31A2A49F27894C16005679EB /* FirebaseFirestoreSwift-Beta */,
 				31A2A4A127894C16005679EB /* FirebaseMessaging */,
+				31D2F7FF27BA6592000C0308 /* FirebaseRemoteConfig */,
 			);
 			productName = VITTY;
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
@@ -382,6 +476,9 @@
 				LastSwiftUpdateCheck = 1300;
 				LastUpgradeCheck = 1300;
 				TargetAttributes = {
+					3105871727A3ECBB00C2FC41 = {
+						CreatedOnToolsVersion = 13.0;
+					};
 					314A408A27383BEC0058082F = {
 						CreatedOnToolsVersion = 13.0;
 					};
@@ -405,11 +502,20 @@
 			projectRoot = "";
 			targets = (
 				314A408A27383BEC0058082F /* VITTY */,
+				3105871727A3ECBB00C2FC41 /* vitty-widgetExtension */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		3105871627A3ECBB00C2FC41 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3105872227A3ECBD00C2FC41 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		314A408927383BEC0058082F /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -430,6 +536,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		3105871427A3ECBB00C2FC41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3105872027A3ECBB00C2FC41 /* vitty_widget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		314A408727383BEC0058082F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -455,7 +569,9 @@
 				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
 				31128D072772FA120084C9EA /* Colors.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
+				31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */,
 				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
+				313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */,
 				31900F03277468790014A58D /* HomePage.swift in Sources */,
 				314A409B27383BEE0058082F /* VITTY.xcdatamodeld in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
@@ -479,7 +595,72 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		3105872527A3ECBD00C2FC41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3105871727A3ECBB00C2FC41 /* vitty-widgetExtension */;
+			targetProxy = 3105872427A3ECBD00C2FC41 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		3105872827A3ECBD00C2FC41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6D98G6WZSC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "vitty-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "vitty-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aeg.VITTY.vitty-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3105872927A3ECBD00C2FC41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6D98G6WZSC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "vitty-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "vitty-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "aeg.VITTY.vitty-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		314A409C27383BEE0058082F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -602,6 +783,7 @@
 		314A409F27383BEE0058082F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = VITTY/VITTYDebug.entitlements;
@@ -636,6 +818,7 @@
 		314A40A027383BEE0058082F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
@@ -667,6 +850,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		3105872A27A3ECBD00C2FC41 /* Build configuration list for PBXNativeTarget "vitty-widgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3105872827A3ECBD00C2FC41 /* Debug */,
+				3105872927A3ECBD00C2FC41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		314A408627383BEC0058082F /* Build configuration list for PBXProject "VITTY" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -741,6 +933,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
 			productName = FirebaseMessaging;
+		};
+		31D2F7FF27BA6592000C0308 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
 		};
 /* End XCSwiftPackageProductDependency section */
 
