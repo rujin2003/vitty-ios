@@ -35,7 +35,6 @@
 		314A409327383BEE0058082F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409227383BEE0058082F /* Assets.xcassets */; };
 		314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409527383BEE0058082F /* Preview Assets.xcassets */; };
 		314A409827383BEE0058082F /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A409727383BEE0058082F /* Persistence.swift */; };
-		314A409B27383BEE0058082F /* VITTY.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 314A409927383BEE0058082F /* VITTY.xcdatamodeld */; };
 		3168511F277319480046A9AC /* SignupOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3168511E277319480046A9AC /* SignupOR.swift */; };
 		316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EF02776238500CC1DE8 /* GoogleSignIn */; };
 		317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DB279F0426009A532E /* CustomNotificationsLabel.swift */; };
@@ -130,7 +129,6 @@
 		314A409227383BEE0058082F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		314A409527383BEE0058082F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		314A409727383BEE0058082F /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		314A409A27383BEE0058082F /* VITTY.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VITTY.xcdatamodel; sourceTree = "<group>"; };
 		3168511E277319480046A9AC /* SignupOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupOR.swift; sourceTree = "<group>"; };
 		317715DB279F0426009A532E /* CustomNotificationsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationsLabel.swift; sourceTree = "<group>"; };
 		317715DD279F1431009A532E /* IndexedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
@@ -316,7 +314,6 @@
 				314A409027383BEC0058082F /* ContentView.swift */,
 				314A409227383BEE0058082F /* Assets.xcassets */,
 				314A409727383BEE0058082F /* Persistence.swift */,
-				314A409927383BEE0058082F /* VITTY.xcdatamodeld */,
 				314A409427383BEE0058082F /* Preview Content */,
 			);
 			path = VITTY;
@@ -573,7 +570,6 @@
 				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
 				313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */,
 				31900F03277468790014A58D /* HomePage.swift in Sources */,
-				314A409B27383BEE0058082F /* VITTY.xcdatamodeld in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				31EC946C27893F9000EA07BE /* Confidential.swift in Sources */,
 				31900F01277467460014A58D /* InstructionsView.swift in Sources */,
@@ -940,19 +936,6 @@
 			productName = FirebaseRemoteConfig;
 		};
 /* End XCSwiftPackageProductDependency section */
-
-/* Begin XCVersionGroup section */
-		314A409927383BEE0058082F /* VITTY.xcdatamodeld */ = {
-			isa = XCVersionGroup;
-			children = (
-				314A409A27383BEE0058082F /* VITTY.xcdatamodel */,
-			);
-			currentVersion = 314A409A27383BEE0058082F /* VITTY.xcdatamodel */;
-			path = VITTY.xcdatamodeld;
-			sourceTree = "<group>";
-			versionGroupType = wrapper.xcdatamodel;
-		};
-/* End XCVersionGroup section */
 	};
 	rootObject = 314A408327383BEC0058082F /* Project object */;
 }

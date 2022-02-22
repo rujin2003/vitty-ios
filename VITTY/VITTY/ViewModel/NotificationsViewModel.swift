@@ -12,6 +12,8 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
     static let shared = NotificationsViewModel()
     static let notifKey = "notificationsKey"
     
+    @Published var notificationTapped: Bool = false
+    
     @Published var notifSettings: [NotificationsSettingsModel] = []
     
     func setupNotificationPreferences(timetable: [String:[Classes]]) {
@@ -24,7 +26,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
             if let currentDayClasses = timetable[currentDay] {
                 if !currentDayClasses.isEmpty {
                     for aclass in 0..<currentDayClasses.count {
-                        let notifsetting = NotificationsSettingsModel(id: UUID().uuidString, enabled: true, day: (day+1), period: aclass)
+                        let notifsetting = NotificationsSettingsModel(id: UUID().uuidString, enabled: true, day: (day+1), period: aclass, location: currentDayClasses[aclass].location ?? "location")
                         temporaryArr.append(notifsetting)
                     }
                 }
@@ -60,7 +62,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
         let classs: Classes = timetable[TimetableViewModel.daysOfTheWeek[notifInfo.day - 1]]?[notifInfo.period] ?? Classes()
         
         
-        LocalNotificationsManager.shared.addNotifications(id: notifInfo.id ?? "",date: classs.startTime ?? Date(), day: notifInfo.day, courseCode: classs.courseCode ?? "Course Code", courseName: classs.courseName  ?? "Course Name")
+        LocalNotificationsManager.shared.addNotifications(id: notifInfo.id ?? "",date: classs.startTime ?? Date(), day: notifInfo.day, courseCode: classs.courseCode ?? "Course Code", courseName: classs.courseName  ?? "Course Name", location: classs.location ?? "Location")
     }
     
     
@@ -77,7 +79,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
 //                let components = Calendar.current.dateComponents([.hour, .minute], from: currClass?.startTime ?? Date())
 //                let hour = components.hour ?? 0
 //                let minute = components.minute ?? 0
-                LocalNotificationsManager.shared.addNotifications(id: period.id ?? "id", date: currClass?.startTime ?? Date(), day: period.day, courseCode: currClass?.courseCode ?? "Course Code", courseName: currClass?.courseName ?? "Course Name")
+                LocalNotificationsManager.shared.addNotifications(id: period.id ?? "id", date: currClass?.startTime ?? Date(), day: period.day, courseCode: currClass?.courseCode ?? "Course Code", courseName: currClass?.courseName ?? "Course Name", location: currClass?.location ?? "Location")
             }
             
         }

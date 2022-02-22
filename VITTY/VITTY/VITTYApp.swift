@@ -26,6 +26,7 @@ struct VITTYApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        configureUserNotifications()
         FirebaseApp.configure()
         return true
     }
@@ -35,5 +36,33 @@ class AppDelegate: NSObject, UIApplicationDelegate {
                      options: [UIApplication.OpenURLOptionsKey: Any])
       -> Bool {
       return GIDSignIn.sharedInstance.handle(url)
+    }
+}
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    private func configureUserNotifications() {
+        UNUserNotificationCenter.current().delegate = self
+        
+        let dismissAction = UNNotificationAction(
+        identifier: "dismiss",
+        title: "Dismiss",
+        options: []
+        )
+        
+        let navigateToClass = UNNotificationAction(
+        identifier: "navigateToClass",
+        title: "Navigate",
+        options: []
+        )
+        
+        let category = UNNotificationCategory(
+        identifier: "vitty-category",
+        actions: [dismissAction, navigateToClass],
+        intentIdentifiers: [],
+        options: []
+        )
+        
+        UNUserNotificationCenter.current().setNotificationCategories([category])
     }
 }

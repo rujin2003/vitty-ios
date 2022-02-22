@@ -50,7 +50,7 @@ class LocalNotificationsManager: ObservableObject {
         }
     }
     
-    func addNotifications(id: String, date: Date, day: Int, courseCode: String, courseName: String) {
+    func addNotifications(id: String, date: Date, day: Int, courseCode: String, courseName: String, location: String) {
         
         let notifTime = Calendar.current.date(byAdding: .minute, value: -5, to: date ?? Date()) ?? Date()
         
@@ -64,17 +64,19 @@ class LocalNotificationsManager: ObservableObject {
         dateFormatter.dateStyle = .none
         dateFormatter.timeStyle = .short
         
-        let content = UNMutableNotificationContent()
-        content.title = StringConstants.notificationTitle
-        content.body = "You have \(courseCode) \(courseName) at \(dateFormatter.string(from: date))"
-        content.sound = .default
-        
         var dateComponents = DateComponents()
         dateComponents.hour = hour
         dateComponents.minute = minute
         dateComponents.weekday = day
         
-//        TODO: add action to notification
+       
+        
+        let content = UNMutableNotificationContent()
+        content.title = StringConstants.notificationTitle
+        content.body = "You have \(courseCode) \(courseName) at \(dateFormatter.string(from: date))"
+        content.sound = .default
+        content.categoryIdentifier = "vitty-category"
+        content.userInfo = ["location":location]
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         
@@ -103,5 +105,21 @@ class LocalNotificationsManager: ObservableObject {
             }
         }
     }
+    
+    /** Handle notification when app is in background */
+        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response:
+            UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+            
+            if response.actionIdentifier == "navigateToClass" {
+                let userInfo = response.notification.request.content.userInfo
+                let location = userInfo["location"] as? String
+                ClassCardViewModel.classCardVM.navigateToClass(at: location ?? "location")
+            }
+            else if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+                NotificationsViewModel.shared.notificationTapped.toggle()
+            }
+            completionHandler()
+        }
+        
 }
 

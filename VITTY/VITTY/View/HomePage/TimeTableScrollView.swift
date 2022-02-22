@@ -11,6 +11,7 @@ struct TimeTableScrollView: View {
     var selectedTT: [Classes]
     @Binding var tabSelected: Int
     @EnvironmentObject var timetableViewModel: TimetableViewModel
+    @ObservedObject var notifSingleton = NotificationsViewModel.shared
     var body: some View {
         ScrollView {
             ScrollViewReader { scrollView in
@@ -29,6 +30,10 @@ struct TimeTableScrollView: View {
                 .onAppear {
                     print((Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1)
                     print(tabSelected)
+                    scrollView.scrollTo(timetableViewModel.classesCompleted)
+                }
+                .onChange(of: notifSingleton.notificationTapped) { _ in
+                    tabSelected = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
                     scrollView.scrollTo(timetableViewModel.classesCompleted)
                 }
             }

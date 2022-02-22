@@ -13,6 +13,7 @@ struct NotificationsSettingsModel: Identifiable, Equatable, Hashable, Codable {
     var day: Int
     // day: 1 - sunday
     var period: Int
+    var location: String
 }
 
 struct NotificationsSettingsHashModel: Codable {
