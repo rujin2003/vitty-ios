@@ -1,0 +1,981 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		3105871B27A3ECBB00C2FC41 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */; };
+		3105871D27A3ECBB00C2FC41 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
+		3105872027A3ECBB00C2FC41 /* vitty_widget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105871F27A3ECBB00C2FC41 /* vitty_widget.swift */; };
+		3105872227A3ECBD00C2FC41 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3105872127A3ECBD00C2FC41 /* Assets.xcassets */; };
+		3105872627A3ECBD00C2FC41 /* vitty-widgetExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		31096381278227730009A29C /* AuthService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31096380278227730009A29C /* AuthService.swift */; };
+		3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109639E27824F6F0009A29C /* AppStorageConstants.swift */; };
+		31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */; };
+		31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */; };
+		31128CFB2772F57E0084C9EA /* OFL.txt in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF52772F57E0084C9EA /* OFL.txt */; };
+		31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */; };
+		31128CFD2772F57E0084C9EA /* Poppins-SemiBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */; };
+		31128CFE2772F57E0084C9EA /* Poppins-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */; };
+		31128D012772F8370084C9EA /* SplashScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D002772F8370084C9EA /* SplashScreen.swift */; };
+		31128D042772F8E90084C9EA /* CustomButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D032772F8E90084C9EA /* CustomButton.swift */; };
+		31128D072772FA120084C9EA /* Colors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D062772FA120084C9EA /* Colors.swift */; };
+		31128D09277300130084C9EA /* SplashScreenIllustration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D08277300130084C9EA /* SplashScreenIllustration.swift */; };
+		31128D0C277300470084C9EA /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D0B277300470084C9EA /* StringConstants.swift */; };
+		31128D0E277302AC0084C9EA /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */; };
+		31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */; };
+		31128D1627730C460084C9EA /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D1527730C460084C9EA /* CustomTextField.swift */; };
+		313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 313E6AFC27BEAED9006F5944 /* ClassCardViewModel.swift */; };
+		314A408F27383BEC0058082F /* VITTYApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A408E27383BEC0058082F /* VITTYApp.swift */; };
+		314A409127383BEC0058082F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 314A409027383BEC0058082F /* ContentView.swift */; };
+		314A409327383BEE0058082F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409227383BEE0058082F /* Assets.xcassets */; };
+		314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 314A409527383BEE0058082F /* Preview Assets.xcassets */; };
+		3168511F277319480046A9AC /* SignupOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3168511E277319480046A9AC /* SignupOR.swift */; };
+		316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EF02776238500CC1DE8 /* GoogleSignIn */; };
+		317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DB279F0426009A532E /* CustomNotificationsLabel.swift */; };
+		317715DE279F1431009A532E /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DD279F1431009A532E /* IndexedCollection.swift */; };
+		317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DF279FE778009A532E /* CustomNotificationButton.swift */; };
+		317715E227A0427B009A532E /* CustomNotifsListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715E127A0427B009A532E /* CustomNotifsListView.swift */; };
+		317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1922775B819008AEB31 /* InstructionsCards.swift */; };
+		317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1942775C555008AEB31 /* LogoutPopup.swift */; };
+		317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */; };
+		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
+		31900F01277467460014A58D /* InstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F00277467460014A58D /* InstructionsView.swift */; };
+		31900F03277468790014A58D /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F02277468790014A58D /* HomePage.swift */; };
+		31900F0527746A400014A58D /* HomePageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0427746A400014A58D /* HomePageHeader.swift */; };
+		31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0727746B3A0014A58D /* HomeTabBarView.swift */; };
+		31900F0A27759DB60014A58D /* Gradient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0927759DB60014A58D /* Gradient.swift */; };
+		31900F0C2775A6080014A58D /* ClassCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0B2775A6080014A58D /* ClassCards.swift */; };
+		31A2A49827894C16005679EB /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A49727894C16005679EB /* FirebaseAnalytics */; };
+		31A2A49A27894C16005679EB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A49927894C16005679EB /* FirebaseAuth */; };
+		31A2A49C27894C16005679EB /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A49B27894C16005679EB /* FirebaseCrashlytics */; };
+		31A2A49E27894C16005679EB /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A49D27894C16005679EB /* FirebaseFirestore */; };
+		31A2A4A027894C16005679EB /* FirebaseFirestoreSwift-Beta in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A49F27894C16005679EB /* FirebaseFirestoreSwift-Beta */; };
+		31A2A4A227894C16005679EB /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A4A127894C16005679EB /* FirebaseMessaging */; };
+		31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2A4A327894E96005679EB /* TimeTableInformation.swift */; };
+		31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2A4A727899EE3005679EB /* TabBarDay.swift */; };
+		31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB527279AD8CA008E20BB /* SettingsHeader.swift */; };
+		31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB529279AE34B008E20BB /* NotificationsView.swift */; };
+		31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */; };
+		31BAB52F279BCC7D008E20BB /* NotificationsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */; };
+		31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */; };
+		31BAB533279D3F49008E20BB /* LocalNotificationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */; };
+		31D2F80027BA6592000C0308 /* FirebaseRemoteConfig in Frameworks */ = {isa = PBXBuildFile; productRef = 31D2F7FF27BA6592000C0308 /* FirebaseRemoteConfig */; };
+		31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */; };
+		31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
+		31EC946C27893F9000EA07BE /* Confidential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946B27893F9000EA07BE /* Confidential.swift */; };
+		31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC946D2789409D00EA07BE /* TimetableViewModel.swift */; };
+		31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31F9B732279AA342006D1012 /* TimeTableScrollView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		3105872427A3ECBD00C2FC41 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314A408327383BEC0058082F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 3105871727A3ECBB00C2FC41;
+			remoteInfo = "vitty-widgetExtension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		3105872727A3ECBD00C2FC41 /* Embed App Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 13;
+			files = (
+				3105872627A3ECBD00C2FC41 /* vitty-widgetExtension.appex in Embed App Extensions */,
+			);
+			name = "Embed App Extensions";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "vitty-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
+		3105871F27A3ECBB00C2FC41 /* vitty_widget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vitty_widget.swift; sourceTree = "<group>"; };
+		3105872127A3ECBD00C2FC41 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		3105872327A3ECBD00C2FC41 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		31096380278227730009A29C /* AuthService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthService.swift; sourceTree = "<group>"; };
+		3109639E27824F6F0009A29C /* AppStorageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageConstants.swift; sourceTree = "<group>"; };
+		310EAC3B27C626EE003EBFAA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		310EAC3D27C626EE003EBFAA /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		31128CF02772F0210084C9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Medium.ttf"; sourceTree = "<group>"; };
+		31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBoldItalic.ttf"; sourceTree = "<group>"; };
+		31128CF52772F57E0084C9EA /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
+		31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Regular.ttf"; sourceTree = "<group>"; };
+		31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-SemiBold.ttf"; sourceTree = "<group>"; };
+		31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-MediumItalic.ttf"; sourceTree = "<group>"; };
+		31128D002772F8370084C9EA /* SplashScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreen.swift; sourceTree = "<group>"; };
+		31128D032772F8E90084C9EA /* CustomButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomButton.swift; sourceTree = "<group>"; };
+		31128D062772FA120084C9EA /* Colors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Colors.swift; sourceTree = "<group>"; };
+		31128D08277300130084C9EA /* SplashScreenIllustration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenIllustration.swift; sourceTree = "<group>"; };
+		31128D0B277300470084C9EA /* StringConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringConstants.swift; sourceTree = "<group>"; };
+		31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Poppins-Bold.ttf"; sourceTree = "<group>"; };
+		31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashScreenTabIndicator.swift; sourceTree = "<group>"; };
+		31128D1527730C460084C9EA /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		313E6AFC27BEAED9006F5944 /* ClassCardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCardViewModel.swift; sourceTree = "<group>"; };
+		314A408B27383BEC0058082F /* VITTY.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VITTY.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		314A408E27383BEC0058082F /* VITTYApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VITTYApp.swift; sourceTree = "<group>"; };
+		314A409027383BEC0058082F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		314A409227383BEE0058082F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		314A409527383BEE0058082F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		3168511E277319480046A9AC /* SignupOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupOR.swift; sourceTree = "<group>"; };
+		317715DB279F0426009A532E /* CustomNotificationsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationsLabel.swift; sourceTree = "<group>"; };
+		317715DD279F1431009A532E /* IndexedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
+		317715DF279FE778009A532E /* CustomNotificationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationButton.swift; sourceTree = "<group>"; };
+		317715E127A0427B009A532E /* CustomNotifsListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotifsListView.swift; sourceTree = "<group>"; };
+		317EE1922775B819008AEB31 /* InstructionsCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsCards.swift; sourceTree = "<group>"; };
+		317EE1942775C555008AEB31 /* LogoutPopup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LogoutPopup.swift; sourceTree = "<group>"; };
+		317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamHolidayMode.swift; sourceTree = "<group>"; };
+		317EE1982775D3C6008AEB31 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		31900F00277467460014A58D /* InstructionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionsView.swift; sourceTree = "<group>"; };
+		31900F02277468790014A58D /* HomePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePage.swift; sourceTree = "<group>"; };
+		31900F0427746A400014A58D /* HomePageHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomePageHeader.swift; sourceTree = "<group>"; };
+		31900F0727746B3A0014A58D /* HomeTabBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeTabBarView.swift; sourceTree = "<group>"; };
+		31900F0927759DB60014A58D /* Gradient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Gradient.swift; sourceTree = "<group>"; };
+		31900F0B2775A6080014A58D /* ClassCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCards.swift; sourceTree = "<group>"; };
+		31A2A4A327894E96005679EB /* TimeTableInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableInformation.swift; sourceTree = "<group>"; };
+		31A2A4A727899EE3005679EB /* TabBarDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDay.swift; sourceTree = "<group>"; };
+		31BAB527279AD8CA008E20BB /* SettingsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeader.swift; sourceTree = "<group>"; };
+		31BAB529279AE34B008E20BB /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
+		31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewHeader.swift; sourceTree = "<group>"; };
+		31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewModel.swift; sourceTree = "<group>"; };
+		31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsSettingsModel.swift; sourceTree = "<group>"; };
+		31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocalNotificationsManager.swift; sourceTree = "<group>"; };
+		31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoteConfigManager.swift; sourceTree = "<group>"; };
+		31EC94692788BCDF00EA07BE /* Classes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Classes.swift; sourceTree = "<group>"; };
+		31EC946B27893F9000EA07BE /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Confidential.swift; path = VITTY/Confidential.swift; sourceTree = "<group>"; };
+		31EC946D2789409D00EA07BE /* TimetableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableViewModel.swift; sourceTree = "<group>"; };
+		31F9B732279AA342006D1012 /* TimeTableScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableScrollView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		3105871527A3ECBB00C2FC41 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3105871D27A3ECBB00C2FC41 /* SwiftUI.framework in Frameworks */,
+				3105871B27A3ECBB00C2FC41 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314A408827383BEC0058082F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31A2A49827894C16005679EB /* FirebaseAnalytics in Frameworks */,
+				31A2A49C27894C16005679EB /* FirebaseCrashlytics in Frameworks */,
+				31A2A4A227894C16005679EB /* FirebaseMessaging in Frameworks */,
+				31A2A49A27894C16005679EB /* FirebaseAuth in Frameworks */,
+				31A2A4A027894C16005679EB /* FirebaseFirestoreSwift-Beta in Frameworks */,
+				31A2A49E27894C16005679EB /* FirebaseFirestore in Frameworks */,
+				316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */,
+				31D2F80027BA6592000C0308 /* FirebaseRemoteConfig in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3105871927A3ECBB00C2FC41 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */,
+				3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		3105871E27A3ECBB00C2FC41 /* vitty-widget */ = {
+			isa = PBXGroup;
+			children = (
+				3105871F27A3ECBB00C2FC41 /* vitty_widget.swift */,
+				3105872127A3ECBD00C2FC41 /* Assets.xcassets */,
+				3105872327A3ECBD00C2FC41 /* Info.plist */,
+			);
+			path = "vitty-widget";
+			sourceTree = "<group>";
+		};
+		3109637F278227580009A29C /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				31096380278227730009A29C /* AuthService.swift */,
+				31BAB532279D3F48008E20BB /* LocalNotificationsManager.swift */,
+				31D2F80127BAD1B7000C0308 /* RemoteConfigManager.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		310EAC3927C626EE003EBFAA /* Firebase */ = {
+			isa = PBXGroup;
+			children = (
+				310EAC3A27C626EE003EBFAA /* Prod */,
+				310EAC3C27C626EE003EBFAA /* Dev */,
+			);
+			path = Firebase;
+			sourceTree = "<group>";
+		};
+		310EAC3A27C626EE003EBFAA /* Prod */ = {
+			isa = PBXGroup;
+			children = (
+				310EAC3B27C626EE003EBFAA /* GoogleService-Info.plist */,
+			);
+			path = Prod;
+			sourceTree = "<group>";
+		};
+		310EAC3C27C626EE003EBFAA /* Dev */ = {
+			isa = PBXGroup;
+			children = (
+				310EAC3D27C626EE003EBFAA /* GoogleService-Info.plist */,
+			);
+			path = Dev;
+			sourceTree = "<group>";
+		};
+		31128CF12772F55D0084C9EA /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				31128CF22772F57E0084C9EA /* Poppins */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
+		31128CF22772F57E0084C9EA /* Poppins */ = {
+			isa = PBXGroup;
+			children = (
+				31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */,
+				31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */,
+				31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */,
+				31128CF52772F57E0084C9EA /* OFL.txt */,
+				31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */,
+				31128CF72772F57E0084C9EA /* Poppins-SemiBold.ttf */,
+				31128CF82772F57E0084C9EA /* Poppins-MediumItalic.ttf */,
+			);
+			path = Poppins;
+			sourceTree = "<group>";
+		};
+		31128CFF2772F81E0084C9EA /* SplashScreen */ = {
+			isa = PBXGroup;
+			children = (
+				31128D08277300130084C9EA /* SplashScreenIllustration.swift */,
+				31128D11277306860084C9EA /* SplashScreenTabIndicator.swift */,
+			);
+			path = SplashScreen;
+			sourceTree = "<group>";
+		};
+		31128D022772F8DA0084C9EA /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				31128D032772F8E90084C9EA /* CustomButton.swift */,
+				31128D1527730C460084C9EA /* CustomTextField.swift */,
+				317EE1942775C555008AEB31 /* LogoutPopup.swift */,
+				317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		31128D052772FA030084C9EA /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				31128D062772FA120084C9EA /* Colors.swift */,
+				31900F0927759DB60014A58D /* Gradient.swift */,
+				317715DD279F1431009A532E /* IndexedCollection.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		31128D0A2773003C0084C9EA /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				31128D0B277300470084C9EA /* StringConstants.swift */,
+				3109639E27824F6F0009A29C /* AppStorageConstants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		314A408227383BEC0058082F = {
+			isa = PBXGroup;
+			children = (
+				31EC946B27893F9000EA07BE /* Confidential.swift */,
+				314A408D27383BEC0058082F /* VITTY */,
+				3105871E27A3ECBB00C2FC41 /* vitty-widget */,
+				3105871927A3ECBB00C2FC41 /* Frameworks */,
+				314A408C27383BEC0058082F /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		314A408C27383BEC0058082F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				314A408B27383BEC0058082F /* VITTY.app */,
+				3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		314A408D27383BEC0058082F /* VITTY */ = {
+			isa = PBXGroup;
+			children = (
+				310EAC3927C626EE003EBFAA /* Firebase */,
+				3109637F278227580009A29C /* Services */,
+				31128CF02772F0210084C9EA /* Info.plist */,
+				314A40A627383C540058082F /* App */,
+				314A40A527383C3F0058082F /* Model */,
+				314A40A427383C370058082F /* View */,
+				314A40A327383C280058082F /* ViewModel */,
+				314A40A127383C0A0058082F /* Utilities */,
+				314A408E27383BEC0058082F /* VITTYApp.swift */,
+				314A409027383BEC0058082F /* ContentView.swift */,
+				314A409227383BEE0058082F /* Assets.xcassets */,
+				314A409427383BEE0058082F /* Preview Content */,
+			);
+			path = VITTY;
+			sourceTree = "<group>";
+		};
+		314A409427383BEE0058082F /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				314A409527383BEE0058082F /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		314A40A127383C0A0058082F /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				31128D0A2773003C0084C9EA /* Constants */,
+				31128D052772FA030084C9EA /* Extensions */,
+				31128CF12772F55D0084C9EA /* Fonts */,
+			);
+			path = Utilities;
+			sourceTree = "<group>";
+		};
+		314A40A327383C280058082F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				31EC946D2789409D00EA07BE /* TimetableViewModel.swift */,
+				31BAB52E279BCC7D008E20BB /* NotificationsViewModel.swift */,
+				313E6AFC27BEAED9006F5944 /* ClassCardViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		314A40A427383C370058082F /* View */ = {
+			isa = PBXGroup;
+			children = (
+				31BAB52B279AE36D008E20BB /* NotificationsView */,
+				31BAB526279AD8B5008E20BB /* Settings */,
+				31900F0627746B130014A58D /* HomePage */,
+				31128D022772F8DA0084C9EA /* Common */,
+				31128CFF2772F81E0084C9EA /* SplashScreen */,
+				3168511E277319480046A9AC /* SignupOR.swift */,
+				317EE1922775B819008AEB31 /* InstructionsCards.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		314A40A527383C3F0058082F /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				31EC94692788BCDF00EA07BE /* Classes.swift */,
+				31A2A4A327894E96005679EB /* TimeTableInformation.swift */,
+				31BAB530279D318F008E20BB /* NotificationsSettingsModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		314A40A627383C540058082F /* App */ = {
+			isa = PBXGroup;
+			children = (
+				31128D002772F8370084C9EA /* SplashScreen.swift */,
+				31900F00277467460014A58D /* InstructionsView.swift */,
+				31900F02277468790014A58D /* HomePage.swift */,
+				317EE1982775D3C6008AEB31 /* SettingsView.swift */,
+				31BAB529279AE34B008E20BB /* NotificationsView.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		31900F0627746B130014A58D /* HomePage */ = {
+			isa = PBXGroup;
+			children = (
+				31900F0427746A400014A58D /* HomePageHeader.swift */,
+				31900F0727746B3A0014A58D /* HomeTabBarView.swift */,
+				31900F0B2775A6080014A58D /* ClassCards.swift */,
+				31A2A4A727899EE3005679EB /* TabBarDay.swift */,
+				31F9B732279AA342006D1012 /* TimeTableScrollView.swift */,
+			);
+			path = HomePage;
+			sourceTree = "<group>";
+		};
+		31BAB526279AD8B5008E20BB /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				31BAB527279AD8CA008E20BB /* SettingsHeader.swift */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		31BAB52B279AE36D008E20BB /* NotificationsView */ = {
+			isa = PBXGroup;
+			children = (
+				31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */,
+				317715DB279F0426009A532E /* CustomNotificationsLabel.swift */,
+				317715DF279FE778009A532E /* CustomNotificationButton.swift */,
+				317715E127A0427B009A532E /* CustomNotifsListView.swift */,
+			);
+			path = NotificationsView;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		3105871727A3ECBB00C2FC41 /* vitty-widgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3105872A27A3ECBD00C2FC41 /* Build configuration list for PBXNativeTarget "vitty-widgetExtension" */;
+			buildPhases = (
+				3105871427A3ECBB00C2FC41 /* Sources */,
+				3105871527A3ECBB00C2FC41 /* Frameworks */,
+				3105871627A3ECBB00C2FC41 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "vitty-widgetExtension";
+			productName = "vitty-widgetExtension";
+			productReference = 3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+		314A408A27383BEC0058082F /* VITTY */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 314A409E27383BEE0058082F /* Build configuration list for PBXNativeTarget "VITTY" */;
+			buildPhases = (
+				314A408727383BEC0058082F /* Sources */,
+				314A408827383BEC0058082F /* Frameworks */,
+				310EAC3E27C62921003EBFAA /* Setup Firebase Environment GoogleService-Info.plist */,
+				314A408927383BEC0058082F /* Resources */,
+				3105872727A3ECBD00C2FC41 /* Embed App Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				3105872527A3ECBD00C2FC41 /* PBXTargetDependency */,
+			);
+			name = VITTY;
+			packageProductDependencies = (
+				316A1EF02776238500CC1DE8 /* GoogleSignIn */,
+				31A2A49727894C16005679EB /* FirebaseAnalytics */,
+				31A2A49927894C16005679EB /* FirebaseAuth */,
+				31A2A49B27894C16005679EB /* FirebaseCrashlytics */,
+				31A2A49D27894C16005679EB /* FirebaseFirestore */,
+				31A2A49F27894C16005679EB /* FirebaseFirestoreSwift-Beta */,
+				31A2A4A127894C16005679EB /* FirebaseMessaging */,
+				31D2F7FF27BA6592000C0308 /* FirebaseRemoteConfig */,
+			);
+			productName = VITTY;
+			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		314A408327383BEC0058082F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1300;
+				LastUpgradeCheck = 1300;
+				TargetAttributes = {
+					3105871727A3ECBB00C2FC41 = {
+						CreatedOnToolsVersion = 13.0;
+					};
+					314A408A27383BEC0058082F = {
+						CreatedOnToolsVersion = 13.0;
+					};
+				};
+			};
+			buildConfigurationList = 314A408627383BEC0058082F /* Build configuration list for PBXProject "VITTY" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 314A408227383BEC0058082F;
+			packageReferences = (
+				316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+			);
+			productRefGroup = 314A408C27383BEC0058082F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				314A408A27383BEC0058082F /* VITTY */,
+				3105871727A3ECBB00C2FC41 /* vitty-widgetExtension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		3105871627A3ECBB00C2FC41 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3105872227A3ECBD00C2FC41 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314A408927383BEC0058082F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				31128CFB2772F57E0084C9EA /* OFL.txt in Resources */,
+				31128D0E277302AC0084C9EA /* Poppins-Bold.ttf in Resources */,
+				31128CFE2772F57E0084C9EA /* Poppins-MediumItalic.ttf in Resources */,
+				31128CFD2772F57E0084C9EA /* Poppins-SemiBold.ttf in Resources */,
+				31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */,
+				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
+				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
+				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
+				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		310EAC3E27C62921003EBFAA /* Setup Firebase Environment GoogleService-Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Setup Firebase Environment GoogleService-Info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Name of the resource we're selectively copying\nGOOGLESERVICE_INFO_PLIST=GoogleService-Info.plist\n\n# Get references to dev and prod versions of the GoogleService-Info.plist\n# NOTE: These should only live on the file system and should NOT be part of the target (since we'll be adding them to the target manually)\nGOOGLESERVICE_INFO_DEV=${PROJECT_DIR}/${TARGET_NAME}/Firebase/Dev/${GOOGLESERVICE_INFO_PLIST}\nGOOGLESERVICE_INFO_PROD=${PROJECT_DIR}/${TARGET_NAME}/Firebase/Prod/${GOOGLESERVICE_INFO_PLIST}\n\n# Make sure the dev version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_DEV}\"\nif [ ! -f $GOOGLESERVICE_INFO_DEV ]\nthen\n    echo \"No Development GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Make sure the prod version of GoogleService-Info.plist exists\necho \"Looking for ${GOOGLESERVICE_INFO_PLIST} in ${GOOGLESERVICE_INFO_PROD}\"\nif [ ! -f $GOOGLESERVICE_INFO_PROD ]\nthen\n    echo \"No Production GoogleService-Info.plist found. Please ensure it's in the proper directory.\"\n    exit 1\nfi\n\n# Get a reference to the destination location for the GoogleService-Info.plist\nPLIST_DESTINATION=${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.app\necho \"Will copy ${GOOGLESERVICE_INFO_PLIST} to final destination: ${PLIST_DESTINATION}\"\n\n# Copy over the prod GoogleService-Info.plist for Release builds\nif [ \"${CONFIGURATION}\" == \"Release\" ]\nthen\n    echo \"Using ${GOOGLESERVICE_INFO_PROD}\"\n    cp \"${GOOGLESERVICE_INFO_PROD}\" \"${PLIST_DESTINATION}\"\nelse\n    echo \"Using ${GOOGLESERVICE_INFO_DEV}\"\n    cp \"${GOOGLESERVICE_INFO_DEV}\" \"${PLIST_DESTINATION}\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		3105871427A3ECBB00C2FC41 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				3105872027A3ECBB00C2FC41 /* vitty_widget.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		314A408727383BEC0058082F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				317EE1932775B819008AEB31 /* InstructionsCards.swift in Sources */,
+				31096381278227730009A29C /* AuthService.swift in Sources */,
+				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
+				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
+				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
+				31128D012772F8370084C9EA /* SplashScreen.swift in Sources */,
+				31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */,
+				31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */,
+				31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */,
+				317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */,
+				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
+				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
+				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
+				31BAB533279D3F49008E20BB /* LocalNotificationsManager.swift in Sources */,
+				317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */,
+				3168511F277319480046A9AC /* SignupOR.swift in Sources */,
+				31128D12277306860084C9EA /* SplashScreenTabIndicator.swift in Sources */,
+				31BAB531279D318F008E20BB /* NotificationsSettingsModel.swift in Sources */,
+				31128D072772FA120084C9EA /* Colors.swift in Sources */,
+				314A409127383BEC0058082F /* ContentView.swift in Sources */,
+				31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */,
+				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
+				313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */,
+				31900F03277468790014A58D /* HomePage.swift in Sources */,
+				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
+				31EC946C27893F9000EA07BE /* Confidential.swift in Sources */,
+				31900F01277467460014A58D /* InstructionsView.swift in Sources */,
+				31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */,
+				31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */,
+				31128D09277300130084C9EA /* SplashScreenIllustration.swift in Sources */,
+				31900F0527746A400014A58D /* HomePageHeader.swift in Sources */,
+				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
+				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
+				31900F0C2775A6080014A58D /* ClassCards.swift in Sources */,
+				317715E227A0427B009A532E /* CustomNotifsListView.swift in Sources */,
+				31F9B733279AA342006D1012 /* TimeTableScrollView.swift in Sources */,
+				31BAB52F279BCC7D008E20BB /* NotificationsViewModel.swift in Sources */,
+				31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */,
+				317715DC279F0426009A532E /* CustomNotificationsLabel.swift in Sources */,
+				31900F0A27759DB60014A58D /* Gradient.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		3105872527A3ECBD00C2FC41 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 3105871727A3ECBB00C2FC41 /* vitty-widgetExtension */;
+			targetProxy = 3105872427A3ECBD00C2FC41 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		3105872827A3ECBD00C2FC41 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6D98G6WZSC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "vitty-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "vitty-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dscvit.vitty.vitty-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3105872927A3ECBD00C2FC41 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 6D98G6WZSC;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "vitty-widget/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "vitty-widget";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.dscvit.vitty.vitty-widget";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		314A409C27383BEE0058082F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		314A409D27383BEE0058082F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = NO;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		314A409F27383BEE0058082F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = VITTY/VITTYDebug.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
+				DEVELOPMENT_TEAM = 6D98G6WZSC;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VITTY/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dscvit.vitty;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		314A40A027383BEE0058082F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
+				DEVELOPMENT_TEAM = 6D98G6WZSC;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VITTY/Info.plist;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				ONLY_ACTIVE_ARCH = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dscvit.vitty;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3105872A27A3ECBD00C2FC41 /* Build configuration list for PBXNativeTarget "vitty-widgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3105872827A3ECBD00C2FC41 /* Debug */,
+				3105872927A3ECBD00C2FC41 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		314A408627383BEC0058082F /* Build configuration list for PBXProject "VITTY" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				314A409C27383BEE0058082F /* Debug */,
+				314A409D27383BEE0058082F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		314A409E27383BEE0058082F /* Build configuration list for PBXNativeTarget "VITTY" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				314A409F27383BEE0058082F /* Debug */,
+				314A40A027383BEE0058082F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/google/GoogleSignIn-iOS";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 6.0.0;
+			};
+		};
+		31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		316A1EF02776238500CC1DE8 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 316A1EEF2776238500CC1DE8 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		31A2A49727894C16005679EB /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		31A2A49927894C16005679EB /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		31A2A49B27894C16005679EB /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		31A2A49D27894C16005679EB /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
+		};
+		31A2A49F27894C16005679EB /* FirebaseFirestoreSwift-Beta */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = "FirebaseFirestoreSwift-Beta";
+		};
+		31A2A4A127894C16005679EB /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
+		};
+		31D2F7FF27BA6592000C0308 /* FirebaseRemoteConfig */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 31A2A49627894C16005679EB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseRemoteConfig;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 314A408327383BEC0058082F /* Project object */;
+}
