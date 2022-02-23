@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct LogoutPopup: View {
+    @EnvironmentObject var authState: AuthService
     @Binding var showLogout: Bool
     var cornerRadius = 3.0
     var fontSizeButton = 14.0
@@ -28,7 +29,8 @@ struct LogoutPopup: View {
                 Spacer()
                 // create function to log out
                 CustomButton(buttonText: "Logout", fontSize: fontSizeButton, cornerRad: cornerRadius) {
-                    
+                    print("signing out")
+                    authState.signOut()
                 }
             }
         }

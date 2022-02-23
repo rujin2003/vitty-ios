@@ -8,53 +8,72 @@
 import SwiftUI
 
 struct HomePage: View {
-    @State var noClass: Bool =  false
-    @State var tabSelected: Int = 0
+    @State var tabSelected: Int = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
     @State var goToSettings: Bool = false
     @State var showLogout: Bool = false
+    @EnvironmentObject var timetableViewModel: TimetableViewModel
+    @EnvironmentObject var authVM: AuthService
+    @EnvironmentObject var notifVM: NotificationsViewModel
     @AppStorage("examMode") var examModeOn: Bool = false
+    @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
     var body: some View {
-//        NavigationView {
-            ZStack {
-                VStack {
-                    VStack(alignment:.leading) {
-                        HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
-                            .padding()
-                        HomeTabBarView(tabSelected: $tabSelected)
+        ZStack {
+            VStack {
+                VStack(alignment:.leading) {
+                    HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
+                        .padding()
+                    HomeTabBarView(tabSelected: $tabSelected)
+                }
+                if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]] {
+                    if !selectedTT.isEmpty {
+                        TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
                     }
-                    if !noClass {
-                        ScrollView {
-                            ForEach(0..<5) { i in
-                                ClassCards()
-                                    .padding(.vertical,5)
-                            }
-                        }
-                    } else {
+                    else {
                         Spacer()
                         VStack(alignment: .center) {
-                            Text("No class")
+                            Text("No class today!")
                                 .font(Font.custom("Poppins-Bold", size: 24))
-                            Text("Small text")
+//                        TODO: remote config
+                            Text(StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!")
                                 .font(Font.custom("Poppins-Regular",size:20))
                         }
                         .foregroundColor(Color.white)
                         Spacer()
                     }
-                    NavigationLink(destination: SettingsView(), isActive: $goToSettings) {
-                        EmptyView()
-                    }
-                    if examModeOn {
-                        ExamHolidayMode()
-                    }
                 }
-                if showLogout {
-                    LogoutPopup(showLogout: $showLogout)
+                NavigationLink(destination: SettingsView().environmentObject(timetableViewModel).environmentObject(authVM).environmentObject(notifVM), isActive: $goToSettings) {
+                    EmptyView()
+                }
+                if examModeOn {
+                    ExamHolidayMode()
                 }
             }
-            .padding(.top)
-            .background(Image(noClass ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
-        .navigationBarHidden(true)
-//        }
+            .blur(radius: showLogout ? 10 : 0)
+            .onAppear {
+                tabSelected = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+            }
+            if showLogout {
+                LogoutPopup(showLogout: $showLogout).environmentObject(authVM)
+            }
+        }
+        .padding(.top)
+        .background(Image(timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]]?.isEmpty ?? false ? "HomeNoClassesBG" : "HomeBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
+        .onAppear {
+            timetableViewModel.getData {
+                if !notifsSetup {
+                    notifVM.setupNotificationPreferences(timetable: timetableViewModel.timetable)
+                    print("Notifications set up")
+                }
+                
+            }
+            //            LocalNotificationsManager.shared.getAllNotificationRequests()
+            notifVM.updateNotifs(timetable: timetableViewModel.timetable)
+            timetableViewModel.updateClassCompleted()
+            notifVM.getNotifPrefs()
+            
+            print(goToSettings)
+        }
+        .animation(.default)
     }
 }
 

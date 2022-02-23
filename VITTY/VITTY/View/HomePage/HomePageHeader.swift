@@ -12,7 +12,7 @@ struct HomePageHeader: View {
     @Binding var showLogout: Bool
     var body: some View {
         HStack {
-            Text("Today's Schedule")
+            Text("Schedule")
             Spacer()
             Menu {
                 Button(action: {

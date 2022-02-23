@@ -8,23 +8,64 @@
 import SwiftUI
 
 struct InstructionsView: View {
+    @EnvironmentObject var authState: AuthService
+    @EnvironmentObject var ttVM: TimetableViewModel
+    @State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
+    @State var displayLogout: Bool = false
+    @EnvironmentObject var notifVM: NotificationsViewModel
+    // notifsSetup is true when notifications don't need to be setup and false when they do
+    @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
     var body: some View {
-        VStack {
-            HStack {
-                Text("Sync Timetable")
+        ZStack {
+            VStack {
+                HStack {
+                    Text("Sync Timetable")
+                    Spacer()
+                    // add logout button functionality
+                    Image(systemName: "arrow.right.square")
+                        .onTapGesture {
+                            displayLogout = true
+                        }
+                }
+                .font(Font.custom("Poppins-Bold", size: 24))
+                .foregroundColor(Color.white)
+                ScrollView {
+                    InstructionsCards()
+                        .padding(.vertical)
+                }
                 Spacer()
-                // add logout button functionality
-                Image(systemName: "arrow.right.square")
+                CustomButton(buttonText: "Done") {
+                    if ttVM.timetable.isEmpty {
+                        ttVM.getData {
+                            if !notifsSetup {
+                                notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+                            }
+                        }
+                    } else {
+                        print("time table is populated")
+                        UserDefaults.standard.set(true, forKey:"instructionsComplete")
+                        goToHomeScreen = true
+                    }
+                }
+                NavigationLink(destination: HomePage().navigationTitle("").navigationBarHidden(true).environmentObject(ttVM).environmentObject(authState).environmentObject(notifVM), isActive: $goToHomeScreen) {
+                    EmptyView()
+                }
             }
-            .font(Font.custom("Poppins-Bold", size: 24))
-            .foregroundColor(Color.white)
-            InstructionsCards()
-            Spacer()
-            CustomButton(buttonText: "Done") {
+            .padding()
+            .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
+            
+            if displayLogout {
+                LogoutPopup(showLogout: $displayLogout)
             }
         }
-        .padding()
-        .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
+        .onAppear {
+            ttVM.getData {
+                if !notifsSetup {
+                    notifVM.setupNotificationPreferences(timetable: ttVM.timetable)
+                }
+            }
+            notifVM.getNotifPrefs()
+        }
     }
 }
 

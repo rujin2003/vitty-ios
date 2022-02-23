@@ -8,23 +8,24 @@
 import SwiftUI
 
 struct ClassCards: View {
-    @State var currentClass: Bool =  true
+    var classInfo: Classes
+    @State var currentClass: Bool =  false
     @State var hideDescription: Bool = true
+    @State var onlineMode: Bool
     var body: some View {
         ZStack {
-            RoundedRectangle(cornerRadius: 12)
-                .fill(Color.darkbg)
-            RoundedRectangle(cornerRadius: 12)
-                .fill(LinearGradient.secGrad)
-                .opacity(currentClass ? 1 : 0)
             VStack {
                 HStack {
                     VStack(alignment:.leading) {
-                        Text("Class Name")
-                            .font(Font.custom("Poppins-SemiBold",size:16))
+                        Text(classInfo.courseName ?? "Course Name")
+                            .font(Font.custom("Poppins-SemiBold",size:15))
                             .foregroundColor(Color.white)
-                        Text("Time")
-                            .font(Font.custom("Poppins-Regular",size:15))
+                        HStack(spacing: 0) {
+                            Text(classInfo.startTime ?? Date(), style: .time)
+                            Text(" - ")
+                            Text(classInfo.endTime ?? Date(), style: .time)
+                        }
+                            .font(Font.custom("Poppins-Regular",size:14))
                     }
                     .padding()
                     Spacer()
@@ -37,26 +38,25 @@ struct ClassCards: View {
                 }
                 if !hideDescription {
                     HStack {
-                        Text("Slot")
-                            .font(Font.custom("Poppins-Regular",size:15))
+                        Text("\(classInfo.slot ?? "Slot")")
+                            .font(Font.custom("Poppins-Regular",size:14))
                         Spacer()
-                        Button(action: {
-                        }
-                               , label: {
-                            HStack(spacing:3) {
-                                Text("Room No")
-                                    .padding(.leading,3)
-                                Image(systemName: "arrow.up.right.diamond.fill")
+//                        TODO: remote config
+                        if onlineMode {
+                        Text("\(classInfo.location ?? "Location")")
+                            .font(Font.custom("Poppins-Regular",size:14))
+                        } else {
+                            HStack {
+                                Text("\(classInfo.location ?? "Location")")
+                                    .font(Font.custom("Poppins-Regular",size:14))
+                                Image(systemName: "mappin.and.ellipse")
                             }
-                            .font(Font.custom("Poppins-Regular",size:15))
-                                .cornerRadius(20)
-                                .padding(3)
-                                .overlay(
-                                    RoundedRectangle(cornerRadius: 20)
-                                        .stroke(Color.vprimary, lineWidth: 1.2)
-                            )
+                            .padding(5)
+                            .overlay(RoundedRectangle(cornerRadius: 15).stroke(lineWidth: 1).foregroundColor(Color.vprimary))
+                            .onTapGesture {
+                                ClassCardViewModel.classCardVM.navigateToClass(at: classInfo.location ?? "SJT")
+                            }
                         }
-                        )
                     }
                     .padding(.horizontal)
                     .padding(.bottom)
@@ -72,6 +72,6 @@ struct ClassCards: View {
 
 struct ClassCards_Previews: PreviewProvider {
     static var previews: some View {
-        ClassCards()
+        ClassCards(classInfo: StringConstants.sampleClassDate, onlineMode: false)
     }
 }

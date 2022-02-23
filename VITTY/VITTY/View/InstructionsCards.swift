@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct InstructionsCards: View {
+    @EnvironmentObject var authState: AuthService
     var body: some View {
         VStack {
             ZStack(alignment: .leading) {
@@ -22,10 +23,16 @@ struct InstructionsCards: View {
                         .font(Font.custom("Poppins-SemiBold",size: 20))
                         .foregroundColor(Color.white)
                         .padding(.vertical,5)
-                    ForEach(StringConstants.accDetails, id: \.self) { point in
-                        Text(point)
-                            .foregroundColor(Color.vprimary)
-                    }
+                    Text(StringConstants.accData[0] + (UserDefaults.standard.string(forKey: "userName") ?? ""))
+                        .foregroundColor(Color.vprimary)
+                    Text(StringConstants.accData[1] + (UserDefaults.standard.string(forKey: "providerId") ?? ""))
+                        .foregroundColor(Color.vprimary)
+                    Text(StringConstants.accData[2] + (UserDefaults.standard.string(forKey: "userEmail") ?? ""))
+                        .foregroundColor(Color.vprimary)
+//                    ForEach(StringConstants.accDetails, id: \.self) { point in
+//                        Text(point)
+//                            .foregroundColor(Color.vprimary)
+//                    }
                 }
                 .padding()
                 .font(Font.custom("Poppins-Regular",size:16))
@@ -44,7 +51,7 @@ struct InstructionsCards: View {
                         .font(Font.custom("Poppins-SemiBold",size: 20))
                         .foregroundColor(Color.white)
                         .padding(.vertical,5)
-                    ScrollView {
+//                    ScrollView {
                         VStack(alignment:.leading) {
                             ForEach(StringConstants.setupInstructions, id: \.self) { point in
                                 Text(point)
@@ -54,13 +61,13 @@ struct InstructionsCards: View {
                                 .foregroundColor(Color.white)
                                 .padding(.vertical)
                         }
-                    }
+//                    }
                     
                 }
                 .padding()
                 .font(Font.custom("Poppins-Regular",size:16))
             }
-            .frame(height: 300)
+//            .frame(height: 300)
             .padding(.vertical)
         }
     }

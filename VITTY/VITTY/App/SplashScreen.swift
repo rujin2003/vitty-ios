@@ -10,6 +10,7 @@ import SwiftUI
 struct SplashScreen: View {
     @State var selectedTab: Int = 0
     @State var onboardingComplete: Bool = false
+    @EnvironmentObject var authState: AuthService
     var body: some View {
         VStack {
             TabView(selection: $selectedTab){
@@ -27,15 +28,25 @@ struct SplashScreen: View {
                 .padding(.vertical)
                 
             } else {
-                NavigationLink(destination: HomePage().navigationBarHidden(true), isActive: $onboardingComplete) {
-                    CustomButton(buttonText: "Sign in with google"){
-                        onboardingComplete = true
+//                NavigationLink(destination: InstructionsView().navigationBarHidden(true), isActive: authState.loggedInUser != nil) {
+                    CustomButton(buttonText: "Sign in with Google", imageString: "logo_google"){
+                        authState.login(with: .googleSignin)
+                    }
+//                }
+                SignupOR()
+                NavigationLink(destination: InstructionsView(), isActive: $onboardingComplete) {
+                    CustomButton(buttonText:"Sign in with Apple",imageString: "logo_apple"){
+                        
                     }
                 }
-                SignupOR()
-                CustomButton(buttonText:"Sign in with apple"){}
             }
             Spacer(minLength: 50)
+            
+            if authState.loggedInUser != nil {
+                NavigationLink(destination: InstructionsView()) {
+                    EmptyView()
+                }
+            }
             
         }
         .animation(.linear(duration: 0.25))
