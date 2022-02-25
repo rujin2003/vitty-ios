@@ -26,7 +26,7 @@ struct TimeTableScrollView: View {
                         ClassCards(classInfo: selectedTT[ind], onlineMode: RemoteConf.onlineMode)
                             .id(ind)
                     }
-                    .padding(.bottom,5)
+                    .padding(.bottom,2)
                 }
                 .onAppear {
                     print((Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1)
