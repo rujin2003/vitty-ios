@@ -33,11 +33,20 @@ class TimetableViewModel: ObservableObject {
     
     private var db = Firestore.firestore()
     
+//    TODO: when switching to prod, uncomment lines 37, 48 and 88
+    //    private let uid = Auth.auth().currentUser?.uid
+    private let uid = Confidential.uid
+    
     func fetchInfo(onCompletion: @escaping ()->Void){
         var timetableVersion = UserDefaults.standard.object(forKey: TimetableViewModel.timetableVersionKey)
         print("fetching user-timetable information")
+        guard uid != nil else {
+            print("error with uid")
+            return
+        }
         db.collection("users")
-            .document(Confidential.uid)
+//            .document(uid!)
+            .document(uid)
             .getDocument { (document, error) in
                 if let error = error  {
                     print("error fetching user information: \(error.localizedDescription)")
@@ -70,9 +79,14 @@ class TimetableViewModel: ObservableObject {
     func fetchTimetable(onCompletion: @escaping ()->Void){
         print("fetching timetable")
         var countt = 0
+        guard uid != nil else {
+            print("error with uid")
+            return
+        }
         for i in (0..<7) {
             db.collection("users")
-                .document(Confidential.uid)
+//                .document(uid!)
+                .document(uid)
                 .collection("timetable")
                 .document(TimetableViewModel.daysOfTheWeek[i])
                 .collection("periods")

@@ -46,7 +46,7 @@ struct HomePageHeader: View {
     }
     // share sheet
     func shareSheet() {
-        guard let data = URL(string: "https://www.instagram.com/thisistherealryanross") else {return} // add appstore link
+        guard let data = URL(string: "https://vitty.dscvit.com/") else {return} // add appstore link
         let av = UIActivityViewController(activityItems: [data], applicationActivities: nil)
         let scenes = UIApplication.shared.connectedScenes
         let windowScene = scenes.first as? UIWindowScene

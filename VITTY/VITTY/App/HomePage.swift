@@ -14,11 +14,19 @@ struct HomePage: View {
     @EnvironmentObject var timetableViewModel: TimetableViewModel
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var notifVM: NotificationsViewModel
+    @StateObject var RemoteConf = RemoteConfigManager.sharedInstance
     @AppStorage("examMode") var examModeOn: Bool = false
     @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
     var body: some View {
         ZStack {
             VStack {
+                // MARK: force crash button
+                //                Button {
+                //                    assert(1 == 2, "Maths failure!")
+                //                } label: {
+                //                    Text("forcing a crash")
+                //                }
+                
                 VStack(alignment:.leading) {
                     HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
                         .padding()
@@ -33,8 +41,9 @@ struct HomePage: View {
                         VStack(alignment: .center) {
                             Text("No class today!")
                                 .font(Font.custom("Poppins-Bold", size: 24))
-//                        TODO: remote config
-                            Text(StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!")
+                            //                        TODO: remote config
+                            Text(RemoteConf.onlineMode
+                                 ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
                                 .font(Font.custom("Poppins-Regular",size:20))
                         }
                         .foregroundColor(Color.white)
@@ -72,6 +81,7 @@ struct HomePage: View {
             notifVM.getNotifPrefs()
             
             print(goToSettings)
+            print("remote config settings \(RemoteConf.onlineMode)")
         }
         .animation(.default)
     }

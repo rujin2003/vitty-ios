@@ -51,6 +51,7 @@ struct InstructionsView: View {
                     EmptyView()
                 }
             }
+            .blur(radius: displayLogout ? 10 : 0)
             .padding()
             .background(Image("InstructionsBG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
             

@@ -12,6 +12,7 @@ struct TimeTableScrollView: View {
     @Binding var tabSelected: Int
     @EnvironmentObject var timetableViewModel: TimetableViewModel
     @ObservedObject var notifSingleton = NotificationsViewModel.shared
+    @StateObject var RemoteConf = RemoteConfigManager.sharedInstance
     var body: some View {
         ScrollView {
             ScrollViewReader { scrollView in
@@ -22,7 +23,7 @@ struct TimeTableScrollView: View {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LinearGradient.secGrad)
                             .opacity((tabSelected == (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1) && timetableViewModel.classesCompleted == ind ? 1 : 0)
-                        ClassCards(classInfo: selectedTT[ind], onlineMode: false)
+                        ClassCards(classInfo: selectedTT[ind], onlineMode: RemoteConf.onlineMode)
                             .id(ind)
                     }
                     .padding(.bottom,5)
