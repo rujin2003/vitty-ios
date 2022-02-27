@@ -7,3 +7,7 @@
 
 import Foundation
 
+struct AppConstants {
+    static let VITTYappgroup = ""
+}
+

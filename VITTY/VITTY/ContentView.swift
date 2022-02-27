@@ -12,7 +12,7 @@ struct ContentView: View {
     @StateObject var authState: AuthService = AuthService()
     @StateObject var timeTableVM: TimetableViewModel = TimetableViewModel()
     // may not need this at all
-    @StateObject var localNotificationsManager = LocalNotificationsManager()
+    @StateObject var localNotificationsManager = NotificationsManager()
     @StateObject var notifVM = NotificationsViewModel()
     var body: some View {
         NavigationView {
@@ -27,12 +27,12 @@ struct ContentView: View {
             }
         }
         .animation(.default)
-        .onAppear(perform: LocalNotificationsManager.shared.getNotificationSettings)
-        .onChange(of: LocalNotificationsManager.shared.authStatus) { authorizationStat in
+        .onAppear(perform: NotificationsManager.shared.getNotificationSettings)
+        .onChange(of: NotificationsManager.shared.authStatus) { authorizationStat in
             
             switch authorizationStat {
             case .notDetermined:
-                LocalNotificationsManager.shared.requestPermission()
+                NotificationsManager.shared.requestPermission()
                 break
             default:
                 break
@@ -40,7 +40,7 @@ struct ContentView: View {
             
         }
         .onReceive(NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)) { _ in
-            LocalNotificationsManager.shared.getNotificationSettings()
+            NotificationsManager.shared.getNotificationSettings()
         }
         .environmentObject(authState)
         .environmentObject(timeTableVM)

@@ -19,6 +19,10 @@ struct StringConstants {
         "View your upcoming classes and timetable via the widget",
         "Instant sync across all of your devices via the app and extension",
     ]
+    // MARK: FIREBASE CONSTANTS
+    static let firestoreDays = [
+        "sunday","monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
+    ]
     // MARK: HOME PAGE CONSTANTS
     static let daysOfTheWeek = [
         "Sun",
@@ -66,4 +70,30 @@ struct StringConstants {
     
     // MARK: NOTIFICATIONS
     static let notificationTitle = "Up next!"
+}
+
+extension StringConstants {
+    // MARK: DUMMY DATA
+    static let dummyClassArray = [
+    Classes(courseType: "Theory", courseCode: "CSE1004", courseName: "Network and Communication", location: "SJT420", slot: "C2+TC2", startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 2700)),
+    Classes(courseType: "Lab", courseCode: "CSE2010", courseName: "Advanced C Programming", location: "MGB420", slot: "L11+L12", startTime: Date(timeIntervalSince1970: 3600), endTime: Date(timeIntervalSince1970: 6300)),
+    Classes(courseType: "Theory", courseCode: "CSE1004", courseName: "Network and Communication", location: "SJT420", slot: "C2+TC2", startTime: Date(timeIntervalSince1970: 0), endTime: Date(timeIntervalSince1970: 2700)),
+    Classes(courseType: "Lab", courseCode: "CSE2010", courseName: "Advanced C Programming", location: "MGB420", slot: "L11+L12", startTime: Date(timeIntervalSince1970: 3600), endTime: Date(timeIntervalSince1970:6300))
+    ]
+    
+    // MARK: NAVIGATION
+    static let VITMap = "Vellore+Institute+of+Technology,+Vellore+India"
+    static let blocksMap = [
+        "CDMM":"Centre+For+Disaster+Mitigation+And+Management",
+        "SJT" : "SJT+Building+%2F+Silver+Jubilee+Towers",
+        "MB" : "MB+-+Main+Building",
+        "MGB" : "Mahatma+Gandhi+Block",
+        "TT" : "Technology+Tower+-+TT",
+        "SMV" : "SMV",
+        "PLB" : "12.971272,79.166357",
+        "CBMR" : "CBMR+block",
+        "GDN" : "GDN"
+    ]
+    
+    static let browserURL = "https://www.google.com/maps/dir/?api=1&destination="
 }

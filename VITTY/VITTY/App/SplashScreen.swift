@@ -36,7 +36,7 @@ struct SplashScreen: View {
                 SignupOR()
                 NavigationLink(destination: InstructionsView(), isActive: $onboardingComplete) {
                     CustomButton(buttonText:"Sign in with Apple",imageString: "logo_apple"){
-                        
+                        authState.login(with: .appleSignin)
                     }
                 }
             }

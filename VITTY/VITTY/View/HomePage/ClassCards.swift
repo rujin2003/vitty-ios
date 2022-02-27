@@ -25,13 +25,13 @@ struct ClassCards: View {
                             Text(" - ")
                             Text(classInfo.endTime ?? Date(), style: .time)
                         }
-                            .font(Font.custom("Poppins-Regular",size:14))
+                        .font(Font.custom("Poppins-Regular",size:14))
                     }
-                    .padding()
+                    .padding(5)
                     Spacer()
                     Image(systemName: hideDescription ? "chevron.down" : "chevron.up")
                         .font(Font.system(size: 18))
-                        .padding()
+                        .padding(5)
                         .onTapGesture {
                             hideDescription.toggle()
                         }
@@ -41,10 +41,10 @@ struct ClassCards: View {
                         Text("\(classInfo.slot ?? "Slot")")
                             .font(Font.custom("Poppins-Regular",size:14))
                         Spacer()
-//                        TODO: remote config
+                        //                        TODO: remote config
                         if onlineMode {
-                        Text("\(classInfo.location ?? "Location")")
-                            .font(Font.custom("Poppins-Regular",size:14))
+                            Text("\(classInfo.location ?? "Location")")
+                                .font(Font.custom("Poppins-Regular",size:14))
                         } else {
                             HStack {
                                 Text("\(classInfo.location ?? "Location")")
@@ -58,15 +58,15 @@ struct ClassCards: View {
                             }
                         }
                     }
-                    .padding(.horizontal)
-                    .padding(.bottom)
+                    .padding(.horizontal,5)
+                    .padding(.bottom,5)
                 }
             }
             .foregroundColor(Color.vprimary)
-            .padding()
+            .padding(5)
         }
-        .padding()
-        .frame(height: hideDescription ? 100 : 155)
+        .padding(5)
+        .frame(height: hideDescription ? 80 : 120)
     }
 }
 

@@ -34,11 +34,13 @@ class TimetableViewModel: ObservableObject {
     private var db = Firestore.firestore()
     
 //    TODO: when switching to prod, uncomment lines 37, 48 and 88
-        private let uid = Auth.auth().currentUser?.uid
+        
 //    private let uid = Confidential.uid
     
     func fetchInfo(onCompletion: @escaping ()->Void){
+        let uid = Auth.auth().currentUser?.uid
         var timetableVersion = UserDefaults.standard.object(forKey: TimetableViewModel.timetableVersionKey)
+        print(uid)
         print("fetching user-timetable information")
         guard uid != nil else {
             print("error with uid")
@@ -77,6 +79,7 @@ class TimetableViewModel: ObservableObject {
     }
     
     func fetchTimetable(onCompletion: @escaping ()->Void){
+        let uid = Auth.auth().currentUser?.uid
         print("fetching timetable")
         var countt = 0
         guard uid != nil else {

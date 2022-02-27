@@ -37,7 +37,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
         print(self.notifSettings)
         saveNotifSettingsToUserDefaults()
         self.setupNotifs(timetable: timetable)
-        LocalNotificationsManager.shared.getAllNotificationRequests()
+        NotificationsManager.shared.getAllNotificationRequests()
     }
     
     func updateNotifs(timetable: [String:[Classes]]) {
@@ -62,13 +62,13 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
         let classs: Classes = timetable[TimetableViewModel.daysOfTheWeek[notifInfo.day - 1]]?[notifInfo.period] ?? Classes()
         
         
-        LocalNotificationsManager.shared.addNotifications(id: notifInfo.id ?? "",date: classs.startTime ?? Date(), day: notifInfo.day, courseCode: classs.courseCode ?? "Course Code", courseName: classs.courseName  ?? "Course Name", location: classs.location ?? "Location")
+        NotificationsManager.shared.addNotifications(id: notifInfo.id ?? "",date: classs.startTime ?? Date(), day: notifInfo.day, courseCode: classs.courseCode ?? "Course Code", courseName: classs.courseName  ?? "Course Name", location: classs.location ?? "Location")
     }
     
     
     func setupNotifs(timetable: [String:[Classes]]) {
         // remove all notification requests
-        LocalNotificationsManager.shared.removeAllNotificationRequests()
+        NotificationsManager.shared.removeAllNotificationRequests()
         // save notif preferences to userdefaults
         self.saveNotifSettingsToUserDefaults()
         // iterate through notification preferences
@@ -79,11 +79,11 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
 //                let components = Calendar.current.dateComponents([.hour, .minute], from: currClass?.startTime ?? Date())
 //                let hour = components.hour ?? 0
 //                let minute = components.minute ?? 0
-                LocalNotificationsManager.shared.addNotifications(id: period.id ?? "id", date: currClass?.startTime ?? Date(), day: period.day, courseCode: currClass?.courseCode ?? "Course Code", courseName: currClass?.courseName ?? "Course Name", location: currClass?.location ?? "Location")
+                NotificationsManager.shared.addNotifications(id: period.id ?? "id", date: currClass?.startTime ?? Date(), day: period.day, courseCode: currClass?.courseCode ?? "Course Code", courseName: currClass?.courseName ?? "Course Name", location: currClass?.location ?? "Location")
             }
             
         }
-        LocalNotificationsManager.shared.getAllNotificationRequests()
+        NotificationsManager.shared.getAllNotificationRequests()
         UserDefaults.standard.set(true, forKey: AuthService.notifsSetupKey)
         
     }

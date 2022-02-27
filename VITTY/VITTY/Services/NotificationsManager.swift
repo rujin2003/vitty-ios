@@ -7,12 +7,15 @@
 
 import Foundation
 import UserNotifications
+import UIKit
+import Firebase
+import FirebaseMessaging
 
-class LocalNotificationsManager: ObservableObject {
+class NotificationsManager: NSObject, ObservableObject {
     
-    static let shared = LocalNotificationsManager()
+    static let shared = NotificationsManager()
     
-    // TODO: handle notifications
+    var isPushEnabled: Bool = false
     
     //    @Published var authStatus: Bool = false
     @Published var authStatus: UNAuthorizationStatus?
@@ -69,7 +72,7 @@ class LocalNotificationsManager: ObservableObject {
         dateComponents.minute = minute
         dateComponents.weekday = day
         
-       
+        
         
         let content = UNMutableNotificationContent()
         content.title = StringConstants.notificationTitle
@@ -107,19 +110,71 @@ class LocalNotificationsManager: ObservableObject {
     }
     
     /** Handle notification when app is in background */
-        func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response:
-            UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
-            
-            if response.actionIdentifier == "navigateToClass" {
-                let userInfo = response.notification.request.content.userInfo
-                let location = userInfo["location"] as? String
-                ClassCardViewModel.classCardVM.navigateToClass(at: location ?? "location")
-            }
-            else if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
-                NotificationsViewModel.shared.notificationTapped.toggle()
-            }
-            completionHandler()
-        }
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response:
+                                UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
         
+        if response.actionIdentifier == "navigateToClass" {
+            let userInfo = response.notification.request.content.userInfo
+            let location = userInfo["location"] as? String
+            ClassCardViewModel.classCardVM.navigateToClass(at: location ?? "location")
+        }
+        else if response.actionIdentifier == UNNotificationDefaultActionIdentifier {
+            NotificationsViewModel.shared.notificationTapped.toggle()
+        }
+        completionHandler()
+    }
+    
+    
+    
+}
+
+
+extension NotificationsManager: UNUserNotificationCenterDelegate, MessagingDelegate {
+    func registerForPushNotifications() {
+        UIApplication.shared.registerForRemoteNotifications()
+        let center = UNUserNotificationCenter.current()
+        center.delegate = self
+        Messaging.messaging().delegate = self
+        center.getNotificationSettings(completionHandler: { (settings) in
+            switch settings.authorizationStatus {
+            case .authorized, .provisional:
+                self.isPushEnabled = true
+                DispatchQueue.main.async {
+                    UIApplication.shared.registerForRemoteNotifications()
+                }
+            case .denied, .ephemeral:
+                break
+            case .notDetermined:
+                center.requestAuthorization(options: [.alert, .sound, .badge]) { (granted, error) in
+                    if granted && error == nil {
+                        self.isPushEnabled = true
+                        DispatchQueue.main.async {
+                            UIApplication.shared.registerForRemoteNotifications()
+                        }
+                    } else {
+                    }
+                }
+            @unknown default:
+                break
+            }
+        })
+    }
+    
+    func didRegisterForRemoteNotifications(_ tokenData: Data) {
+        Messaging.messaging().apnsToken = tokenData
+    }
+    
+    func messaging(
+        _ messaging: Messaging,
+        didReceiveRegistrationToken fcmToken: String?
+    ) {
+        print("Firebase registration token: \(String(describing: fcmToken))")
+        let tokenDict = ["token": fcmToken ?? ""]
+        NotificationCenter.default.post(
+            name: Notification.Name("FCMToken"),
+            object: nil,
+            userInfo: tokenDict)
+    }
+    
 }
 
