@@ -33,6 +33,22 @@ struct StringConstants {
         "Fri",
         "Sat",
     ]
+    // MARK: SHARE SHEET
+    static let shareSheetContent: String = """
+    Are you having trouble staying on top of your hectic college schedule? Don't know where your classes are? VITTY has got you covered, with VITTY you can have easy access to your timetable no matter where you are!
+
+    Simply upload your VIT timetable as text or image and never miss another class again!
+
+    Get VITTY Now!
+
+    Website: https://dscv.it/vitty
+
+    Chrome Extension: https://dscv.it/vitty-extension
+
+    Android App: https://dscv.it/vitty-app
+
+    iOS App: https://dscv.it/vitty-ios
+    """
     // MARK: INSTRUCTIONS PAGE
     // dummy arrays
     static let instructionsHeaders = ["Account Details", "Setup Instructions"]
