@@ -34,11 +34,11 @@ struct SplashScreen: View {
                     }
 //                }
                 SignupOR()
-                NavigationLink(destination: InstructionsView(), isActive: $onboardingComplete) {
+//                NavigationLink(destination: InstructionsView(), isActive: $onboardingComplete) {
                     CustomButton(buttonText:"Sign in with Apple",imageString: "logo_apple"){
                         authState.login(with: .appleSignin)
                     }
-                }
+//                }
             }
             Spacer(minLength: 50)
             
@@ -49,7 +49,7 @@ struct SplashScreen: View {
             }
             
         }
-        .animation(.linear(duration: 0.25))
+//        .transition(.customTransition)
         .padding()
         .background(Image((selectedTab % 2 == 0) ? "SplashScreen13BG" : "SplashScreen2BG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
     }
@@ -58,5 +58,13 @@ struct SplashScreen: View {
 struct SplashScreen_Previews: PreviewProvider {
     static var previews: some View {
         SplashScreen()
+    }
+}
+
+extension AnyTransition {
+    static var customTransition: AnyTransition {
+        let transition = AnyTransition.scale(scale: 0.3, anchor: .topTrailing)
+            .combined(with: .opacity)
+        return transition
     }
 }

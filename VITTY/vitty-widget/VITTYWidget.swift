@@ -18,7 +18,7 @@ struct VITTYProvider: TimelineProvider {
         let date = Date()
         var VITTYSnap = VITTYWidgetDataModel(classInfo: [], classesCompleted: 0, error: nil)
         for i in 0...7 {
-            VITTYSnap.classInfo.append(Classes(courseType: "Type\(i)", courseCode: "CSE\(i)\(i)\(i)\(i)", courseName: "Course\(i) Course Name", location: "Loc\(i)", slot: "Slot\(i)", startTime: Date(timeInterval: TimeInterval(3600*i), since: date), endTime: Date(timeInterval: TimeInterval(3600*i + 2700), since: date)))
+            VITTYSnap.classInfo.append(Classes(courseType: "Type\(i)", courseCode: "CSE\(i)\(i)\(i)\(i)", courseName: "Internet Programming and Web Technologies", location: "Loc\(i)", slot: "Slot\(i)", startTime: Date(timeInterval: TimeInterval(3600*i), since: date), endTime: Date(timeInterval: TimeInterval(3600*i + 2700), since: date)))
         }
         
         
@@ -74,7 +74,12 @@ struct VITTYWidget: Widget {
     
     init() {
         FirebaseApp.configure()
-        try? Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+        do {
+            try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+        } catch let error as NSError {
+          print("Error changing user access group: %@", error)
+        }
+        //        try? Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
     }
 
     var body: some WidgetConfiguration {

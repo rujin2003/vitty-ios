@@ -36,7 +36,6 @@
 		3164C42627C9ED4600D6B53F /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C42427C9ECE500D6B53F /* WidgetModel.swift */; };
 		3164C42727C9ED4F00D6B53F /* WidgetModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C42427C9ECE500D6B53F /* WidgetModel.swift */; };
 		3164C42827C9EE2800D6B53F /* Classes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31EC94692788BCDF00EA07BE /* Classes.swift */; };
-		3164C43427C9FEC700D6B53F /* VITTYWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C43327C9FEC700D6B53F /* VITTYWidgetView.swift */; };
 		3164C44127CA242B00D6B53F /* TimeTableInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2A4A327894E96005679EB /* TimeTableInformation.swift */; };
 		3164C44227CA254600D6B53F /* StringConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31128D0B277300470084C9EA /* StringConstants.swift */; };
 		3164C44327CB51C900D6B53F /* TimetableWidgetService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C43F27CA20F200D6B53F /* TimetableWidgetService.swift */; };
@@ -66,8 +65,8 @@
 		3164C46327CBB0F800D6B53F /* Poppins-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128D0D277302AC0084C9EA /* Poppins-Bold.ttf */; };
 		3164C46427CBB0F800D6B53F /* Poppins-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF62772F57E0084C9EA /* Poppins-Regular.ttf */; };
 		3164C46527CBB0F800D6B53F /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */; };
-		3164C46727CBC96700D6B53F /* WidgetMLClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C46627CBC96700D6B53F /* WidgetMLClassCard.swift */; };
-		3164C46827CBCD1400D6B53F /* WidgetMLClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C46627CBC96700D6B53F /* WidgetMLClassCard.swift */; };
+		3164C46727CBC96700D6B53F /* WidgetLClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C46627CBC96700D6B53F /* WidgetLClassCard.swift */; };
+		3164C46827CBCD1400D6B53F /* WidgetLClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C46627CBC96700D6B53F /* WidgetLClassCard.swift */; };
 		3164C46A27CBD29100D6B53F /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109639E27824F6F0009A29C /* AppStorageConstants.swift */; };
 		3168511F277319480046A9AC /* SignupOR.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3168511E277319480046A9AC /* SignupOR.swift */; };
 		316A1EF12776238500CC1DE8 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 316A1EF02776238500CC1DE8 /* GoogleSignIn */; };
@@ -79,6 +78,7 @@
 		317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1942775C555008AEB31 /* LogoutPopup.swift */; };
 		317EE1972775C8BE008AEB31 /* ExamHolidayMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1962775C8BE008AEB31 /* ExamHolidayMode.swift */; };
 		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
+		318B66EF27CE9A2C00C53BC3 /* VITTYWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3164C43327C9FEC700D6B53F /* VITTYWidgetView.swift */; };
 		31900F01277467460014A58D /* InstructionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F00277467460014A58D /* InstructionsView.swift */; };
 		31900F03277468790014A58D /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F02277468790014A58D /* HomePage.swift */; };
 		31900F0527746A400014A58D /* HomePageHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31900F0427746A400014A58D /* HomePageHeader.swift */; };
@@ -93,6 +93,11 @@
 		31A2A4A227894C16005679EB /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = 31A2A4A127894C16005679EB /* FirebaseMessaging */; };
 		31A2A4A427894E96005679EB /* TimeTableInformation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2A4A327894E96005679EB /* TimeTableInformation.swift */; };
 		31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A2A4A727899EE3005679EB /* TabBarDay.swift */; };
+		31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */; };
+		31A3BF4127D09AF300B6BB97 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */; };
+		31A3BF4327D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF4227D0BAE800B6BB97 /* WidgetMClassCard.swift */; };
+		31A3BF4427D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF4227D0BAE800B6BB97 /* WidgetMClassCard.swift */; };
+		31A3BF4527D0ED0000B6BB97 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = AFEFCB7527C9065B007B2029 /* GoogleService-Info.plist */; };
 		31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB527279AD8CA008E20BB /* SettingsHeader.swift */; };
 		31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB529279AE34B008E20BB /* NotificationsView.swift */; };
 		31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */; };
@@ -168,7 +173,7 @@
 		3164C43C27CA001B00D6B53F /* NoDetailsAvailableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoDetailsAvailableView.swift; sourceTree = "<group>"; };
 		3164C43F27CA20F200D6B53F /* TimetableWidgetService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimetableWidgetService.swift; sourceTree = "<group>"; };
 		3164C44927CB590D00D6B53F /* WidgetSmallClassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetSmallClassCard.swift; sourceTree = "<group>"; };
-		3164C46627CBC96700D6B53F /* WidgetMLClassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetMLClassCard.swift; sourceTree = "<group>"; };
+		3164C46627CBC96700D6B53F /* WidgetLClassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetLClassCard.swift; sourceTree = "<group>"; };
 		3164C46927CBCFBE00D6B53F /* vitty-widgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "vitty-widgetExtension.entitlements"; sourceTree = "<group>"; };
 		3168511E277319480046A9AC /* SignupOR.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupOR.swift; sourceTree = "<group>"; };
 		317715DB279F0426009A532E /* CustomNotificationsLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNotificationsLabel.swift; sourceTree = "<group>"; };
@@ -187,6 +192,8 @@
 		31900F0B2775A6080014A58D /* ClassCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassCards.swift; sourceTree = "<group>"; };
 		31A2A4A327894E96005679EB /* TimeTableInformation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableInformation.swift; sourceTree = "<group>"; };
 		31A2A4A727899EE3005679EB /* TabBarDay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarDay.swift; sourceTree = "<group>"; };
+		31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		31A3BF4227D0BAE800B6BB97 /* WidgetMClassCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetMClassCard.swift; sourceTree = "<group>"; };
 		31BAB527279AD8CA008E20BB /* SettingsHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsHeader.swift; sourceTree = "<group>"; };
 		31BAB529279AE34B008E20BB /* NotificationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsView.swift; sourceTree = "<group>"; };
 		31BAB52C279AE398008E20BB /* NotificationsViewHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationsViewHeader.swift; sourceTree = "<group>"; };
@@ -316,6 +323,7 @@
 				31128D062772FA120084C9EA /* Colors.swift */,
 				31900F0927759DB60014A58D /* Gradient.swift */,
 				317715DD279F1431009A532E /* IndexedCollection.swift */,
+				31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -458,7 +466,8 @@
 				3164C43A27C9FF9F00D6B53F /* LargeWidgetView.swift */,
 				3164C43C27CA001B00D6B53F /* NoDetailsAvailableView.swift */,
 				3164C44927CB590D00D6B53F /* WidgetSmallClassCard.swift */,
-				3164C46627CBC96700D6B53F /* WidgetMLClassCard.swift */,
+				3164C46627CBC96700D6B53F /* WidgetLClassCard.swift */,
+				31A3BF4227D0BAE800B6BB97 /* WidgetMClassCard.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -637,6 +646,7 @@
 				3105872227A3ECBD00C2FC41 /* Assets.xcassets in Resources */,
 				3164C46127CBB0F800D6B53F /* Poppins-MediumItalic.ttf in Resources */,
 				3164C46527CBB0F800D6B53F /* Poppins-Medium.ttf in Resources */,
+				31A3BF4527D0ED0000B6BB97 /* GoogleService-Info.plist in Resources */,
 				3164C46227CBB0F800D6B53F /* Poppins-SemiBoldItalic.ttf in Resources */,
 				3164C46427CBB0F800D6B53F /* Poppins-Regular.ttf in Resources */,
 			);
@@ -711,6 +721,7 @@
 				3164C44727CB54D900D6B53F /* Colors.swift in Sources */,
 				3164C42627C9ED4600D6B53F /* WidgetModel.swift in Sources */,
 				3164C44127CA242B00D6B53F /* TimeTableInformation.swift in Sources */,
+				31A3BF4427D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */,
 				3164C45E27CBAB5A00D6B53F /* Gradient.swift in Sources */,
 				3164C45527CB5B9C00D6B53F /* VITTYWidgetView.swift in Sources */,
 				3164C45427CB5B7400D6B53F /* RemoteConfigManager.swift in Sources */,
@@ -722,7 +733,8 @@
 				3164C45627CB718900D6B53F /* MediumWidgetView.swift in Sources */,
 				3164C44227CA254600D6B53F /* StringConstants.swift in Sources */,
 				3164C42827C9EE2800D6B53F /* Classes.swift in Sources */,
-				3164C46727CBC96700D6B53F /* WidgetMLClassCard.swift in Sources */,
+				3164C46727CBC96700D6B53F /* WidgetLClassCard.swift in Sources */,
+				31A3BF4127D09AF300B6BB97 /* Date+Extension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -735,8 +747,10 @@
 				31BAB52D279AE398008E20BB /* NotificationsViewHeader.swift in Sources */,
 				31BAB528279AD8CA008E20BB /* SettingsHeader.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
+				31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */,
 				3164C45C27CB71DD00D6B53F /* NoDetailsAvailableView.swift in Sources */,
 				31128D012772F8370084C9EA /* SplashScreen.swift in Sources */,
+				31A3BF4327D0BAE800B6BB97 /* WidgetMClassCard.swift in Sources */,
 				31EC946E2789409D00EA07BE /* TimetableViewModel.swift in Sources */,
 				31900F0827746B3A0014A58D /* HomeTabBarView.swift in Sources */,
 				31BAB52A279AE34B008E20BB /* NotificationsView.swift in Sources */,
@@ -755,15 +769,15 @@
 				31D2F80227BAD1B7000C0308 /* RemoteConfigManager.swift in Sources */,
 				31128D1627730C460084C9EA /* CustomTextField.swift in Sources */,
 				313E6AFD27BEAED9006F5944 /* ClassCardViewModel.swift in Sources */,
+				318B66EF27CE9A2C00C53BC3 /* VITTYWidgetView.swift in Sources */,
 				31900F03277468790014A58D /* HomePage.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
-				3164C46827CBCD1400D6B53F /* WidgetMLClassCard.swift in Sources */,
+				3164C46827CBCD1400D6B53F /* WidgetLClassCard.swift in Sources */,
 				31900F01277467460014A58D /* InstructionsView.swift in Sources */,
 				3164C45D27CB71DF00D6B53F /* WidgetSmallClassCard.swift in Sources */,
 				31A2A4A827899EE3005679EB /* TabBarDay.swift in Sources */,
 				31EC946A2788BCDF00EA07BE /* Classes.swift in Sources */,
 				31128D09277300130084C9EA /* SplashScreenIllustration.swift in Sources */,
-				3164C43427C9FEC700D6B53F /* VITTYWidgetView.swift in Sources */,
 				31900F0527746A400014A58D /* HomePageHeader.swift in Sources */,
 				317EE1952775C555008AEB31 /* LogoutPopup.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,

@@ -25,13 +25,13 @@ struct StringConstants {
     ]
     // MARK: HOME PAGE CONSTANTS
     static let daysOfTheWeek = [
-        "Sun",
         "Mon",
         "Tue",
         "Wed",
         "Thu",
         "Fri",
         "Sat",
+        "Sun",
     ]
     // MARK: SHARE SHEET
     static let shareSheetContent: String = """
@@ -62,6 +62,7 @@ struct StringConstants {
         "5. When done, click on Upload."
     ]
     static let setupFinalText = "BRAVO! That's it. You did it!"
+    static let followInstructionsText = "Fetching information. Follow the instructions given below"
     
     // MARK: CLASS DATA
     static let sampleClassDate = Classes(courseType: "Theory", courseCode: "MAT3004", courseName: "Applied Linear Algebra", location: "SJT112", slot: "A1", startTime: Date(), endTime: Date(timeIntervalSinceNow: 3600))

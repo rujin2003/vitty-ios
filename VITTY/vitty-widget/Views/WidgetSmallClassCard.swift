@@ -11,71 +11,38 @@ struct WidgetSmallClassCard: View {
     var classInfo: Classes
     var onlineMode: Bool = false
     var body: some View {
-        ZStack {
-            VStack {
-                Spacer()
-                VStack(alignment:.leading) {
-                    HStack {
-                        Text(classInfo.courseCode ?? "Course Code")
-                            .font(Font.custom("Poppins-SemiBold",size:12))
-                            .foregroundColor(Color.white)
-                        
-                        if !onlineMode {
-                            Spacer()
-                            Text("\(classInfo.slot ?? "Slot")")
-                                .font(Font.custom("Poppins-Regular",size:10))
-                        }
-                    }
-                    
-                    Text(classInfo.courseName ?? "Course Name")
-                        .lineLimit(1)
-                        .font(Font.custom("Poppins-SemiBold",size:12))
-                        .foregroundColor(Color.white)
-                    HStack(spacing: 0) {
-                        Text(classInfo.startTime ?? Date(), style: .time)
-                        Text(" - ")
-                        Text(classInfo.endTime ?? Date(), style: .time)
-                        
-                    }
-                    .font(Font.custom("Poppins-Regular",size:10))
+        VStack {
+            VStack(alignment:.leading, spacing: 2) {
+                
+                Text(classInfo.courseName ?? "Course Name")
+                    .lineLimit(3)
+                    .multilineTextAlignment(.leading)
+                    .font(Font.custom("Poppins-SemiBold",size:11))
+                    .foregroundColor(Color.white)
+                
+                HStack(spacing: 0) {
+                    Text(classInfo.startTime ?? Date(), style: .time)
+                    Text(" - ")
+                    Text(classInfo.endTime ?? Date(), style: .time)
                 }
-                HStack {
-                    // TODO: remote config
-                    if onlineMode {
-                        Text("\(classInfo.slot ?? "Slot")")
-                            .font(Font.custom("Poppins-Regular",size:10))
-                        Spacer()
+                .font(Font.custom("Poppins-Regular",size:11))
+                .foregroundColor(Color.vprimary)
+                
+                if onlineMode {
+                    Text("\(classInfo.location ?? "Location")")
+                        .font(Font.custom("Poppins-Regular",size:11))
+                } else {
+                    Link(destination: getNavigationLink(from: classInfo.location ?? "SJT"),
+                         label: {
                         Text("\(classInfo.location ?? "Location")")
-                            .font(Font.custom("Poppins-Regular",size:10))
-                    } else {
-                        Link(destination: getNavigationLink(from: classInfo.location ?? "SJT"),
-                             label: {
-                            HStack {
-                                VStack {
-                                    Text("Go to")
-                                    Text("\(classInfo.location ?? "Location")")
-                                    //                                        .font(Font.custom("Poppins-Regular",size:11))
-                                }
-                                .font(Font.custom("Poppins-SemiBold",size:11))
-                                Image(systemName: "mappin.and.ellipse")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(height: 11)
-                            }
-                            .foregroundColor(Color.white)
-                            .padding(7)
-                            .overlay(RoundedRectangle(cornerRadius: 5).stroke(lineWidth: 1).foregroundColor(Color.vprimary))
-                        }
-                        )
-                    }
+                            .font(Font.custom("Poppins-Regular",size:11))
+                            .foregroundColor(Color.vprimary)
+                    })
                 }
-                .padding(.horizontal,5)
-                Spacer()
             }
-            
         }
-        .foregroundColor(Color.vprimary)
         .padding(5)
+        .foregroundColor(Color.vprimary)
     }
     
     func getNavigationLink(from location: String) -> URL {

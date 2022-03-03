@@ -10,58 +10,61 @@ import SwiftUI
 struct LargeWidgetView: View {
     var widgetData: VITTYWidgetDataModel
     var body: some View {
-        VStack {
-            VStack {
-                if widgetData.classesCompleted < widgetData.classInfo.count && widgetData.error == nil {
+        VStack(alignment: .leading, spacing: 0) {
+            if widgetData.classesCompleted < widgetData.classInfo.count && widgetData.error == nil {
+                VStack(alignment: .leading, spacing: 0) {
+                    Text("Your next class")
+                        .font(Font.custom("Poppins-Regular",size:14))
+                        .foregroundColor(Color.vprimary)
+                        .padding(.leading, 10)
+                        .padding(.top, 5)
+                        .padding(.bottom, 4)
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LinearGradient.secGrad)
-                        WidgetMLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
+                        WidgetLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
                     }
-                    .padding(3)
+                    .padding(.horizontal, 3)
+                    .padding(.bottom, 8)
                     if widgetData.classesCompleted + 1 < widgetData.classInfo.count {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(Color.darkbg)
-                            WidgetMLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted + 1], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
+                            WidgetLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted + 1], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
                         }
-                        .padding(3)
+                        .padding(.horizontal, 3)
+                        .padding(.bottom, 8)
                         if widgetData.classesCompleted + 2 < widgetData.classInfo.count {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 12)
                                     .fill(Color.darkbg)
-                                WidgetMLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted + 2], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
+                                WidgetLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted + 2], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
                             }
-                            .padding(3)
-                            if widgetData.classesCompleted + 3 < widgetData.classInfo.count {
-                                ZStack {
-                                    RoundedRectangle(cornerRadius: 12)
-                                        .fill(Color.darkbg)
-                                    WidgetMLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted + 3], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
-                                }
-                                .padding(3)
-                            } else {
-                                Spacer()
-                            }
+                            .padding(.horizontal, 3)
+                            .padding(.bottom, 5)
                         } else {
                             Spacer()
                         }
                     } else {
                         Spacer()
                     }
-                } else {
+                }
+            } else {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 12)
+                        .fill(Color.darkbg)
                     VStack {
                         Text("No more class today!")
-                            .font(Font.custom("Poppins-Bold", size: 24))
+                            .font(Font.custom("Poppins-Bold", size: 15))
                         Text(RemoteConfigManager.sharedInstance.onlineMode
                              ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
-                            .font(Font.custom("Poppins-Regular",size:20))
+                            .font(Font.custom("Poppins-Regular",size:12))
                     }
                     .foregroundColor(Color.white)
                 }
             }
-            .padding(5)
         }
+        .padding(5)
         .background(Color.widgbg)
     }
 }

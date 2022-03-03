@@ -10,25 +10,40 @@ import SwiftUI
 struct SmallWidgetView: View {
     var widgetData: VITTYWidgetDataModel
     var body: some View {
-        VStack {
+        VStack(alignment: .leading) {
             ZStack {
                 if widgetData.classesCompleted < widgetData.classInfo.count && widgetData.error == nil {
-                    ZStack {
-                        RoundedRectangle(cornerRadius: 12)
-                            .fill(LinearGradient.secGrad)
-                        WidgetSmallClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
+                    VStack(alignment: .leading, spacing: 0) {
+                        Text("Your next class")
+                            .font(Font.custom("Poppins-Regular",size:12))
+                            .foregroundColor(Color.vprimary)
+                            .padding(.leading, 10)
+                            .padding(.top, 5)
+                            .padding(.bottom, 4)
+                        ZStack {
+                            RoundedRectangle(cornerRadius: 12)
+                                .fill(LinearGradient.secGrad)
+                            WidgetSmallClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
+                        }
+                        .padding(.horizontal,5)
+                        .padding(.bottom, 5)
                     }
                     .padding(5)
                 }
                 else {
-                    VStack {
-                        Text("No more class today!")
-                            .font(Font.custom("Poppins-Bold", size: 24))
-                        Text(RemoteConfigManager.sharedInstance.onlineMode
-                             ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
-                            .font(Font.custom("Poppins-Regular",size:20))
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 12)
+                            .fill(Color.darkbg)
+                        VStack(alignment: .leading) {
+                            Text("No more class today!")
+                                .font(Font.custom("Poppins-Bold", size: 15))
+                            Text(RemoteConfigManager.sharedInstance.onlineMode
+                                 ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
+                                .font(Font.custom("Poppins-Regular",size:12))
+                        }
+                        .foregroundColor(Color.white)
                     }
-                    .foregroundColor(Color.white)
+                    .padding(5)
                 }
                 
             }

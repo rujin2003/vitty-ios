@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct HomePage: View {
-    @State var tabSelected: Int = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+    //    @State var tabSelected: Int = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+    @State var tabSelected: Int = Date.convertToMondayWeek()
     @State var goToSettings: Bool = false
     @State var showLogout: Bool = false
     @EnvironmentObject var timetableViewModel: TimetableViewModel
@@ -32,24 +33,15 @@ struct HomePage: View {
                         .padding()
                     HomeTabBarView(tabSelected: $tabSelected)
                 }
-                if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]] {
-                    if !selectedTT.isEmpty {
-                        TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
-                    }
-                    else {
-                        Spacer()
-                        VStack(alignment: .center) {
-                            Text("No class today!")
-                                .font(Font.custom("Poppins-Bold", size: 24))
-                            //                        TODO: remote config
-                            Text(RemoteConf.onlineMode
-                                 ? StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!" : StringConstants.noClassQuotesOffline.randomElement() ?? "Have fun today!")
-                                .font(Font.custom("Poppins-Regular",size:20))
+                // TODO: change timetable scroll view to implement all of this
+                TabView(selection: $tabSelected) {
+                    ForEach(0..<7) { tabSel in
+                        if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSel]] {
+                            TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
                         }
-                        .foregroundColor(Color.white)
-                        Spacer()
                     }
                 }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 NavigationLink(destination: SettingsView().environmentObject(timetableViewModel).environmentObject(authVM).environmentObject(notifVM), isActive: $goToSettings) {
                     EmptyView()
                 }
@@ -59,7 +51,7 @@ struct HomePage: View {
             }
             .blur(radius: showLogout ? 10 : 0)
             .onAppear {
-                tabSelected = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+                tabSelected = Date.convertToMondayWeek()
             }
             if showLogout {
                 LogoutPopup(showLogout: $showLogout).environmentObject(authVM)
@@ -75,6 +67,7 @@ struct HomePage: View {
                 }
                 
             }
+            print("tabSelected: \(tabSelected)")
             //            LocalNotificationsManager.shared.getAllNotificationRequests()
             notifVM.updateNotifs(timetable: timetableViewModel.timetable)
             timetableViewModel.updateClassCompleted()

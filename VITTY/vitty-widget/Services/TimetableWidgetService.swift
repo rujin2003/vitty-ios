@@ -26,7 +26,14 @@ class TimetableWidgetService {
         let day: String = StringConstants.firestoreDays[dayInt]
         
         
-        let uid = Auth.auth().currentUser?.uid
+//        let uid = Auth.auth().currentUser?.uid
+        guard let user = try? Auth.auth().getStoredUser(forAccessGroup: AppConstants.VITTYappgroup) else {
+            print("couldn't get stored user")
+            completion(VITTYWidgetDataModel(classInfo: [], classesCompleted: -1, error: "Couldn't get the stored user"))
+            return
+        }
+        let uid = user.uid
+        print(uid)
         guard uid != nil else {
             print("user not authorized")
             completion(VITTYWidgetDataModel(classInfo: [], classesCompleted: -1, error: "Please sign in"))
@@ -34,7 +41,7 @@ class TimetableWidgetService {
         }
         db
             .collection("users")
-            .document(uid!)
+            .document(uid)
             .getDocument { (document, error) in
                 guard error == nil else {
                     print("Error fetching user information: \(error.debugDescription)")
@@ -54,7 +61,7 @@ class TimetableWidgetService {
                 if let timetableAvailable = data?.isTimetableAvailable, timetableAvailable {
                     self.db
                         .collection("users")
-                        .document(uid!)
+                        .document(uid)
                         .collection("timetable")
                         .document(day)
                         .collection("periods")

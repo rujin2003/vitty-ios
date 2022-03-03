@@ -20,13 +20,14 @@ struct ContentView: View {
                 InstructionsView()
                     .navigationTitle("")
                     .navigationBarHidden(true)
+                    .animation(.default)
             } else {
                 SplashScreen()
                     .navigationTitle("")
                     .navigationBarHidden(true)
             }
         }
-        .animation(.default)
+//        .animation(.default)
         .onAppear(perform: NotificationsManager.shared.getNotificationSettings)
         .onChange(of: NotificationsManager.shared.authStatus) { authorizationStat in
             

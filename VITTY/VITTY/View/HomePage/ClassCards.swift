@@ -14,6 +14,11 @@ struct ClassCards: View {
     @State var onlineMode: Bool
     var body: some View {
         ZStack {
+            RoundedRectangle(cornerRadius: 12)
+                .fill(Color.clear)
+                .onTapGesture {
+                    hideDescription.toggle()
+                }
             VStack {
                 HStack {
                     VStack(alignment:.leading) {
@@ -32,9 +37,9 @@ struct ClassCards: View {
                     Image(systemName: hideDescription ? "chevron.down" : "chevron.up")
                         .font(Font.system(size: 18))
                         .padding(5)
-                        .onTapGesture {
-                            hideDescription.toggle()
-                        }
+                    //                        .onTapGesture {
+                    //                            hideDescription.toggle()
+                    //                        }
                 }
                 if !hideDescription {
                     HStack {
@@ -67,7 +72,12 @@ struct ClassCards: View {
         }
         .padding(5)
         .frame(height: hideDescription ? 80 : 120)
+        .onTapGesture {
+            hideDescription.toggle()
+        }
+        
     }
+        
 }
 
 struct ClassCards_Previews: PreviewProvider {

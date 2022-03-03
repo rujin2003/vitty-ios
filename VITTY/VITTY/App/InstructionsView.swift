@@ -12,6 +12,7 @@ struct InstructionsView: View {
     @EnvironmentObject var ttVM: TimetableViewModel
     @State var goToHomeScreen = UserDefaults.standard.bool(forKey: "instructionsComplete")
     @State var displayLogout: Bool = false
+    @State var displayFollowInstructions = false
     @EnvironmentObject var notifVM: NotificationsViewModel
     // notifsSetup is true when notifications don't need to be setup and false when they do
     @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
@@ -21,7 +22,6 @@ struct InstructionsView: View {
                 HStack {
                     Text("Sync Timetable")
                     Spacer()
-                    // add logout button functionality
                     Image(systemName: "arrow.right.square")
                         .onTapGesture {
                             displayLogout = true
@@ -30,11 +30,19 @@ struct InstructionsView: View {
                 .font(Font.custom("Poppins-Bold", size: 24))
                 .foregroundColor(Color.white)
                 ScrollView {
+                    if displayFollowInstructions {
+                        Text(StringConstants.followInstructionsText.uppercased())
+                            .foregroundColor(Color.white)
+                            .padding(.vertical)
+                            .font(.custom("Poppins-Regular", size: 16))
+                        
+                    }
                     InstructionsCards()
                         .padding(.vertical)
                 }
                 Spacer()
                 CustomButton(buttonText: "Done") {
+                    self.displayFollowInstructions = true
                     if ttVM.timetable.isEmpty {
                         ttVM.getData {
                             if !notifsSetup {

@@ -24,7 +24,13 @@ class TimetableViewModel: ObservableObject {
     var versionChanged: Bool = false
     
     static let daysOfTheWeek = [
-        "sunday","monday", "tuesday", "wednesday", "thursday", "friday", "saturday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
     ]
     
     static let timetableVersionKey: String = "timetableVersionKey"
@@ -131,14 +137,13 @@ class TimetableViewModel: ObservableObject {
 
 extension TimetableViewModel {
     func updateClassCompleted(){
-        let today = Calendar.current.dateComponents([.weekday, .hour, .minute], from: Date())
-        let today_i = (today.weekday ?? 1) - 1
+        let today_i = Date.convertToMondayWeek()
         let todayDay = TimetableViewModel.daysOfTheWeek[today_i]
         let todaysTT = self.timetable[todayDay]
         let todayClassCount = todaysTT?.count ?? 0
         self.classesCompleted = 0
+        let currentPoint = Calendar.current.date(from: Calendar.current.dateComponents([.hour,.minute], from: Date())) ?? Date()
         for i in (0..<todayClassCount) {
-            let currentPoint = Calendar.current.date(from: Calendar.current.dateComponents([.hour,.minute], from: Date())) ?? Date()
             let endPoint = Calendar.current.date(from: Calendar.current.dateComponents([.hour,.minute], from: todaysTT?[i].endTime ?? Date())) ?? Date()
             if currentPoint > endPoint {
                 self.classesCompleted += 1
