@@ -16,32 +16,32 @@ struct LargeWidgetView: View {
                     Text("Your next class")
                         .font(Font.custom("Poppins-Regular",size:14))
                         .foregroundColor(Color.vprimary)
-                        .padding(.leading, 10)
-                        .padding(.top, 5)
-                        .padding(.bottom, 4)
+                        .padding(.leading, 15)
+                        .padding(.top, 10)
+                        .padding(.bottom, 5)
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LinearGradient.secGrad)
                         WidgetLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
                     }
-                    .padding(.horizontal, 3)
-                    .padding(.bottom, 8)
+                    .padding(.vertical, 5)
+                    .padding(.horizontal, 10)
                     if widgetData.classesCompleted + 1 < widgetData.classInfo.count {
                         ZStack {
                             RoundedRectangle(cornerRadius: 12)
                                 .fill(Color.darkbg)
                             WidgetLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted + 1], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
                         }
-                        .padding(.horizontal, 3)
-                        .padding(.bottom, 8)
+                        .padding(.vertical, 5)
+                        .padding(.horizontal, 10)
                         if widgetData.classesCompleted + 2 < widgetData.classInfo.count {
                             ZStack {
                                 RoundedRectangle(cornerRadius: 12)
                                     .fill(Color.darkbg)
                                 WidgetLClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted + 2], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
                             }
-                            .padding(.horizontal, 3)
-                            .padding(.bottom, 5)
+                            .padding(.vertical, 5)
+                            .padding(.horizontal, 10)
                         } else {
                             Spacer()
                         }
@@ -49,6 +49,7 @@ struct LargeWidgetView: View {
                         Spacer()
                     }
                 }
+                .padding(.bottom, 5)
             } else {
                 ZStack {
                     RoundedRectangle(cornerRadius: 12)

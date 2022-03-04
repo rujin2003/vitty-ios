@@ -16,16 +16,14 @@ struct MediumWidgetView: View {
                     Text("Your next class")
                         .font(Font.custom("Poppins-Regular",size:14))
                         .foregroundColor(Color.vprimary)
-                        .padding(.leading, 10)
-                        .padding(.top, 5)
-                        .padding(.bottom, 4)
+                        .padding(.leading, 15)
+                        .padding(.top, 10)
                     ZStack {
                         RoundedRectangle(cornerRadius: 12)
                             .fill(LinearGradient.secGrad)
                         WidgetMClassCard(classInfo: widgetData.classInfo[widgetData.classesCompleted], onlineMode: RemoteConfigManager.sharedInstance.onlineMode)
                     }
-                    .padding(.horizontal, 3)
-                    .padding(.bottom, 3)
+                    .padding(10)
                 }
             } else {
                 ZStack {

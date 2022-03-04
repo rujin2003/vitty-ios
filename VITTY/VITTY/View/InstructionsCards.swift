@@ -23,7 +23,7 @@ struct InstructionsCards: View {
                         .font(Font.custom("Poppins-SemiBold",size: 20))
                         .foregroundColor(Color.white)
                         .padding(.vertical,5)
-                    Text(StringConstants.accData[0] + (UserDefaults.standard.string(forKey: "userName") ?? ""))
+                    Text(StringConstants.accData[0] + (UserDefaults.standard.string(forKey: "userName") ?? "Anon"))
                         .foregroundColor(Color.vprimary)
                     Text(StringConstants.accData[1] + (UserDefaults.standard.string(forKey: "providerId") ?? ""))
                         .foregroundColor(Color.vprimary)
