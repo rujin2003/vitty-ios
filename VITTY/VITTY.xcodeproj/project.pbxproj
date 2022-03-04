@@ -814,6 +814,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = FYJ559CK7D;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "vitty-widget/Info.plist";
@@ -843,6 +844,7 @@
 				CODE_SIGN_ENTITLEMENTS = "vitty-widgetExtension.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = FYJ559CK7D;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = "vitty-widget/Info.plist";
