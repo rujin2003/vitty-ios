@@ -38,11 +38,11 @@ class AuthService: NSObject, ObservableObject {
     static let notifsSetupKey = "notifsSetupKey"
     
     override init(){
-        do {
-            try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
-        } catch let error as NSError {
-          print("Error changing user access group: %@", error)
-        }
+//        do {
+//            try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+//        } catch let error as NSError {
+//          print("Error changing user access group: %@", error)
+//        }
         loggedInUser = auth.currentUser
         super.init()
         

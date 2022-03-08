@@ -21,7 +21,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
         // iterate through each day
         var temporaryArray: [NotificationsSettingsModel] = []
         for day in 0..<7 {
-            let currentDay = TimetableViewModel.daysOfTheWeek[day]
+            let currentDay = StringConstants.notificationDays[day]
             var temporaryArr: [NotificationsSettingsModel] = []
             if let currentDayClasses = timetable[currentDay] {
                 if !currentDayClasses.isEmpty {
@@ -59,7 +59,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
     }
     
     func addNotif(timetable: [String:[Classes]], notifInfo: NotificationsSettingsModel) {
-        let classs: Classes = timetable[TimetableViewModel.daysOfTheWeek[notifInfo.day - 1]]?[notifInfo.period] ?? Classes()
+        let classs: Classes = timetable[StringConstants.notificationDays[notifInfo.day - 1]]?[notifInfo.period] ?? Classes()
         
         
         NotificationsManager.shared.addNotifications(id: notifInfo.id ?? "",date: classs.startTime ?? Date(), day: notifInfo.day, courseCode: classs.courseCode ?? "Course Code", courseName: classs.courseName  ?? "Course Name", location: classs.location ?? "Location")
@@ -75,7 +75,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
         for period in self.notifSettings {
             
             if period.enabled {
-                let currClass = timetable[TimetableViewModel.daysOfTheWeek[period.day - 1]]?[period.period]
+                let currClass = timetable[StringConstants.notificationDays[period.day - 1]]?[period.period]
 //                let components = Calendar.current.dateComponents([.hour, .minute], from: currClass?.startTime ?? Date())
 //                let hour = components.hour ?? 0
 //                let minute = components.minute ?? 0

@@ -28,17 +28,14 @@ struct SplashScreen: View {
                 .padding(.vertical)
                 
             } else {
-//                NavigationLink(destination: InstructionsView().navigationBarHidden(true), isActive: authState.loggedInUser != nil) {
-                    CustomButton(buttonText: "Sign in with Google", imageString: "logo_google"){
-                        authState.login(with: .googleSignin)
-                    }
-//                }
+                CustomButton(buttonText:"Sign in with Apple",imageString: "logo_apple"){
+                    authState.login(with: .appleSignin)
+                }
                 SignupOR()
-//                NavigationLink(destination: InstructionsView(), isActive: $onboardingComplete) {
-                    CustomButton(buttonText:"Sign in with Apple",imageString: "logo_apple"){
-                        authState.login(with: .appleSignin)
-                    }
-//                }
+                
+                CustomButton(buttonText: "Sign in with Google", imageString: "logo_google"){
+                    authState.login(with: .googleSignin)
+                }
             }
             Spacer(minLength: 50)
             
@@ -49,7 +46,7 @@ struct SplashScreen: View {
             }
             
         }
-//        .transition(.customTransition)
+        //        .transition(.customTransition)
         .padding()
         .background(Image((selectedTab % 2 == 0) ? "SplashScreen13BG" : "SplashScreen2BG").resizable().scaledToFill().edgesIgnoringSafeArea(.all))
     }

@@ -74,11 +74,11 @@ struct VITTYWidget: Widget {
     
     init() {
         FirebaseApp.configure()
-        do {
-            try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
-        } catch let error as NSError {
-          print("Error changing user access group: %@", error)
-        }
+//        do {
+//            try Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+//        } catch let error as NSError {
+//          print("Error changing user access group: %@", error)
+//        }
         //        try? Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
     }
 
@@ -88,7 +88,8 @@ struct VITTYWidget: Widget {
         }
         .configurationDisplayName("VITTY")
         .description("Shows current and upcoming classes!")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+//        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([])
     }
 }
 
