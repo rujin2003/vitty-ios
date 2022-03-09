@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		310238B227D85EA80096D926 /* Confidential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310238B127D85D400096D926 /* Confidential.swift */; };
+		310238B327D85EA80096D926 /* Confidential.swift in Sources */ = {isa = PBXBuildFile; fileRef = 310238B127D85D400096D926 /* Confidential.swift */; };
 		3105871B27A3ECBB00C2FC41 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */; };
 		3105871D27A3ECBB00C2FC41 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
 		3105872027A3ECBB00C2FC41 /* VITTYWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3105871F27A3ECBB00C2FC41 /* VITTYWidget.swift */; };
@@ -136,6 +138,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		310238B127D85D400096D926 /* Confidential.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Confidential.swift; sourceTree = "<group>"; };
 		3105871827A3ECBB00C2FC41 /* vitty-widgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "vitty-widgetExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3105871A27A3ECBB00C2FC41 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
@@ -340,6 +343,7 @@
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
+				310238B127D85D400096D926 /* Confidential.swift */,
 				3164C46927CBCFBE00D6B53F /* vitty-widgetExtension.entitlements */,
 				314A408D27383BEC0058082F /* VITTY */,
 				3105871E27A3ECBB00C2FC41 /* vitty-widget */,
@@ -733,6 +737,7 @@
 				3164C45627CB718900D6B53F /* MediumWidgetView.swift in Sources */,
 				3164C44227CA254600D6B53F /* StringConstants.swift in Sources */,
 				3164C42827C9EE2800D6B53F /* Classes.swift in Sources */,
+				310238B327D85EA80096D926 /* Confidential.swift in Sources */,
 				3164C46727CBC96700D6B53F /* WidgetLClassCard.swift in Sources */,
 				31A3BF4127D09AF300B6BB97 /* Date+Extension.swift in Sources */,
 			);
@@ -759,6 +764,7 @@
 				3164C45A27CB71D700D6B53F /* MediumWidgetView.swift in Sources */,
 				31128D042772F8E90084C9EA /* CustomButton.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
+				310238B227D85EA80096D926 /* Confidential.swift in Sources */,
 				31BAB533279D3F49008E20BB /* NotificationsManager.swift in Sources */,
 				317715E0279FE778009A532E /* CustomNotificationButton.swift in Sources */,
 				3168511F277319480046A9AC /* SignupOR.swift in Sources */,
@@ -832,7 +838,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
 		};
@@ -862,7 +868,7 @@
 				SKIP_INSTALL = YES;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 1;
+				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
 		};
