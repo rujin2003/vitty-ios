@@ -79,7 +79,7 @@ struct VITTYWidget: Widget {
         } catch let error as NSError {
           print("Error changing user access group: %@", error)
         }
-        //        try? Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
+                try? Auth.auth().useUserAccessGroup(AppConstants.VITTYappgroup)
     }
 
     var body: some WidgetConfiguration {
@@ -89,6 +89,7 @@ struct VITTYWidget: Widget {
         .configurationDisplayName("VITTY")
         .description("Shows current and upcoming classes!")
         .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+//        .supportedFamilies([])
     }
 }
 

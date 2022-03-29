@@ -55,12 +55,13 @@ struct StringConstants {
     static let accData = ["Name: ","Signed in with: ","Email: "]
     static let sampleData = ["Name: Ryan Ross","Email: blinkexists182@aol.com"]
     static let setupInstructions = [
-        "1. Download the Chrome Extension from: https://dscv.it/vitty-extension", // make the link tappable
+        "1. Upload the timetable on", // make the link tappable
         "2. Log in with the same Google/Apple Account as shown above",
         "3. Upload a screenshot of your timetable",
         "4. Review it",
         "5. When done, click on Upload."
     ]
+    static let websiteURL = "https://dscv.it/vitty"
     static let setupFinalText = "BRAVO! That's it. You did it!"
     static let followInstructionsText = "Fetching information. Follow the instructions given below"
     
@@ -87,6 +88,15 @@ struct StringConstants {
     
     // MARK: NOTIFICATIONS
     static let notificationTitle = "Up next!"
+    static let notificationDays = [
+        "sunday",
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday"
+    ]
 }
 
 extension StringConstants {
