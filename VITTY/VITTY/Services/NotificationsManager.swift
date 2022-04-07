@@ -97,7 +97,15 @@ class NotificationsManager: NSObject, ObservableObject {
     
     func removeAllNotificationRequests() {
         let center = UNUserNotificationCenter.current()
+        print("removing pending notification requests")
         center.removeAllPendingNotificationRequests()
+        print("removing delivered notifications")
+        center.removeAllDeliveredNotifications()
+        center.getPendingNotificationRequests { notifreqs in
+            for notifreq in notifreqs {
+                print(notifreq.identifier)
+            }
+        }
     }
     
     func getAllNotificationRequests() {

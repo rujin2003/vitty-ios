@@ -130,6 +130,7 @@ struct SettingsView: View {
         //        .navigationTitle("")
         .onChange(of: examModeOn) { examMode in
             if examMode {
+                print("exam mode is on")
                 NotificationsManager.shared.removeAllNotificationRequests()
             } else {
                 notifVM.updateNotifs(timetable: ttVM.timetable)

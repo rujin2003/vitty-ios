@@ -69,6 +69,7 @@ struct HomePage: View {
             }
             print("tabSelected: \(tabSelected)")
             //            LocalNotificationsManager.shared.getAllNotificationRequests()
+            print("calling update notifs from homepage")
             notifVM.updateNotifs(timetable: timetableViewModel.timetable)
             timetableViewModel.updateClassCompleted()
             notifVM.getNotifPrefs()

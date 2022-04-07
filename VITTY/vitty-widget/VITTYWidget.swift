@@ -88,8 +88,8 @@ struct VITTYWidget: Widget {
         }
         .configurationDisplayName("VITTY")
         .description("Shows current and upcoming classes!")
-        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
-//        .supportedFamilies([])
+//        .supportedFamilies([.systemSmall, .systemMedium, .systemLarge])
+        .supportedFamilies([])
     }
 }
 
