@@ -41,20 +41,29 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
     }
     
     func updateNotifs(timetable: [String:[Classes]]) {
-        self.saveNotifSettingsToUserDefaults()
-        UNUserNotificationCenter.current().getPendingNotificationRequests { allPendingNotifs in
-            var idsToRemove: [String] = []
-            for notifSetting in self.notifSettings {
-                if !notifSetting.enabled && allPendingNotifs.contains( where: { $0.identifier == notifSetting.id} ) {
-                    idsToRemove.append(notifSetting.id ?? "")
-                } else if notifSetting.enabled && !allPendingNotifs.contains(where: { $0.identifier == notifSetting.id} ) {
-                    self.addNotif(timetable: timetable, notifInfo: notifSetting)
-                }
-            }
-            print("removing notifs with ids")
-            print(idsToRemove)
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: idsToRemove)
+        let examMode = UserDefaults.standard.bool(forKey: "examMode")
+        if examMode {
+            print("exam mode is on. notifications will not be updated now.")
+            NotificationsManager.shared.removeAllNotificationRequests()
+            print("all notifications have been removed")
             
+        } else {
+            print("updating notifications")
+            self.saveNotifSettingsToUserDefaults()
+            UNUserNotificationCenter.current().getPendingNotificationRequests { allPendingNotifs in
+                var idsToRemove: [String] = []
+                for notifSetting in self.notifSettings {
+                    if !notifSetting.enabled && allPendingNotifs.contains( where: { $0.identifier == notifSetting.id} ) {
+                        idsToRemove.append(notifSetting.id ?? "")
+                    } else if notifSetting.enabled && !allPendingNotifs.contains(where: { $0.identifier == notifSetting.id} ) {
+                        self.addNotif(timetable: timetable, notifInfo: notifSetting)
+                    }
+                }
+                print("removing notifs with ids")
+                print(idsToRemove)
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: idsToRemove)
+                
+            }
         }
     }
     
@@ -76,9 +85,9 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
             
             if period.enabled {
                 let currClass = timetable[StringConstants.notificationDays[period.day - 1]]?[period.period]
-//                let components = Calendar.current.dateComponents([.hour, .minute], from: currClass?.startTime ?? Date())
-//                let hour = components.hour ?? 0
-//                let minute = components.minute ?? 0
+                //                let components = Calendar.current.dateComponents([.hour, .minute], from: currClass?.startTime ?? Date())
+                //                let hour = components.hour ?? 0
+                //                let minute = components.minute ?? 0
                 NotificationsManager.shared.addNotifications(id: period.id ?? "id", date: currClass?.startTime ?? Date(), day: period.day, courseCode: currClass?.courseCode ?? "Course Code", courseName: currClass?.courseName ?? "Course Name", location: currClass?.location ?? "Location")
             }
             
