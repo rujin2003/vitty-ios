@@ -8,39 +8,40 @@
 import SwiftUI
 
 struct HomePage: View {
-    @State var tabSelected: Int = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+    //    @State var tabSelected: Int = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+    @State var tabSelected: Int = Date.convertToMondayWeek()
     @State var goToSettings: Bool = false
     @State var showLogout: Bool = false
     @EnvironmentObject var timetableViewModel: TimetableViewModel
     @EnvironmentObject var authVM: AuthService
     @EnvironmentObject var notifVM: NotificationsViewModel
+    @StateObject var RemoteConf = RemoteConfigManager.sharedInstance
     @AppStorage("examMode") var examModeOn: Bool = false
     @AppStorage(AuthService.notifsSetupKey) var notifsSetup = false
     var body: some View {
         ZStack {
             VStack {
+                // MARK: force crash button
+                //                Button {
+                //                    assert(1 == 2, "Maths failure!")
+                //                } label: {
+                //                    Text("forcing a crash")
+                //                }
+                
                 VStack(alignment:.leading) {
                     HomePageHeader(goToSettings: $goToSettings, showLogout: $showLogout)
                         .padding()
                     HomeTabBarView(tabSelected: $tabSelected)
                 }
-                if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSelected]] {
-                    if !selectedTT.isEmpty {
-                        TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
-                    }
-                    else {
-                        Spacer()
-                        VStack(alignment: .center) {
-                            Text("No class today!")
-                                .font(Font.custom("Poppins-Bold", size: 24))
-//                        TODO: remote config
-                            Text(StringConstants.noClassQuotesOnline.randomElement() ?? "Have fun today!")
-                                .font(Font.custom("Poppins-Regular",size:20))
+                // TODO: change timetable scroll view to implement all of this
+                TabView(selection: $tabSelected) {
+                    ForEach(0..<7) { tabSel in
+                        if let selectedTT = timetableViewModel.timetable[TimetableViewModel.daysOfTheWeek[tabSel]] {
+                            TimeTableScrollView(selectedTT: selectedTT, tabSelected: $tabSelected).environmentObject(timetableViewModel)
                         }
-                        .foregroundColor(Color.white)
-                        Spacer()
                     }
                 }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 NavigationLink(destination: SettingsView().environmentObject(timetableViewModel).environmentObject(authVM).environmentObject(notifVM), isActive: $goToSettings) {
                     EmptyView()
                 }
@@ -50,7 +51,7 @@ struct HomePage: View {
             }
             .blur(radius: showLogout ? 10 : 0)
             .onAppear {
-                tabSelected = (Calendar.current.dateComponents([.weekday], from: Date()).weekday ?? 1) - 1
+                tabSelected = Date.convertToMondayWeek()
             }
             if showLogout {
                 LogoutPopup(showLogout: $showLogout).environmentObject(authVM)
@@ -66,12 +67,15 @@ struct HomePage: View {
                 }
                 
             }
+            print("tabSelected: \(tabSelected)")
             //            LocalNotificationsManager.shared.getAllNotificationRequests()
+            print("calling update notifs from homepage")
             notifVM.updateNotifs(timetable: timetableViewModel.timetable)
             timetableViewModel.updateClassCompleted()
             notifVM.getNotifPrefs()
             
             print(goToSettings)
+            print("remote config settings \(RemoteConf.onlineMode)")
         }
         .animation(.default)
     }

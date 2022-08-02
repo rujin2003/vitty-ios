@@ -23,7 +23,7 @@ struct InstructionsCards: View {
                         .font(Font.custom("Poppins-SemiBold",size: 20))
                         .foregroundColor(Color.white)
                         .padding(.vertical,5)
-                    Text(StringConstants.accData[0] + (UserDefaults.standard.string(forKey: "userName") ?? ""))
+                    Text(StringConstants.accData[0] + (UserDefaults.standard.string(forKey: "userName") ?? "Anon"))
                         .foregroundColor(Color.vprimary)
                     Text(StringConstants.accData[1] + (UserDefaults.standard.string(forKey: "providerId") ?? ""))
                         .foregroundColor(Color.vprimary)
@@ -53,9 +53,18 @@ struct InstructionsCards: View {
                         .padding(.vertical,5)
 //                    ScrollView {
                         VStack(alignment:.leading) {
-                            ForEach(StringConstants.setupInstructions, id: \.self) { point in
-                                Text(point)
+                            
+                            ForEach(0 ..< StringConstants.setupInstructions.count) { point in
+                                Text(StringConstants.setupInstructions[point])
                                     .foregroundColor(Color.vprimary)
+                                if point == 0 {
+                                    Link(destination: URL(string: StringConstants.websiteURL) ?? URL(string: "https://dscvit.com/")!, label: {
+                                        Text(StringConstants.websiteURL)
+                                            .underline()
+                                            .foregroundColor(Color.vprimary)
+                                            
+                                    })
+                                }
                             }
                             Text(StringConstants.setupFinalText)
                                 .foregroundColor(Color.white)

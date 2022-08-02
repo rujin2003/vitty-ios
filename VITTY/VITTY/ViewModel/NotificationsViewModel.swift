@@ -21,7 +21,7 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
         // iterate through each day
         var temporaryArray: [NotificationsSettingsModel] = []
         for day in 0..<7 {
-            let currentDay = TimetableViewModel.daysOfTheWeek[day]
+            let currentDay = StringConstants.notificationDays[day]
             var temporaryArr: [NotificationsSettingsModel] = []
             if let currentDayClasses = timetable[currentDay] {
                 if !currentDayClasses.isEmpty {
@@ -37,53 +37,62 @@ class NotificationsViewModel: NSObject, ObservableObject, UNUserNotificationCent
         print(self.notifSettings)
         saveNotifSettingsToUserDefaults()
         self.setupNotifs(timetable: timetable)
-        LocalNotificationsManager.shared.getAllNotificationRequests()
+        NotificationsManager.shared.getAllNotificationRequests()
     }
     
     func updateNotifs(timetable: [String:[Classes]]) {
-        self.saveNotifSettingsToUserDefaults()
-        UNUserNotificationCenter.current().getPendingNotificationRequests { allPendingNotifs in
-            var idsToRemove: [String] = []
-            for notifSetting in self.notifSettings {
-                if !notifSetting.enabled && allPendingNotifs.contains( where: { $0.identifier == notifSetting.id} ) {
-                    idsToRemove.append(notifSetting.id ?? "")
-                } else if notifSetting.enabled && !allPendingNotifs.contains(where: { $0.identifier == notifSetting.id} ) {
-                    self.addNotif(timetable: timetable, notifInfo: notifSetting)
-                }
-            }
-            print("removing notifs with ids")
-            print(idsToRemove)
-            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: idsToRemove)
+        let examMode = UserDefaults.standard.bool(forKey: "examMode")
+        if examMode {
+            print("exam mode is on. notifications will not be updated now.")
+            NotificationsManager.shared.removeAllNotificationRequests()
+            print("all notifications have been removed")
             
+        } else {
+            print("updating notifications")
+            self.saveNotifSettingsToUserDefaults()
+            UNUserNotificationCenter.current().getPendingNotificationRequests { allPendingNotifs in
+                var idsToRemove: [String] = []
+                for notifSetting in self.notifSettings {
+                    if !notifSetting.enabled && allPendingNotifs.contains( where: { $0.identifier == notifSetting.id} ) {
+                        idsToRemove.append(notifSetting.id ?? "")
+                    } else if notifSetting.enabled && !allPendingNotifs.contains(where: { $0.identifier == notifSetting.id} ) {
+                        self.addNotif(timetable: timetable, notifInfo: notifSetting)
+                    }
+                }
+                print("removing notifs with ids")
+                print(idsToRemove)
+                UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: idsToRemove)
+                
+            }
         }
     }
     
     func addNotif(timetable: [String:[Classes]], notifInfo: NotificationsSettingsModel) {
-        let classs: Classes = timetable[TimetableViewModel.daysOfTheWeek[notifInfo.day - 1]]?[notifInfo.period] ?? Classes()
+        let classs: Classes = timetable[StringConstants.notificationDays[notifInfo.day - 1]]?[notifInfo.period] ?? Classes()
         
         
-        LocalNotificationsManager.shared.addNotifications(id: notifInfo.id ?? "",date: classs.startTime ?? Date(), day: notifInfo.day, courseCode: classs.courseCode ?? "Course Code", courseName: classs.courseName  ?? "Course Name", location: classs.location ?? "Location")
+        NotificationsManager.shared.addNotifications(id: notifInfo.id ?? "",date: classs.startTime ?? Date(), day: notifInfo.day, courseCode: classs.courseCode ?? "Course Code", courseName: classs.courseName  ?? "Course Name", location: classs.location ?? "Location")
     }
     
     
     func setupNotifs(timetable: [String:[Classes]]) {
         // remove all notification requests
-        LocalNotificationsManager.shared.removeAllNotificationRequests()
+        NotificationsManager.shared.removeAllNotificationRequests()
         // save notif preferences to userdefaults
         self.saveNotifSettingsToUserDefaults()
         // iterate through notification preferences
         for period in self.notifSettings {
             
             if period.enabled {
-                let currClass = timetable[TimetableViewModel.daysOfTheWeek[period.day - 1]]?[period.period]
-//                let components = Calendar.current.dateComponents([.hour, .minute], from: currClass?.startTime ?? Date())
-//                let hour = components.hour ?? 0
-//                let minute = components.minute ?? 0
-                LocalNotificationsManager.shared.addNotifications(id: period.id ?? "id", date: currClass?.startTime ?? Date(), day: period.day, courseCode: currClass?.courseCode ?? "Course Code", courseName: currClass?.courseName ?? "Course Name", location: currClass?.location ?? "Location")
+                let currClass = timetable[StringConstants.notificationDays[period.day - 1]]?[period.period]
+                //                let components = Calendar.current.dateComponents([.hour, .minute], from: currClass?.startTime ?? Date())
+                //                let hour = components.hour ?? 0
+                //                let minute = components.minute ?? 0
+                NotificationsManager.shared.addNotifications(id: period.id ?? "id", date: currClass?.startTime ?? Date(), day: period.day, courseCode: currClass?.courseCode ?? "Course Code", courseName: currClass?.courseName ?? "Course Name", location: currClass?.location ?? "Location")
             }
             
         }
-        LocalNotificationsManager.shared.getAllNotificationRequests()
+        NotificationsManager.shared.getAllNotificationRequests()
         UserDefaults.standard.set(true, forKey: AuthService.notifsSetupKey)
         
     }

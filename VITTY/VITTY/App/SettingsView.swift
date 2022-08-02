@@ -28,7 +28,7 @@ struct SettingsView: View {
                 Text("Notifications")
                     .font(.custom("Poppins-SemiBold", size: 18))
                 
-                if LocalNotificationsManager.shared.authStatus == .denied {
+                if NotificationsManager.shared.authStatus == .denied {
                     HStack {
                         VStack(alignment: .leading) {
                             Text("Notifications turned off")
@@ -130,7 +130,8 @@ struct SettingsView: View {
         //        .navigationTitle("")
         .onChange(of: examModeOn) { examMode in
             if examMode {
-                LocalNotificationsManager.shared.removeAllNotificationRequests()
+                print("exam mode is on")
+                NotificationsManager.shared.removeAllNotificationRequests()
             } else {
                 notifVM.updateNotifs(timetable: ttVM.timetable)
             }

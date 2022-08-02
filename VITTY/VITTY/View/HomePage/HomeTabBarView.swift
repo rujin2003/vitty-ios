@@ -22,6 +22,9 @@ struct HomeTabBarView: View {
                     .onAppear {
                         scrollView.scrollTo(tabSelected)
                     }
+                    .onChange(of: tabSelected) { newTab in
+                        scrollView.scrollTo(newTab)
+                    }
                 }
             }
             .padding(.horizontal,5)

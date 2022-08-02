@@ -18,9 +18,10 @@ class ClassCardViewModel: ObservableObject {
         "MGB" : "Mahatma+Gandhi+Block",
         "TT" : "Technology+Tower+-+TT",
         "SMV" : "SMV",
-        "PLB" : "12.971272,79.166357",
+        "PLB" : "Pearl+Research+Block",
         "CBMR" : "CBMR+block",
-        "GDN" : "GDN"
+        "GDN" : "GDN",
+        "PRP" : "Pearl+Research+Block"
     ]
     let appleMapsURL = "maps://?q="
     let googleMapsURL = "comgooglemaps://?q="
