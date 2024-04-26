@@ -34,7 +34,7 @@ struct SuggestedFriendsView: View {
 				.refreshable {
 					suggestedFriendsViewModel.fetchData(
 						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-						token: authViewModel.appUser?.token ?? "",
+						token: authViewModel.loggedInBackendUser?.token ?? "",
 						loading: false
 					)
 				}

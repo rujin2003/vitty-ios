@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import OSLog
 
 public enum Stage {
 	case loading
@@ -23,6 +24,12 @@ extension TimeTableView {
 		var stage: Stage = .loading
 		var lectures = [Lecture]()
 		var dayNo = Date.convertToMondayWeek()
+		private let logger = Logger(
+			subsystem: Bundle.main.bundleIdentifier!,
+			category: String(
+				describing: TimeTableViewModel.self
+			)
+		)
 
 		func changeDay() {
 			switch dayNo {
@@ -46,16 +53,23 @@ extension TimeTableView {
 		}
 
 		func fetchTimeTable(username: String, authToken: String) async {
+			logger.info("Fetching TimeTable Started")
 			do {
 				stage = .loading
-				let data = try await TimeTableAPIService.shared.getTimeTable(with: username, authToken: authToken)
+				let data = try await TimeTableAPIService.shared.getTimeTable(
+					with: username,
+					authToken: authToken
+				)
+				logger.info("TimeTable Fetched from API")
 				timeTable = data
 				changeDay()
 				stage = .data
-			} catch {
-				print(error)
+			}
+			catch {
+				logger.error("\(error)")
 				stage = .error
 			}
+			logger.info("Fetching TimeTable Ended")
 		}
 	}
 }

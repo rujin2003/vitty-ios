@@ -7,6 +7,7 @@
 
 import Alamofire
 import Foundation
+import OSLog
 
 @Observable
 class SuggestedFriendsViewModel {
@@ -14,6 +15,13 @@ class SuggestedFriendsViewModel {
 	var suggestedFriends = [Friend]()
 	var loading = false
 	var error = false
+	
+	private let logger = Logger(
+		subsystem: Bundle.main.bundleIdentifier!,
+		category: String(
+			describing: SuggestedFriendsViewModel.self
+		)
+	)
 
 	func fetchData(from url: String, token: String, loading: Bool) {
 		self.loading = loading
@@ -25,7 +33,7 @@ class SuggestedFriendsViewModel {
 						self.suggestedFriends = data
 						self.loading = false
 					case .failure(let error):
-						print("Error fetching data: \(error)")
+						self.logger.error("Error fetching data: \(error)")
 						self.loading = false
 						self.error.toggle()
 				}

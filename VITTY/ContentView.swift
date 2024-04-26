@@ -16,7 +16,7 @@ struct ContentView: View {
 	var body: some View {
 		NavigationView {
 			if authViewModel.loggedInFirebaseUser != nil {
-				if authViewModel.appUser == nil {
+				if authViewModel.loggedInBackendUser == nil {
 					InstructionView()
 				}
 				else {

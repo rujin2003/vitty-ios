@@ -10,7 +10,7 @@ import SwiftUI
 struct CommunityPage: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
-//	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
+	//	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 
 	@State private var isShowingRequestView = false
@@ -84,8 +84,8 @@ struct CommunityPage: View {
 							.refreshable {
 								communityPageViewModel.fetchData(
 									from:
-										"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
-									token: authViewModel.appUser?.token ?? "",
+										"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+									token: authViewModel.loggedInBackendUser?.token ?? "",
 									loading: false
 								)
 							}
@@ -118,8 +118,8 @@ struct CommunityPage: View {
 		.onAppear {
 			communityPageViewModel.fetchData(
 				from:
-					"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
-				token: authViewModel.appUser?.token ?? "",
+					"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+				token: authViewModel.loggedInBackendUser?.token ?? "",
 				loading: true
 			)
 		}

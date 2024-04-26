@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 //import SwiftData
 
@@ -26,6 +27,12 @@ class TimeTable: Codable {
 	let friday: [Lecture]
 	let saturday: [Lecture]
 	let sunday: [Lecture]
+	private let logger = Logger(
+		subsystem: Bundle.main.bundleIdentifier!,
+		category: String(
+			describing: TimeTable.self
+		)
+	)
 
 	init(
 		monday: [Lecture],
@@ -62,7 +69,7 @@ class TimeTable: Codable {
 			monday = try container.decode([Lecture].self, forKey: .monday)
 		}
 		catch {
-			print("Error decoding Monday lectures:", error)
+			logger.error("Error decoding Monday lectures: \(error)")
 			monday = []
 		}
 
@@ -70,7 +77,7 @@ class TimeTable: Codable {
 			tuesday = try container.decode([Lecture].self, forKey: .tuesday)
 		}
 		catch {
-			print("Error decoding Tuesday lectures:", error)
+			logger.error("Error decoding Tuesday lectures: \(error)")
 			tuesday = []
 		}
 
@@ -78,7 +85,7 @@ class TimeTable: Codable {
 			wednesday = try container.decode([Lecture].self, forKey: .wednesday)
 		}
 		catch {
-			print("Error decoding Wednesday lectures:", error)
+			logger.error("Error decoding Wednesday lectures: \(error)")
 			wednesday = []
 		}
 
@@ -86,7 +93,7 @@ class TimeTable: Codable {
 			thursday = try container.decode([Lecture].self, forKey: .thursday)
 		}
 		catch {
-			print("Error decoding Thursday lectures:", error)
+			logger.error("Error decoding Thursday lectures: \(error)")
 			thursday = []
 		}
 
@@ -94,7 +101,7 @@ class TimeTable: Codable {
 			friday = try container.decode([Lecture].self, forKey: .friday)
 		}
 		catch {
-			print("Error decoding Friday lectures:", error)
+			logger.error("Error decoding Friday lectures: \(error)")
 			friday = []
 		}
 
@@ -102,7 +109,7 @@ class TimeTable: Codable {
 			saturday = try container.decode([Lecture].self, forKey: .saturday)
 		}
 		catch {
-			print("Error decoding Saturday lectures:", error)
+			logger.error("Error decoding Saturday lectures: \(error)")
 			saturday = []
 		}
 
@@ -110,7 +117,7 @@ class TimeTable: Codable {
 			sunday = try container.decode([Lecture].self, forKey: .sunday)
 		}
 		catch {
-			print("Error decoding Sunday lectures:", error)
+			logger.error("Error decoding Sunday lectures: \(error)")
 			sunday = []
 		}
 	}
