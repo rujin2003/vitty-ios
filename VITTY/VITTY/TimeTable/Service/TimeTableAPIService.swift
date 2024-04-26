@@ -13,8 +13,8 @@ class TimeTableAPIService {
 	func getTimeTable(
 		with username: String,
 		authToken: String
-	)   async throws -> TimeTable {
-		
+	) async throws -> TimeTable {
+
 		let url = URL(string: "\(Constants.url)timetable/\(username)")!
 		var request = URLRequest(url: url)
 		request.httpMethod = "GET"

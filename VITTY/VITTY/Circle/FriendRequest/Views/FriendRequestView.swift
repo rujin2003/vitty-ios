@@ -34,7 +34,7 @@ struct FriendRequestView: View {
 				.refreshable {
 					friendRequestViewModel.fetchFriendRequests(
 						from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-						authToken: authViewModel.appUser?.token ?? "",
+						authToken: authViewModel.loggedInBackendUser?.token ?? "",
 						loading: false
 					)
 

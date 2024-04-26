@@ -39,7 +39,7 @@ struct CommunityPageHeader: View {
 		.onAppear {
 			friendRequestViewModel.fetchFriendRequests(
 				from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-				authToken: authViewModel.appUser?.token ?? "",
+				authToken: authViewModel.loggedInBackendUser?.token ?? "",
 				loading: true
 			)
 		}
@@ -50,8 +50,8 @@ struct CommunityPageHeader: View {
 			onDismiss: {
 				communityPageViewModel.fetchData(
 					from:
-						"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.appUser?.username ?? "")/",
-					token: authViewModel.appUser?.token ?? "",
+						"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+					token: authViewModel.loggedInBackendUser?.token ?? "",
 					loading: true
 				)
 			},

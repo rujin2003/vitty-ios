@@ -19,6 +19,9 @@ struct LectureDetailView: View {
 					Marker(lecture.venue, coordinate: determineCoordinates(venue: lecture.venue))
 				}
 				.mapStyle(.standard)
+//				.mapControls{
+//					MapUserLocationButton()
+//				}
 				VStack(alignment: .leading) {
 					HStack {
 						Text(lecture.name)

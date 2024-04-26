@@ -65,16 +65,16 @@ struct StringConstants {
 	static let setupFinalText = "BRAVO! That's it. You did it!"
 	static let followInstructionsText = "Fetching information. Follow the instructions given below"
 
-//	// MARK: CLASS DATA
-//	static let sampleClassDate = Classes(
-//		courseType: "Theory",
-//		courseCode: "MAT3004",
-//		courseName: "Applied Linear Algebra",
-//		location: "SJT112",
-//		slot: "A1",
-//		startTime: Date(),
-//		endTime: Date(timeIntervalSinceNow: 3600)
-//	)
+	//	// MARK: CLASS DATA
+	//	static let sampleClassDate = Classes(
+	//		courseType: "Theory",
+	//		courseCode: "MAT3004",
+	//		courseName: "Applied Linear Algebra",
+	//		location: "SJT112",
+	//		slot: "A1",
+	//		startTime: Date(),
+	//		endTime: Date(timeIntervalSinceNow: 3600)
+	//	)
 
 	// MARK: RANDOM STRINGS
 	static let noClassQuotesOnline = [

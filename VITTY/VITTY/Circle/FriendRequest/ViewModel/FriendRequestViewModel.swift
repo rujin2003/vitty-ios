@@ -6,6 +6,7 @@ import Alamofire
 //  Created by Chandram Dutta on 07/01/24.
 //
 import Foundation
+import OSLog
 
 @Observable
 class FriendRequestViewModel {
@@ -13,6 +14,13 @@ class FriendRequestViewModel {
 	var requests = [Friend]()
 	var loading = false
 	var error = false
+	
+	private let logger = Logger(
+		subsystem: Bundle.main.bundleIdentifier!,
+		category: String(
+			describing: FriendRequestViewModel.self
+		)
+	)
 
 	func fetchFriendRequests(from url: URL, authToken: String, loading: Bool) {
 		self.loading = loading
@@ -66,13 +74,13 @@ class FriendRequestViewModel {
 							self.loading = false
 						}
 						catch {
-							print("Error decoding JSON: \(error)")
+							self.logger.error("Error decoding JSON: \(error)")
 							self.error = true
 							self.loading = false
 						}
 
 					case .failure(let error):
-						print("Error fetching data: \(error.localizedDescription)")
+						self.logger.error("Error fetching data: \(error.localizedDescription)")
 						self.error = true
 						self.loading = false
 				}

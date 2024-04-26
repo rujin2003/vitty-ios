@@ -6,11 +6,19 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct AddFriendCard: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
+	
+	private let logger = Logger(
+		subsystem: Bundle.main.bundleIdentifier!,
+		category: String(
+			describing: AddFriendCard.self
+		)
+	)
 
 	let friend: Friend
 	var body: some View {
@@ -42,7 +50,7 @@ struct AddFriendCard: View {
 						(data, response, error) in
 						// Handle the response here
 						if let error = error {
-							print("Error: \(error.localizedDescription)")
+							logger.error("\(error.localizedDescription)")
 							return
 						}
 
@@ -50,10 +58,9 @@ struct AddFriendCard: View {
 							// Parse the response data if needed
 							do {
 								let json = try JSONSerialization.jsonObject(with: data, options: [])
-								print("Response JSON: \(json)")
 							}
 							catch {
-								print("Error parsing response JSON: \(error.localizedDescription)")
+								logger.error("Error parsing response JSON: \(error.localizedDescription)")
 							}
 						}
 					}
@@ -63,7 +70,7 @@ struct AddFriendCard: View {
 
 					suggestedFriendsViewModel.fetchData(
 						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-						token: authViewModel.appUser?.token ?? "",
+						token: authViewModel.loggedInBackendUser?.token ?? "",
 						loading: false
 					)
 				}

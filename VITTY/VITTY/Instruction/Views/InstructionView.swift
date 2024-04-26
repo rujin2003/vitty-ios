@@ -85,7 +85,7 @@ struct InstructionView: View {
 					}
 					.padding(.vertical)
 					NavigationLink(destination: {
-						if authViewModel.appUser == nil {
+						if authViewModel.loggedInBackendUser == nil {
 							UsernameView()
 						}
 						else {

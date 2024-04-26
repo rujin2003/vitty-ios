@@ -86,7 +86,7 @@ struct UsernameView: View {
 					Spacer()
 					Button(action: {
 						Task {
-							
+
 							isLoading = true
 							await authViewModel.signInServer(username: username, regNo: regNo)
 							isLoading = false

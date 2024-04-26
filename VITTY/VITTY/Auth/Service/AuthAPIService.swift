@@ -14,7 +14,7 @@ enum AuthAPIServiceError: Error {
 
 class AuthAPIService {
 	static let shared = AuthAPIService()
-	
+
 	func signInUser(
 		with authRequestBody: AuthRequestBody
 	) async throws -> AppUser {
@@ -29,7 +29,7 @@ class AuthAPIService {
 		let appUser = try decoder.decode(AppUser.self, from: data.0)
 		return appUser
 	}
-	
+
 	func checkUserExists(with authID: String) async throws -> Bool {
 		let url = URL(string: "\(Constants.url)auth/check-user-exists")!
 		var request = URLRequest(url: url)
@@ -37,7 +37,7 @@ class AuthAPIService {
 		request.setValue("application/json", forHTTPHeaderField: "Content-Type")
 		let encoder = JSONEncoder()
 		request.httpBody = try encoder.encode(["uuid": authID])
-		let (data, res) = try await URLSession.shared.data(for: request)
+		let (_, res) = try await URLSession.shared.data(for: request)
 		let httpResponse = res as? HTTPURLResponse
 		return httpResponse?.statusCode == 200
 	}

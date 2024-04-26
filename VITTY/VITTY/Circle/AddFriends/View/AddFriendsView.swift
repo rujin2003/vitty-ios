@@ -84,7 +84,7 @@ struct AddFriendsView: View {
 		.onAppear {
 			suggestedFriendsViewModel.fetchData(
 				from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-				token: authViewModel.appUser?.token ?? "",
+				token: authViewModel.loggedInBackendUser?.token ?? "",
 				loading: true
 			)
 		}
