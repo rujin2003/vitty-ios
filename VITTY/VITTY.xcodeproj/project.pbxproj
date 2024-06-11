@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09AA6AF72BE25ED800C21D8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09AA6AF62BE25ED800C21D8E /* GoogleService-Info.plist */; };
+		09AA6AF92BE25EDC00C21D8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09AA6AF82BE25EDC00C21D8E /* GoogleService-Info.plist */; };
 		3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109639E27824F6F0009A29C /* AppStorageConstants.swift */; };
 		31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */; };
 		31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */; };
@@ -80,8 +82,6 @@
 		528CF1732B769B18007298A0 /* TimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1722B769B18007298A0 /* TimeTable.swift */; };
 		528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1752B769E22007298A0 /* TimeTableViewModel.swift */; };
 		528CF1782B769E64007298A0 /* TimeTableAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1772B769E64007298A0 /* TimeTableAPIService.swift */; };
-		52A81F992BD9F42500AED9B7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52A81F982BD9F42500AED9B7 /* GoogleService-Info.plist */; };
-		52A81F9B2BD9F42B00AED9B7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 52A81F9A2BD9F42A00AED9B7 /* GoogleService-Info.plist */; };
 		52D5AB862B6FE2ED00B2E66D /* AuthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB852B6FE2ED00B2E66D /* AuthViewModel.swift */; };
 		52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB882B6FE3B200B2E66D /* AppUser.swift */; };
 		52D5AB8C2B6FE4D600B2E66D /* UserDefaultKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D5AB8B2B6FE4D500B2E66D /* UserDefaultKeys.swift */; };
@@ -110,6 +110,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		09AA6AF62BE25ED800C21D8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		09AA6AF82BE25EDC00C21D8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3109639E27824F6F0009A29C /* AppStorageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageConstants.swift; sourceTree = "<group>"; };
 		31128CF02772F0210084C9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -154,8 +156,6 @@
 		528CF1722B769B18007298A0 /* TimeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTable.swift; sourceTree = "<group>"; };
 		528CF1752B769E22007298A0 /* TimeTableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableViewModel.swift; sourceTree = "<group>"; };
 		528CF1772B769E64007298A0 /* TimeTableAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableAPIService.swift; sourceTree = "<group>"; };
-		52A81F982BD9F42500AED9B7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		52A81F9A2BD9F42A00AED9B7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		52D5AB852B6FE2ED00B2E66D /* AuthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthViewModel.swift; sourceTree = "<group>"; };
 		52D5AB882B6FE3B200B2E66D /* AppUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppUser.swift; sourceTree = "<group>"; };
 		52D5AB8B2B6FE4D500B2E66D /* UserDefaultKeys.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserDefaultKeys.swift; sourceTree = "<group>"; };
@@ -583,7 +583,7 @@
 		52A81F962BD9F41A00AED9B7 /* Dev */ = {
 			isa = PBXGroup;
 			children = (
-				52A81F9A2BD9F42A00AED9B7 /* GoogleService-Info.plist */,
+				09AA6AF82BE25EDC00C21D8E /* GoogleService-Info.plist */,
 			);
 			path = Dev;
 			sourceTree = "<group>";
@@ -591,7 +591,7 @@
 		52A81F972BD9F41E00AED9B7 /* Prod */ = {
 			isa = PBXGroup;
 			children = (
-				52A81F982BD9F42500AED9B7 /* GoogleService-Info.plist */,
+				09AA6AF62BE25ED800C21D8E /* GoogleService-Info.plist */,
 			);
 			path = Prod;
 			sourceTree = "<group>";
@@ -791,8 +791,8 @@
 				31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */,
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
-				52A81F992BD9F42500AED9B7 /* GoogleService-Info.plist in Resources */,
-				52A81F9B2BD9F42B00AED9B7 /* GoogleService-Info.plist in Resources */,
+				09AA6AF72BE25ED800C21D8E /* GoogleService-Info.plist in Resources */,
+				09AA6AF92BE25EDC00C21D8E /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
 			);
@@ -1027,7 +1027,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = FYJ559CK7D;
+				DEVELOPMENT_TEAM = 2TS98F9X52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -1043,7 +1043,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2.0.0;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1064,7 +1064,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = FYJ559CK7D;
+				DEVELOPMENT_TEAM = 2TS98F9X52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -1080,7 +1080,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1;
+				MARKETING_VERSION = 2.0.0;
 				ONLY_ACTIVE_ARCH = NO;
 				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
