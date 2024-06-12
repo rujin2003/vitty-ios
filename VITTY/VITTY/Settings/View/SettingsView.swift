@@ -14,6 +14,7 @@ struct SettingsView: View {
 		ZStack {
 			Image("HomeBG")
 				.resizable()
+				.scaledToFill()
 				.ignoresSafeArea()
 			List {
 				Section(header: Text("About")) {

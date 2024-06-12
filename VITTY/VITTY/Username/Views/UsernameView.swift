@@ -24,6 +24,7 @@ struct UsernameView: View {
 			ZStack {
 				Image("HomeBG")
 					.resizable()
+					.scaledToFill()
 					.ignoresSafeArea()
 				VStack(alignment: .leading) {
 					Text("Enter username and your registration number below.")

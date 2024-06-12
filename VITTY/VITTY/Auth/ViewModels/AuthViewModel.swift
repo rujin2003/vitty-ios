@@ -77,10 +77,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 
 	func login(with loginOption: LoginOption) async throws {
 		logger.info("Login Started")
-		
-		isLoading = true
 		error = nil
-
 		switch loginOption {
 			case .googleSignIn:
 				logger.info("Google SignIn Started")
@@ -125,9 +122,9 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		}
 		catch {
 			logger.error("\(error)")
+			throw error
 		}
-		self.isLoading = false
-	}
+}
 
 	private func signInWithApple() {
 		let nonce = AppleSignInUtilties.randomNonceString()
@@ -146,7 +143,6 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		didCompleteWithError error: Error
 	) {
 		logger.error("Error signing in with Apple: \(error.localizedDescription)")
-		isLoading = false
 		self.error = error as NSError
 	}
 
@@ -208,8 +204,8 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 			}
 			catch {
 				logger.error("\(error)")
+				throw error
 			}
-			self.isLoading = false
 		}
 		else {
 			logger.error("Error during authorization")

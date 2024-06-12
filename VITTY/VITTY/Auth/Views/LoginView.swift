@@ -6,10 +6,18 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct LoginView: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
+	
+	private let logger = Logger(
+		subsystem: Bundle.main.bundleIdentifier!,
+		category: String(
+			describing: LoginView.self
+		)
+	)
 
 	private let carouselItems = [
 		LoginViewCarouselItem(
@@ -35,6 +43,7 @@ struct LoginView: View {
 		ZStack {
 			Image("SplashScreen13BG")
 				.resizable()
+				.scaledToFill()
 				.ignoresSafeArea()
 			ScrollViewReader { value in
 				VStack(alignment: .center) {
@@ -62,11 +71,17 @@ struct LoginView: View {
 										.padding(.top, 1)
 									if index == 2 {
 										Spacer()
-
 										Button(action: {
 											Task {
-												try await authViewModel.login(with: .appleSignIn)
+												authViewModel.isLoading = true
+												do {
+													try await authViewModel.login(with: .appleSignIn)
+												} catch {
+													logger.error("\(error)")
+												}
+												authViewModel.isLoading = false
 											}
+											authViewModel.isLoading = false
 										}) {
 											Spacer()
 											if authViewModel.isLoading {
@@ -75,7 +90,6 @@ struct LoginView: View {
 													.padding(.vertical, 16)
 											}
 											else {
-
 												Image("logo_apple")
 													.resizable()
 													.scaledToFit()
@@ -92,7 +106,13 @@ struct LoginView: View {
 										.padding([.top, .leading, .trailing])
 										Button(action: {
 											Task {
-												try await authViewModel.login(with: .googleSignIn)
+												authViewModel.isLoading = true
+												do {
+													try await authViewModel.login(with: .googleSignIn)
+												} catch {
+													logger.error("\(error)")
+												}
+												authViewModel.isLoading = false
 											}
 										}) {
 											Spacer()
@@ -146,6 +166,7 @@ struct LoginView: View {
 						}
 					}
 				}
+				.safeAreaPadding()
 			}
 		}
 	}

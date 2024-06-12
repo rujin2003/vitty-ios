@@ -30,6 +30,7 @@ struct TimeTableView: View {
 			ZStack {
 				Image(viewModel.lectures == [] ? "HomeNoClassesBG" : "HomeBG")
 					.resizable()
+					.scaledToFill()
 					.ignoresSafeArea()
 				switch viewModel.stage {
 					case .loading:
