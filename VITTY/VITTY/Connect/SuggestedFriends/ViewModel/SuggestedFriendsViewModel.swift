@@ -15,7 +15,7 @@ class SuggestedFriendsViewModel {
 	var suggestedFriends = [Friend]()
 	var loading = false
 	var error = false
-	
+
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(

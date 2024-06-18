@@ -5,9 +5,9 @@
 //  Created by Chandram Dutta on 09/02/24.
 //
 
+import OSLog
 import SwiftData
 import SwiftUI
-import OSLog
 
 struct TimeTableView: View {
 	@Environment(AuthViewModel.self) private var authViewModel
@@ -17,7 +17,7 @@ struct TimeTableView: View {
 	@State private var selectedLecture: Lecture? = nil
 
 	let friend: Friend?
-	
+
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
@@ -28,10 +28,7 @@ struct TimeTableView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				Image(viewModel.lectures == [] ? "HomeNoClassesBG" : "HomeBG")
-					.resizable()
-					.scaledToFill()
-					.ignoresSafeArea()
+				BackgroundView(background: viewModel.lectures == [] ? "HomeNoClassesBG" : "HomeBG")
 				switch viewModel.stage {
 					case .loading:
 						VStack {
@@ -48,7 +45,7 @@ struct TimeTableView: View {
 							Spacer()
 						}
 					case .data:
-					VStack(spacing: 0) {
+						VStack(spacing: 0) {
 							ScrollView(.horizontal) {
 								HStack {
 									ForEach(daysOfWeek, id: \.self) { day in
@@ -100,7 +97,8 @@ struct TimeTableView: View {
 									}
 									.padding(.bottom)
 									.listRowBackground(
-										RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryBlue)
+										RoundedRectangle(cornerRadius: 15)
+											.fill(Color.theme.secondaryBlue)
 											.padding(.bottom)
 									)
 									.listRowSeparator(.hidden)
@@ -166,7 +164,8 @@ struct TimeTableView: View {
 		.onAppear {
 			Task {
 				await viewModel.fetchTimeTable(
-					username: friend?.username ?? (authViewModel.loggedInBackendUser?.username ?? ""),
+					username: friend?.username
+						?? (authViewModel.loggedInBackendUser?.username ?? ""),
 					authToken: authViewModel.loggedInBackendUser?.token ?? ""
 				)
 			}

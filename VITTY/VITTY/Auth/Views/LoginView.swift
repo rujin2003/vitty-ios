@@ -5,13 +5,13 @@
 //  Created by Chandram Dutta on 04/02/24.
 //
 
-import SwiftUI
 import OSLog
+import SwiftUI
 
 struct LoginView: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
-	
+
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
@@ -41,10 +41,7 @@ struct LoginView: View {
 
 	var body: some View {
 		ZStack {
-			Image("SplashScreen13BG")
-				.resizable()
-				.scaledToFill()
-				.ignoresSafeArea()
+			BackgroundView(background: "SplashScreen13BG")
 			ScrollViewReader { value in
 				VStack(alignment: .center) {
 					ScrollView(.horizontal) {
@@ -75,8 +72,11 @@ struct LoginView: View {
 											Task {
 												authViewModel.isLoading = true
 												do {
-													try await authViewModel.login(with: .appleSignIn)
-												} catch {
+													try await authViewModel.login(
+														with: .appleSignIn
+													)
+												}
+												catch {
 													logger.error("\(error)")
 												}
 												authViewModel.isLoading = false
@@ -108,8 +108,11 @@ struct LoginView: View {
 											Task {
 												authViewModel.isLoading = true
 												do {
-													try await authViewModel.login(with: .googleSignIn)
-												} catch {
+													try await authViewModel.login(
+														with: .googleSignIn
+													)
+												}
+												catch {
 													logger.error("\(error)")
 												}
 												authViewModel.isLoading = false

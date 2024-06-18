@@ -7,17 +7,21 @@
 
 import SwiftUI
 
-struct CommunityPage: View {
+struct ConnectPage: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
-	//	@EnvironmentObject private var timeTableViewModel: TimetableViewModel
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
+	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
 	@State private var isShowingRequestView = false
+	@State private var isAddFriendsViewPresented = false
 
 	var body: some View {
 		NavigationStack {
 			ZStack {
+				BackgroundView(
+					background: communityPageViewModel.error ? "HomeNoClassesBG" : "HomeBG"
+				)
 				VStack(alignment: .center) {
 					if communityPageViewModel.error {
 						Spacer()
@@ -94,15 +98,33 @@ struct CommunityPage: View {
 					}
 				}
 			}
-			.background(
-				Image(communityPageViewModel.error ? "HomeNoClassesBG" : "HomeBG")
-					.resizable()
-					.scaledToFill()
-					.edgesIgnoringSafeArea(.all)
-			)
 			.toolbar {
-				NavigationLink(destination: AddFriendsView(), isActive: $isShowingRequestView) {
-					EmptyView()
+				Group {
+					if !(friendRequestViewModel.error) && !(friendRequestViewModel.loading) {
+
+						Text("\(friendRequestViewModel.requests.count) req")
+							.font(Font.custom("Poppins-Regular", size: 12))
+							.padding(4)
+							.foregroundStyle(.white)
+							.background(.red)
+							.clipShape(RoundedRectangle(cornerRadius: 4))
+							.onTapGesture {
+								isAddFriendsViewPresented.toggle()
+							}
+							.sheet(
+								isPresented: $isAddFriendsViewPresented,
+								onDismiss: {
+									communityPageViewModel.fetchData(
+										from:
+											"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+										token: authViewModel.loggedInBackendUser?.token ?? "",
+										loading: true
+									)
+								},
+								content: FriendRequestView.init
+							)
+
+					}
 				}
 				Button(action: {
 					isShowingRequestView.toggle()
@@ -111,6 +133,10 @@ struct CommunityPage: View {
 					Image(systemName: "person.fill.badge.plus")
 						.foregroundColor(.white)
 				}
+				.navigationDestination(
+					isPresented: $isShowingRequestView,
+					destination: { AddFriendsView() }
+				)
 
 			}
 			.navigationTitle("Connect")
@@ -120,6 +146,11 @@ struct CommunityPage: View {
 				from:
 					"\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
 				token: authViewModel.loggedInBackendUser?.token ?? "",
+				loading: true
+			)
+			friendRequestViewModel.fetchFriendRequests(
+				from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
+				authToken: authViewModel.loggedInBackendUser?.token ?? "",
 				loading: true
 			)
 		}

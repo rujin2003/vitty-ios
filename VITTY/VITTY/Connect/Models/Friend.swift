@@ -19,7 +19,7 @@ struct FriendRaw: Decodable {
 
 struct Friend: Decodable {
 	let currentStatus: CurrentStatus
-	let friendStatus: String
+	var friendStatus: String
 	let friendsCount: Int
 	let mutualFriendsCount: Int
 	let name: String

@@ -12,9 +12,7 @@ struct InstructionView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				Image("SplashScreen13BG")
-					.resizable()
-					.ignoresSafeArea()
+				BackgroundView(background: "SplashScreen13BG")
 				VStack {
 					ZStack(alignment: .leading) {
 						RoundedRectangle(cornerRadius: 12, style: .circular)
