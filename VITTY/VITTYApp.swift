@@ -6,8 +6,8 @@
 //
 
 import Firebase
-import SwiftUI
 import OSLog
+import SwiftUI
 
 /**
  `NOTE FOR FUTURE/NEW DEVS:`
@@ -39,14 +39,14 @@ import OSLog
 
 @main
 struct VITTYApp: App {
-	
+
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
 			describing: VITTYApp.self
 		)
 	)
-	
+
 	init() {
 		setupFirebase()
 	}

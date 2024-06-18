@@ -22,9 +22,7 @@ struct UsernameView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				Image("HomeBG")
-					.resizable()
-					.ignoresSafeArea()
+				BackgroundView(background: "HomeBG")
 				VStack(alignment: .leading) {
 					Text("Enter username and your registration number below.")
 						.foregroundColor(Color.vprimary)

@@ -5,77 +5,75 @@
 //  Created by Chandram Dutta on 07/01/24.
 //
 
-import SwiftUI
 import OSLog
+import SwiftUI
 
 struct SearchView: View {
 	@State private var searchText = ""
 	@State private var searchedFriends = [Friend]()
 	@State private var loading = false
-	
+
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
 			describing: SearchView.self
 		)
 	)
-	
+
 	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(\.dismiss) var dismiss
 	var body: some View {
 		NavigationStack {
-			VStack(alignment: .leading) {
-				RoundedRectangle(cornerRadius: 20)
-					.foregroundColor(Color.theme.tfBlue)
-					.frame(maxWidth: .infinity)
-					.frame(height: 64)
-					.padding()
-					.overlay(
-						RoundedRectangle(cornerRadius: 20)
-							.stroke(Color.theme.tfBlueLight, lineWidth: 1)
-							.frame(maxWidth: .infinity)
-							.frame(height: 64)
-							.padding()
-							.overlay(alignment: .leading) {
-								TextField(text: $searchText) {
-									Text("Search Friends")
-										.foregroundColor(Color.theme.tfBlueLight)
+			ZStack {
+				BackgroundView(
+					background:
+						"HomeBG"
+				)
+				VStack(alignment: .leading) {
+					RoundedRectangle(cornerRadius: 20)
+						.foregroundColor(Color.theme.tfBlue)
+						.frame(maxWidth: .infinity)
+						.frame(height: 64)
+						.padding()
+						.overlay(
+							RoundedRectangle(cornerRadius: 20)
+								.stroke(Color.theme.tfBlueLight, lineWidth: 1)
+								.frame(maxWidth: .infinity)
+								.frame(height: 64)
+								.padding()
+								.overlay(alignment: .leading) {
+									TextField(text: $searchText) {
+										Text("Search Friends")
+											.foregroundColor(Color.theme.tfBlueLight)
+									}
+									.onChange(of: searchText) {
+										search()
+									}
+									.padding(.horizontal, 42)
+									.foregroundColor(.white)
+									.foregroundColor(Color.theme.tfBlue)
 								}
-								.onChange(of: searchText) {
-									search()
-								}
-								.padding(.horizontal, 42)
-								.foregroundColor(.white)
-								.foregroundColor(Color.theme.tfBlue)
-							}
-					)
-				if loading {
-					Spacer()
-					ProgressView()
-				}
-				else {
-					List(searchedFriends, id: \.username) { friend in
+						)
+					if loading {
+						Spacer()
+						ProgressView()
+					}
+					else {
+						List($searchedFriends, id: \.username) { friend in
 
-						AddFriendCard(friend: friend)
+							AddFriendCardSearch(friend: friend, search: searchText)
 
-							.listRowBackground(Color("DarkBG"))
+								.listRowBackground(Color("DarkBG"))
 
+						}
+
+						.scrollContentBackground(.hidden)
 					}
 
-					.scrollContentBackground(.hidden)
+					Spacer()
 				}
-
-				Spacer()
 			}
 			.navigationTitle("Search")
-			.background(
-				Image(
-					"HomeBG"
-				)
-				.resizable()
-				.scaledToFill()
-				.edgesIgnoringSafeArea(.all)
-			)
 		}
 	}
 

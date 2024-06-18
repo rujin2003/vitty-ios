@@ -26,32 +26,30 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 	var error: NSError?
 	let firebaseAuth = Auth.auth()
 	fileprivate var currentNonce: String?
-	
+
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
 			describing: AuthViewModel.self
 		)
 	)
-	
-	
 
 	override init() {
 		logger.info("Auth Initialization Started")
-		
+
 		do {
 			try firebaseAuth.useUserAccessGroup(nil)
 		}
 		catch {
 			logger.error("\(error)")
 		}
-		
+
 		super.init()
-		
+
 		loggedInFirebaseUser = firebaseAuth.currentUser
-		
+
 		firebaseAuth.addStateDidChangeListener(authViewModelChanged)
-		
+
 		do {
 			Task {
 				if UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) != nil {
@@ -63,7 +61,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 				}
 			}
 		}
-		
+
 		logger.info("Auth Initialization Ended")
 	}
 
@@ -77,10 +75,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 
 	func login(with loginOption: LoginOption) async throws {
 		logger.info("Login Started")
-		
-		isLoading = true
 		error = nil
-
 		switch loginOption {
 			case .googleSignIn:
 				logger.info("Google SignIn Started")
@@ -117,16 +112,28 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 				loggedInBackendUser = try await AuthAPIService.shared.signInUser(
 					with: AuthRequestBody(uuid: authUser.user.uid, reg_no: "", username: "")
 				)
-				UserDefaults.standard.set(loggedInBackendUser?.token, forKey: UserDefaultKeys.tokenKey)
-				UserDefaults.standard.set(loggedInBackendUser?.username, forKey: UserDefaultKeys.userKey)
-				UserDefaults.standard.set(loggedInBackendUser?.name, forKey: UserDefaultKeys.nameKey)
-				UserDefaults.standard.set(loggedInBackendUser?.picture, forKey: UserDefaultKeys.imageKey)
+				UserDefaults.standard.set(
+					loggedInBackendUser?.token,
+					forKey: UserDefaultKeys.tokenKey
+				)
+				UserDefaults.standard.set(
+					loggedInBackendUser?.username,
+					forKey: UserDefaultKeys.userKey
+				)
+				UserDefaults.standard.set(
+					loggedInBackendUser?.name,
+					forKey: UserDefaultKeys.nameKey
+				)
+				UserDefaults.standard.set(
+					loggedInBackendUser?.picture,
+					forKey: UserDefaultKeys.imageKey
+				)
 			}
 		}
 		catch {
 			logger.error("\(error)")
+			throw error
 		}
-		self.isLoading = false
 	}
 
 	private func signInWithApple() {
@@ -146,7 +153,6 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		didCompleteWithError error: Error
 	) {
 		logger.error("Error signing in with Apple: \(error.localizedDescription)")
-		isLoading = false
 		self.error = error as NSError
 	}
 
@@ -200,16 +206,28 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 					loggedInBackendUser = try await AuthAPIService.shared.signInUser(
 						with: AuthRequestBody(uuid: authUser.user.uid, reg_no: "", username: "")
 					)
-					UserDefaults.standard.set(loggedInBackendUser?.token, forKey: UserDefaultKeys.tokenKey)
-					UserDefaults.standard.set(loggedInBackendUser?.username, forKey: UserDefaultKeys.userKey)
-					UserDefaults.standard.set(loggedInBackendUser?.name, forKey: UserDefaultKeys.nameKey)
-					UserDefaults.standard.set(loggedInBackendUser?.picture, forKey: UserDefaultKeys.imageKey)
+					UserDefaults.standard.set(
+						loggedInBackendUser?.token,
+						forKey: UserDefaultKeys.tokenKey
+					)
+					UserDefaults.standard.set(
+						loggedInBackendUser?.username,
+						forKey: UserDefaultKeys.userKey
+					)
+					UserDefaults.standard.set(
+						loggedInBackendUser?.name,
+						forKey: UserDefaultKeys.nameKey
+					)
+					UserDefaults.standard.set(
+						loggedInBackendUser?.picture,
+						forKey: UserDefaultKeys.imageKey
+					)
 				}
 			}
 			catch {
 				logger.error("\(error)")
+				throw error
 			}
-			self.isLoading = false
 		}
 		else {
 			logger.error("Error during authorization")

@@ -18,20 +18,16 @@ struct AddFriendsView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				VStack(alignment: .center) {
+				BackgroundView(
+					background:
+						suggestedFriendsViewModel.suggestedFriends.isEmpty
+						&& friendRequestViewModel.requests.isEmpty ? "HomeNoClassesBG" : "HomeBG"
+				)
+				VStack(alignment: .leading) {
 					if !suggestedFriendsViewModel.suggestedFriends.isEmpty
 						|| !friendRequestViewModel.requests.isEmpty
 					{
 						VStack(alignment: .leading) {
-							if !friendRequestViewModel.requests.isEmpty {
-								Text("Friend Requests")
-									.font(Font.custom("Poppins-Regular", size: 14))
-									.foregroundColor(Color.vprimary)
-									.padding(.top)
-									.padding(.horizontal)
-								FriendRequestView()
-									.padding(.horizontal)
-							}
 							if !suggestedFriendsViewModel.suggestedFriends.isEmpty {
 								Text("Suggested Friends")
 									.font(Font.custom("Poppins-Regular", size: 14))
@@ -60,26 +56,18 @@ struct AddFriendsView: View {
 				}
 			}
 			.toolbar {
-				NavigationLink(destination: SearchView(), isActive: $isSearchViewPresented) {
-					EmptyView()
-				}
 				Button(action: {
 					isSearchViewPresented = true
 				}) {
 					Image(systemName: "magnifyingglass")
 						.foregroundColor(.white)
 				}
+				.navigationDestination(
+					isPresented: $isSearchViewPresented,
+					destination: { SearchView() }
+				)
 			}
 			.navigationTitle("Add Friends")
-			.background(
-				Image(
-					suggestedFriendsViewModel.suggestedFriends.isEmpty
-						&& friendRequestViewModel.requests.isEmpty ? "HomeNoClassesBG" : "HomeBG"
-				)
-				.resizable()
-				.scaledToFill()
-				.edgesIgnoringSafeArea(.all)
-			)
 		}
 		.onAppear {
 			suggestedFriendsViewModel.fetchData(

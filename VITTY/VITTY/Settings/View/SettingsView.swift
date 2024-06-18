@@ -12,9 +12,7 @@ struct SettingsView: View {
 	let gdscURL = URL(string: "https://dscvit.com/")
 	var body: some View {
 		ZStack {
-			Image("HomeBG")
-				.resizable()
-				.ignoresSafeArea()
+			BackgroundView(background: "HomeBG")
 			List {
 				Section(header: Text("About")) {
 					HStack {

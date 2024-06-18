@@ -14,7 +14,7 @@ struct HomeView: View {
 				.tabItem {
 					Label("Time Table", systemImage: "calendar.day.timeline.left")
 				}
-			CommunityPage()
+			ConnectPage()
 				.tabItem {
 					Label("Connect", systemImage: "person.2")
 				}

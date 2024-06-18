@@ -5,14 +5,14 @@
 //  Created by Chandram Dutta on 05/01/24.
 //
 
-import SwiftUI
 import OSLog
+import SwiftUI
 
 struct AddFriendCard: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
 	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
-	
+
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
@@ -35,44 +35,33 @@ struct AddFriendCard: View {
 			Spacer()
 			if friend.friendStatus != "sent" && friend.friendStatus != "friends" {
 				Button("Send Request") {
-					let url = URL(
-						string: "\(APIConstants.base_url)/api/v2/requests/\(friend.username)/send"
-					)!
-					var request = URLRequest(url: url)
 
-					request.httpMethod = "POST"
-					request.addValue(
-						"Bearer \(authViewModel)",
-						forHTTPHeaderField: "Authorization"
-					)
+					Task {
+						let url = URL(
+							string:
+								"\(APIConstants.base_url)/api/v2/requests/\(friend.username)/send"
+						)!
+						print("\(APIConstants.base_url)/api/v2/requests/\(friend.username)/send")
+						var request = URLRequest(url: url)
 
-					let task = URLSession.shared.dataTask(with: request) {
-						(data, response, error) in
-						// Handle the response here
-						if let error = error {
-							logger.error("\(error.localizedDescription)")
-							return
+						request.httpMethod = "POST"
+						request.addValue(
+							"Bearer \(authViewModel.loggedInBackendUser?.token ?? "")",
+							forHTTPHeaderField: "Authorization"
+						)
+						do {
+							let (_, _) = try await URLSession.shared.data(for: request)
+							suggestedFriendsViewModel.fetchData(
+								from: "\(APIConstants.base_url)/api/v2/users/suggested/",
+								token: authViewModel.loggedInBackendUser?.token ?? "",
+								loading: false
+							)
 						}
-
-						if let data = data {
-							// Parse the response data if needed
-							do {
-								let json = try JSONSerialization.jsonObject(with: data, options: [])
-							}
-							catch {
-								logger.error("Error parsing response JSON: \(error.localizedDescription)")
-							}
+						catch {
+							return
 						}
 					}
 
-					// Start the URLSession task
-					task.resume()
-
-					suggestedFriendsViewModel.fetchData(
-						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
-						token: authViewModel.loggedInBackendUser?.token ?? "",
-						loading: false
-					)
 				}
 				.buttonStyle(.bordered)
 				.font(.caption)

@@ -1,43 +1,43 @@
 //
-//  FriendRequestView.swift
+//  SuggestedFriendsView.swift
 //  VITTY
 //
-//  Created by Chandram Dutta on 07/01/24.
+//  Created by Chandram Dutta on 05/01/24.
 //
 
 import SwiftUI
 
-struct FriendRequestView: View {
+struct SuggestedFriendsView: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
-	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
+	@Environment(SuggestedFriendsViewModel.self) private var suggestedFriendsViewModel
 
 	var body: some View {
 		VStack(alignment: .center) {
-			if friendRequestViewModel.loading {
+			if suggestedFriendsViewModel.loading {
 				Spacer()
 				ProgressView()
 				Spacer()
 			}
 			else {
-				List(friendRequestViewModel.requests, id: \.username) { friend in
-					FriendReqCard(friend: friend)
+				List(suggestedFriendsViewModel.suggestedFriends, id: \.username) { friend in
+					AddFriendCard(friend: friend)
 						.padding(.bottom)
 						.listRowBackground(
 							RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryBlue)
 								.padding(.bottom)
 						)
 						.listRowSeparator(.hidden)
+
 				}
 				.listStyle(.plain)
 				.scrollContentBackground(.hidden)
 				.refreshable {
-					friendRequestViewModel.fetchFriendRequests(
-						from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
-						authToken: authViewModel.loggedInBackendUser?.token ?? "",
+					suggestedFriendsViewModel.fetchData(
+						from: "\(APIConstants.base_url)/api/v2/users/suggested/",
+						token: authViewModel.loggedInBackendUser?.token ?? "",
 						loading: false
 					)
-
 				}
 				Spacer()
 			}

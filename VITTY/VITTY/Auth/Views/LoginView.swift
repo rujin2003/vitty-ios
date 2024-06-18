@@ -5,11 +5,19 @@
 //  Created by Chandram Dutta on 04/02/24.
 //
 
+import OSLog
 import SwiftUI
 
 struct LoginView: View {
 
 	@Environment(AuthViewModel.self) private var authViewModel
+
+	private let logger = Logger(
+		subsystem: Bundle.main.bundleIdentifier!,
+		category: String(
+			describing: LoginView.self
+		)
+	)
 
 	private let carouselItems = [
 		LoginViewCarouselItem(
@@ -33,9 +41,7 @@ struct LoginView: View {
 
 	var body: some View {
 		ZStack {
-			Image("SplashScreen13BG")
-				.resizable()
-				.ignoresSafeArea()
+			BackgroundView(background: "SplashScreen13BG")
 			ScrollViewReader { value in
 				VStack(alignment: .center) {
 					ScrollView(.horizontal) {
@@ -62,11 +68,20 @@ struct LoginView: View {
 										.padding(.top, 1)
 									if index == 2 {
 										Spacer()
-
 										Button(action: {
 											Task {
-												try await authViewModel.login(with: .appleSignIn)
+												authViewModel.isLoading = true
+												do {
+													try await authViewModel.login(
+														with: .appleSignIn
+													)
+												}
+												catch {
+													logger.error("\(error)")
+												}
+												authViewModel.isLoading = false
 											}
+											authViewModel.isLoading = false
 										}) {
 											Spacer()
 											if authViewModel.isLoading {
@@ -75,7 +90,6 @@ struct LoginView: View {
 													.padding(.vertical, 16)
 											}
 											else {
-
 												Image("logo_apple")
 													.resizable()
 													.scaledToFit()
@@ -92,7 +106,16 @@ struct LoginView: View {
 										.padding([.top, .leading, .trailing])
 										Button(action: {
 											Task {
-												try await authViewModel.login(with: .googleSignIn)
+												authViewModel.isLoading = true
+												do {
+													try await authViewModel.login(
+														with: .googleSignIn
+													)
+												}
+												catch {
+													logger.error("\(error)")
+												}
+												authViewModel.isLoading = false
 											}
 										}) {
 											Spacer()
@@ -146,6 +169,7 @@ struct LoginView: View {
 						}
 					}
 				}
+				.safeAreaPadding()
 			}
 		}
 	}
