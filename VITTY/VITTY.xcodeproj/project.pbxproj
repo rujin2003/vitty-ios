@@ -7,8 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		09AA6AF72BE25ED800C21D8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09AA6AF62BE25ED800C21D8E /* GoogleService-Info.plist */; };
-		09AA6AF92BE25EDC00C21D8E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 09AA6AF82BE25EDC00C21D8E /* GoogleService-Info.plist */; };
 		3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3109639E27824F6F0009A29C /* AppStorageConstants.swift */; };
 		31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF32772F57E0084C9EA /* Poppins-Medium.ttf */; };
 		31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 31128CF42772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf */; };
@@ -78,6 +76,12 @@
 		5251A7FE2B46E3A800D44CFE /* swift-format in Frameworks */ = {isa = PBXBuildFile; productRef = 5251A7FD2B46E3A800D44CFE /* swift-format */; };
 		525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525AA7A82B4B0164003C6A12 /* SearchView.swift */; };
 		525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525F759C2B809F8400E3B418 /* LectureDetailView.swift */; };
+		52644D112C21F7BD00D92917 /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 52644D102C21F7BD00D92917 /* WidgetKit.framework */; };
+		52644D122C21F7BD00D92917 /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
+		52644D152C21F7BD00D92917 /* vittyios_widgetsBundle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52644D142C21F7BD00D92917 /* vittyios_widgetsBundle.swift */; };
+		52644D172C21F7BD00D92917 /* vittyios_widgets.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52644D162C21F7BD00D92917 /* vittyios_widgets.swift */; };
+		52644D192C21F7BF00D92917 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 52644D182C21F7BF00D92917 /* Assets.xcassets */; };
+		52644D1D2C21F7BF00D92917 /* vittyios-widgetsExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 52644D0F2C21F7BD00D92917 /* vittyios-widgetsExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		527E3E082B7662920086F23D /* TimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 527E3E072B7662920086F23D /* TimeTableView.swift */; };
 		528B25602C1D7E960071EB6E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 528B255F2C1D7E960071EB6E /* GoogleService-Info.plist */; };
 		528B25622C1D7E9C0071EB6E /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 528B25612C1D7E9C0071EB6E /* GoogleService-Info.plist */; };
@@ -99,6 +103,16 @@
 		5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0AF542AD2B586006B081D /* UserImage.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		52644D1B2C21F7BF00D92917 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314A408327383BEC0058082F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 52644D0E2C21F7BD00D92917;
+			remoteInfo = "vittyios-widgetsExtension";
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		3105872727A3ECBD00C2FC41 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -106,6 +120,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				52644D1D2C21F7BF00D92917 /* vittyios-widgetsExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,8 +128,6 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		09AA6AF62BE25ED800C21D8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
-		09AA6AF82BE25EDC00C21D8E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SwiftUI.framework; path = System/Library/Frameworks/SwiftUI.framework; sourceTree = SDKROOT; };
 		3109639E27824F6F0009A29C /* AppStorageConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStorageConstants.swift; sourceTree = "<group>"; };
 		31128CF02772F0210084C9EA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -155,6 +168,12 @@
 		5251A7FF2B46E3C000D44CFE /* .swift-format */ = {isa = PBXFileReference; lastKnownFileType = text; path = ".swift-format"; sourceTree = "<group>"; };
 		525AA7A82B4B0164003C6A12 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		525F759C2B809F8400E3B418 /* LectureDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureDetailView.swift; sourceTree = "<group>"; };
+		52644D0F2C21F7BD00D92917 /* vittyios-widgetsExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "vittyios-widgetsExtension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		52644D102C21F7BD00D92917 /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		52644D142C21F7BD00D92917 /* vittyios_widgetsBundle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vittyios_widgetsBundle.swift; sourceTree = "<group>"; };
+		52644D162C21F7BD00D92917 /* vittyios_widgets.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = vittyios_widgets.swift; sourceTree = "<group>"; };
+		52644D182C21F7BF00D92917 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		52644D1A2C21F7BF00D92917 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		527E3E072B7662920086F23D /* TimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeTableView.swift; sourceTree = "<group>"; };
 		528B255F2C1D7E960071EB6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
 		528B25612C1D7E9C0071EB6E /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../../../Downloads/GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -219,6 +238,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		52644D0C2C21F7BD00D92917 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52644D122C21F7BD00D92917 /* SwiftUI.framework in Frameworks */,
+				52644D112C21F7BD00D92917 /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -226,6 +254,7 @@
 			isa = PBXGroup;
 			children = (
 				3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */,
+				52644D102C21F7BD00D92917 /* WidgetKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -285,6 +314,7 @@
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
 				314A408D27383BEC0058082F /* VITTY */,
+				52644D132C21F7BD00D92917 /* vittyios-widgets */,
 				3105871927A3ECBB00C2FC41 /* Frameworks */,
 				314A408C27383BEC0058082F /* Products */,
 			);
@@ -294,6 +324,7 @@
 			isa = PBXGroup;
 			children = (
 				314A408B27383BEC0058082F /* VITTY.app */,
+				52644D0F2C21F7BD00D92917 /* vittyios-widgetsExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -533,6 +564,17 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		52644D132C21F7BD00D92917 /* vittyios-widgets */ = {
+			isa = PBXGroup;
+			children = (
+				52644D142C21F7BD00D92917 /* vittyios_widgetsBundle.swift */,
+				52644D162C21F7BD00D92917 /* vittyios_widgets.swift */,
+				52644D182C21F7BF00D92917 /* Assets.xcassets */,
+				52644D1A2C21F7BF00D92917 /* Info.plist */,
+			);
+			path = "vittyios-widgets";
+			sourceTree = "<group>";
+		};
 		527E3E022B76626A0086F23D /* TimeTable */ = {
 			isa = PBXGroup;
 			children = (
@@ -706,6 +748,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				52644D1C2C21F7BF00D92917 /* PBXTargetDependency */,
 			);
 			name = VITTY;
 			packageProductDependencies = (
@@ -747,6 +790,23 @@
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
 			productType = "com.apple.product-type.application";
 		};
+		52644D0E2C21F7BD00D92917 /* vittyios-widgetsExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 52644D202C21F7BF00D92917 /* Build configuration list for PBXNativeTarget "vittyios-widgetsExtension" */;
+			buildPhases = (
+				52644D0B2C21F7BD00D92917 /* Sources */,
+				52644D0C2C21F7BD00D92917 /* Frameworks */,
+				52644D0D2C21F7BD00D92917 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "vittyios-widgetsExtension";
+			productName = "vittyios-widgetsExtension";
+			productReference = 52644D0F2C21F7BD00D92917 /* vittyios-widgetsExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -754,11 +814,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1520;
+				LastSwiftUpdateCheck = 1540;
 				LastUpgradeCheck = 1520;
 				TargetAttributes = {
 					314A408A27383BEC0058082F = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					52644D0E2C21F7BD00D92917 = {
+						CreatedOnToolsVersion = 15.4;
 					};
 				};
 			};
@@ -782,6 +845,7 @@
 			projectRoot = "";
 			targets = (
 				314A408A27383BEC0058082F /* VITTY */,
+				52644D0E2C21F7BD00D92917 /* vittyios-widgetsExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -802,6 +866,14 @@
 				528B25622C1D7E9C0071EB6E /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		52644D0D2C21F7BD00D92917 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52644D192C21F7BF00D92917 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -900,7 +972,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		52644D0B2C21F7BD00D92917 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				52644D172C21F7BD00D92917 /* vittyios_widgets.swift in Sources */,
+				52644D152C21F7BD00D92917 /* vittyios_widgetsBundle.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		52644D1C2C21F7BF00D92917 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 52644D0E2C21F7BD00D92917 /* vittyios-widgetsExtension */;
+			targetProxy = 52644D1B2C21F7BF00D92917 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		314A409C27383BEE0058082F /* Debug */ = {
@@ -1027,6 +1116,7 @@
 		314A409F27383BEE0058082F /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = VITTY/VITTY.entitlements;
@@ -1068,6 +1158,7 @@
 		314A40A027383BEE0058082F /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = VITTY/VITTYRelease.entitlements;
@@ -1105,6 +1196,73 @@
 			};
 			name = Release;
 		};
+		52644D1E2C21F7BF00D92917 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2TS98F9X52;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "vittyios-widgets/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "vittyios-widgets";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gdscvit.vittyios.vittyios-widgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		52644D1F2C21F7BF00D92917 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 2TS98F9X52;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "vittyios-widgets/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "vittyios-widgets";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.gdscvit.vittyios.vittyios-widgets";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1122,6 +1280,15 @@
 			buildConfigurations = (
 				314A409F27383BEE0058082F /* Debug */,
 				314A40A027383BEE0058082F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		52644D202C21F7BF00D92917 /* Build configuration list for PBXNativeTarget "vittyios-widgetsExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				52644D1E2C21F7BF00D92917 /* Debug */,
+				52644D1F2C21F7BF00D92917 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
