@@ -24,7 +24,7 @@ struct SuggestedFriendsView: View {
 					AddFriendCard(friend: friend)
 						.padding(.bottom)
 						.listRowBackground(
-							RoundedRectangle(cornerRadius: 15).fill(Color.theme.secondaryBlue)
+							RoundedRectangle(cornerRadius: 15).fill(Color("Secondary"))
 								.padding(.bottom)
 						)
 						.listRowSeparator(.hidden)

@@ -28,7 +28,7 @@ struct TimeTableView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				BackgroundView(background: viewModel.lectures == [] ? "HomeNoClassesBG" : "HomeBG")
+				BackgroundView()
 				switch viewModel.stage {
 					case .loading:
 						VStack {
@@ -50,10 +50,12 @@ struct TimeTableView: View {
 								HStack {
 									ForEach(daysOfWeek, id: \.self) { day in
 										Text(day)
+											.foregroundStyle(daysOfWeek[viewModel.dayNo] == day
+															 ? Color("Background") : Color("Accent"))
 											.frame(width: 60, height: 54)
 											.background(
 												daysOfWeek[viewModel.dayNo] == day
-													? Color(Color.theme.secondary) : Color.clear
+													? Color("Accent") : Color.clear
 											)
 											.onTapGesture {
 												withAnimation {
@@ -68,7 +70,7 @@ struct TimeTableView: View {
 								}
 							}
 							.scrollIndicators(.hidden)
-							.background(Color("DarkBG"))
+							.background(Color("Secondary"))
 							.clipShape(RoundedRectangle(cornerRadius: 10))
 							.padding(.horizontal)
 							if viewModel.lectures == [] {
@@ -89,7 +91,7 @@ struct TimeTableView: View {
 											Spacer()
 											Text("\(lecture.venue)")
 										}
-										.foregroundColor(Color.vprimary)
+										.foregroundColor(Color("Accent"))
 										.font(.caption)
 									}
 									.onTapGesture {
@@ -98,7 +100,7 @@ struct TimeTableView: View {
 									.padding(.bottom)
 									.listRowBackground(
 										RoundedRectangle(cornerRadius: 15)
-											.fill(Color.theme.secondaryBlue)
+											.fill(Color("Secondary"))
 											.padding(.bottom)
 									)
 									.listRowSeparator(.hidden)

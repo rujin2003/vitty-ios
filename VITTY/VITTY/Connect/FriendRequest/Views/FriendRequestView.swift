@@ -15,9 +15,7 @@ struct FriendRequestView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				BackgroundView(
-					background: "HomeBG"
-				)
+				BackgroundView()
 				VStack(alignment: .leading) {
 					if !friendRequestViewModel.loading {
 						List(friendRequestViewModel.requests, id: \.username) { friend in
@@ -25,7 +23,7 @@ struct FriendRequestView: View {
 								.padding(.bottom)
 								.listRowBackground(
 									RoundedRectangle(cornerRadius: 15)
-										.fill(Color.theme.secondaryBlue)
+										.fill(Color("Secondary"))
 										.padding(.bottom)
 								)
 								.listRowSeparator(.hidden)

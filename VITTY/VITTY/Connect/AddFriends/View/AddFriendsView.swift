@@ -18,11 +18,7 @@ struct AddFriendsView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				BackgroundView(
-					background:
-						suggestedFriendsViewModel.suggestedFriends.isEmpty
-						&& friendRequestViewModel.requests.isEmpty ? "HomeNoClassesBG" : "HomeBG"
-				)
+				BackgroundView()
 				VStack(alignment: .leading) {
 					if !suggestedFriendsViewModel.suggestedFriends.isEmpty
 						|| !friendRequestViewModel.requests.isEmpty
@@ -31,7 +27,7 @@ struct AddFriendsView: View {
 							if !suggestedFriendsViewModel.suggestedFriends.isEmpty {
 								Text("Suggested Friends")
 									.font(Font.custom("Poppins-Regular", size: 14))
-									.foregroundColor(Color.vprimary)
+									.foregroundColor(Color("Accent"))
 									.padding(.top)
 									.padding(.horizontal)
 								SuggestedFriendsView()

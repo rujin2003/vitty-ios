@@ -22,10 +22,9 @@ struct UsernameView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				BackgroundView(background: "HomeBG")
+				BackgroundView()
 				VStack(alignment: .leading) {
 					Text("Enter username and your registration number below.")
-						.foregroundColor(Color.vprimary)
 						.font(.footnote)
 						.frame(maxWidth: .infinity, alignment: .leading)
 						.onChange(of: username) { _, _ in
@@ -46,7 +45,6 @@ struct UsernameView: View {
 							}
 						}
 					Text("Your username will help your friends find you!")
-						.foregroundColor(Color.vprimary)
 						.font(.footnote)
 						.frame(maxWidth: .infinity, alignment: .leading)
 						.onChange(of: regNo) { _, _ in
@@ -84,10 +82,11 @@ struct UsernameView: View {
 					Spacer()
 					Button(action: {
 						Task {
-
-							isLoading = true
-							await authViewModel.signInServer(username: username, regNo: regNo)
-							isLoading = false
+							// TODO: Important
+//
+//							isLoading = true
+//							await authViewModel.signInServer(username: username, regNo: regNo)
+//							isLoading = false
 						}
 					}) {
 						if isLoading {

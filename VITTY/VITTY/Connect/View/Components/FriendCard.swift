@@ -19,23 +19,21 @@ struct FriendCard: View {
 				if friend.currentStatus.status == "free" {
 					Text("Not in a class right now")
 						.font(Font.custom("Poppins-Regular", size: 14))
-						.foregroundColor(Color.vprimary)
+						.foregroundColor(Color("Accent"))
 				}
 				else {
 					Text(friend.currentStatus.class ?? "")
 						.font(Font.custom("Poppins-Regular", size: 14))
-						.foregroundColor(Color.vprimary)
+						.foregroundColor(Color("Accent"))
 				}
 			}
 			Spacer()
 			VStack {
 				Text("NOW")
 					.font(Font.custom("Poppins-Regular", size: 14))
-					.foregroundColor(Color.vprimary)
 				if friend.currentStatus.status == "free" {
 					Text(friend.currentStatus.status.capitalized)
 						.font(Font.custom("Poppins-SemiBold", size: 16))
-						.foregroundColor(Color.white)
 				}
 				else {
 					Text(friend.currentStatus.venue ?? "-")

@@ -13,4 +13,12 @@ class AppUser: Codable {
 	let role: String
 	let token: String
 	let username: String
+	
+	init(name: String, picture: String, role: String, token: String, username: String) {
+		self.name = name
+		self.picture = picture
+		self.role = role
+		self.token = token
+		self.username = username
+	}
 }

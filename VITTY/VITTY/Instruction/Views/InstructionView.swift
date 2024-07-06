@@ -12,76 +12,67 @@ struct InstructionView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				BackgroundView(background: "SplashScreen13BG")
-				VStack {
-					ZStack(alignment: .leading) {
+				BackgroundView()
+				VStack(alignment: .leading) {
+					VStack(alignment: .leading) {
+						Text("Account Details")
+							.font(Font.custom("Poppins-SemiBold", size: 20))
+							.foregroundColor(Color.white)
+							.padding(.vertical, 5)
+						Text(
+							"Name: \(authViewModel.loggedInFirebaseUser?.displayName ?? "-")"
+						)
+						Text(
+							"Signed in with: \(authViewModel.loggedInFirebaseUser?.providerID ?? "-")"
+						)
+						Text(
+							"Email: \(authViewModel.loggedInFirebaseUser?.email ?? "-")"
+						)
+					}
+					.padding()
+					.frame(maxWidth: .infinity, alignment: .topLeading)
+					.font(Font.custom("Poppins-Regular", size: 16))
+					.background{
 						RoundedRectangle(cornerRadius: 12, style: .circular)
-							.fill(Color.darkbg)
+							.fill(Color("Secondary"))
 							.overlay(
 								RoundedRectangle(cornerRadius: 12)
-									.stroke(Color.vprimary, lineWidth: 1.2)
+									.stroke(Color("Accent"), lineWidth: 1.2)
 							)
-						VStack(alignment: .leading) {
-							Text("Account Details")
-								.font(Font.custom("Poppins-SemiBold", size: 20))
-								.foregroundColor(Color.white)
-								.padding(.vertical, 5)
-							Text(
-								"Name: \(authViewModel.loggedInFirebaseUser?.displayName ?? "-")"
-							)
-							.foregroundColor(Color.vprimary)
-							Text(
-								"Signed in with: \(authViewModel.loggedInFirebaseUser?.providerID ?? "-")"
-							)
-							.foregroundColor(Color.vprimary)
-							Text(
-								"Email: \(authViewModel.loggedInFirebaseUser?.email ?? "-")"
-							)
-							.foregroundColor(Color.vprimary)
-						}
-						.padding()
-						.font(Font.custom("Poppins-Regular", size: 16))
 					}
-					.frame(height: 100)
-					.padding(.vertical)
-					ZStack(alignment: .leading) {
+					VStack(alignment: .leading) {
+						Text("Setup Instructions")
+							.font(Font.custom("Poppins-SemiBold", size: 20))
+							.padding(.vertical, 5)
+						VStack(alignment: .leading) {
+							Text("1. Upload the timetable on")
+							Link(
+								destination: URL(string: "https://dscv.it/vittyconnect")!,
+								label: {
+									Text(StringConstants.websiteURL)
+										.underline()
+								}
+							)
+							Text("2. Log in with the same Apple/Google Account as shown above")
+							Text("3. Upload a screenshot of your timetable")
+							Text("4. Review it")
+							Text("5. When done, click on Upload")
+							Text("BRAVO! That's it. You did it!")
+								.padding(.vertical)
+						}
+					}
+					.padding()
+					.frame(maxWidth: .infinity, alignment: .topLeading)
+					.font(Font.custom("Poppins-Regular", size: 16))
+					.background{
 						RoundedRectangle(cornerRadius: 12, style: .circular)
-							.fill(Color.darkbg)
+							.fill(Color("Secondary"))
 							.overlay(
 								RoundedRectangle(cornerRadius: 12)
-									.stroke(Color.vprimary, lineWidth: 1.2)
+									.stroke(Color("Accent"), lineWidth: 1.2)
 							)
-						VStack(alignment: .leading) {
-							Text("Setup Instructions")
-								.font(Font.custom("Poppins-SemiBold", size: 20))
-								.foregroundColor(Color.white)
-								.padding(.vertical, 5)
-							//                    ScrollView {
-							VStack(alignment: .leading) {
-								Text("1. Upload the timetable on")
-								Link(
-									destination: URL(string: "https://dscvit.com/vitty")!,
-									label: {
-										Text(StringConstants.websiteURL)
-											.underline()
-											.foregroundColor(Color.vprimary)
-
-									}
-								)
-								Text("2. Log in with the same Apple/Google Account as shown above")
-								Text("3. Upload a screenshot of your timetable")
-								Text("4. Review it")
-								Text("5. When done, click on Upload")
-								Text("BRAVO! That's it. You did it!")
-									.foregroundColor(Color.white)
-									.padding(.vertical)
-							}
-							.foregroundColor(Color.vprimary)
-						}
-						.padding()
-						.font(Font.custom("Poppins-Regular", size: 16))
 					}
-					.padding(.vertical)
+					Spacer()
 					NavigationLink(destination: {
 						if authViewModel.loggedInBackendUser == nil {
 							UsernameView()
@@ -95,15 +86,13 @@ struct InstructionView: View {
 							.fontWeight(.bold)
 							.foregroundColor(Color.white)
 							.padding(.vertical, 16)
-
+						
 						Spacer()
 					}
-					.background(Color("brightBlue"))
+					.background(Color("Secondary"))
 					.cornerRadius(18)
-					Spacer()
 				}
 				.padding()
-
 			}
 			.toolbar {
 				Button(action: {
