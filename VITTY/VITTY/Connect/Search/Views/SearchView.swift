@@ -25,33 +25,30 @@ struct SearchView: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				BackgroundView(
-					background:
-						"HomeBG"
-				)
+				BackgroundView()
 				VStack(alignment: .leading) {
 					RoundedRectangle(cornerRadius: 20)
-						.foregroundColor(Color.theme.tfBlue)
+						.foregroundColor(Color("Secondary"))
 						.frame(maxWidth: .infinity)
 						.frame(height: 64)
 						.padding()
 						.overlay(
 							RoundedRectangle(cornerRadius: 20)
-								.stroke(Color.theme.tfBlueLight, lineWidth: 1)
+								.stroke(Color("Accent"), lineWidth: 1)
 								.frame(maxWidth: .infinity)
 								.frame(height: 64)
 								.padding()
 								.overlay(alignment: .leading) {
 									TextField(text: $searchText) {
 										Text("Search Friends")
-											.foregroundColor(Color.theme.tfBlueLight)
+											.foregroundColor(Color("Accent"))
 									}
 									.onChange(of: searchText) {
 										search()
 									}
 									.padding(.horizontal, 42)
 									.foregroundColor(.white)
-									.foregroundColor(Color.theme.tfBlue)
+									.foregroundColor(Color("Secondary"))
 								}
 						)
 					if loading {
@@ -62,8 +59,14 @@ struct SearchView: View {
 						List($searchedFriends, id: \.username) { friend in
 
 							AddFriendCardSearch(friend: friend, search: searchText)
-
-								.listRowBackground(Color("DarkBG"))
+							
+							
+							.listRowBackground(
+								RoundedRectangle(cornerRadius: 15)
+									.fill(Color("Secondary"))
+									.padding(.bottom)
+							)
+							.listRowSeparator(.hidden)
 
 						}
 

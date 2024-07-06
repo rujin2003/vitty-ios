@@ -12,7 +12,7 @@ struct SettingsView: View {
 	let gdscURL = URL(string: "https://dscvit.com/")
 	var body: some View {
 		ZStack {
-			BackgroundView(background: "HomeBG")
+			BackgroundView()
 			List {
 				Section(header: Text("About")) {
 					HStack {
@@ -23,7 +23,7 @@ struct SettingsView: View {
 						Text("GitHub Repository")
 					}
 					.frame(height: 35)
-					.listRowBackground(Color("DarkBG"))
+					.listRowBackground(Color("Secondary"))
 					.onTapGesture {
 						if let url = githubURL {
 							UIApplication.shared.open(url)
@@ -37,7 +37,7 @@ struct SettingsView: View {
 						Text("GDSC VIT")
 					}
 					.frame(height: 35)
-					.listRowBackground(Color("DarkBG"))
+					.listRowBackground(Color("Secondary"))
 					.onTapGesture {
 						if let url = gdscURL {
 							UIApplication.shared.open(url)

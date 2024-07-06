@@ -8,16 +8,13 @@
 import SwiftUI
 
 struct BackgroundView: View {
-
-	let background: String
-
+	
 	var body: some View {
-		Image(background)
-			.resizable()
+		Color("Background")
 			.ignoresSafeArea(.all)
 	}
 }
 
 #Preview {
-	BackgroundView(background: "HomeBG")
+	BackgroundView()
 }

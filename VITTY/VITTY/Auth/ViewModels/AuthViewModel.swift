@@ -4,16 +4,16 @@
 //
 //  Created by Chandram Dutta on 04/02/24.
 //
+//
 
 import AuthenticationServices
-import CryptoKit
-import Firebase
-import FirebaseAuth
-import Foundation
-import GoogleSignIn
 import OSLog
+import GoogleSignIn
+import CryptoKit
+import FirebaseAuth
 
-enum LoginOption {
+
+enum LoginOptions {
 	case googleSignIn
 	case appleSignIn
 }
@@ -23,120 +23,150 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 	var loggedInFirebaseUser: User?
 	var loggedInBackendUser: AppUser?
 	var isLoading: Bool = false
-	var error: NSError?
 	let firebaseAuth = Auth.auth()
 	fileprivate var currentNonce: String?
-
+	
 	private let logger = Logger(
-		subsystem: Bundle.main.bundleIdentifier!,
-		category: String(
-			describing: AuthViewModel.self
-		)
+		subsystem: Bundle.main.bundleIdentifier!, category: String(describing: AuthViewModel.self)
 	)
-
+	
 	override init() {
-		logger.info("Auth Initialization Started")
-
+		logger.info("Initialising Auth")
+		
 		do {
 			try firebaseAuth.useUserAccessGroup(nil)
+		} catch {
+			logger.error("Accessing user group keychain failed: \(error)")
 		}
-		catch {
-			logger.error("\(error)")
-		}
-
+		
 		super.init()
-
+		
 		loggedInFirebaseUser = firebaseAuth.currentUser
-
-		firebaseAuth.addStateDidChangeListener(authViewModelChanged)
-
-		do {
-			Task {
-				if UserDefaults.standard.string(forKey: UserDefaultKeys.userKey) != nil {
-					await signInServer(
-						username: UserDefaults.standard.string(forKey: UserDefaultKeys.userKey)
-							?? "",
-						regNo: ""
-					)
-				}
-			}
+		firebaseAuth.addStateDidChangeListener(firebaseUserAuthUpdate)
+		
+		if UserDefaults.standard.string(forKey: UserDefaultKeys.tokenKey) != nil {
+			logger.info("Local User Exists")
+			self.loggedInBackendUser = AppUser(
+				name: UserDefaults.standard.string(forKey: UserDefaultKeys.usernameKey)!,
+				picture: UserDefaults.standard.string(forKey: UserDefaultKeys.pictureKey)!,
+				role:  UserDefaults.standard.string(forKey: UserDefaultKeys.roleKey)!,
+				token: UserDefaults.standard.string(forKey: UserDefaultKeys.tokenKey)!,
+				username: UserDefaults.standard.string(forKey: UserDefaultKeys.usernameKey)!)
 		}
-
-		logger.info("Auth Initialization Ended")
+		
+		logger.info("Auth Initialisation Complete")
 	}
-
-	private func authViewModelChanged(with auth: Auth, user: User?) {
-		logger.info("Auth State Changed")
+	
+	
+//	private func signInServer(username: String, regNo: String) async {
+//		logger.info("Signing into server...")
+//		do {
+//			self.loggedInBackendUser = try await AuthAPIService.shared
+//				.signInUser(
+//					with: AuthRequestBody(
+//						uuid: loggedInFirebaseUser?.uid ?? "",
+//						reg_no: regNo,
+//						username: username
+//					)
+//				)
+//		}
+//		catch {
+//			logger.error("Signing into server error: \(error)")
+//		}
+//		logger.info("Signed into server")
+//	}
+	
+	private func firebaseUserAuthUpdate(with auth: Auth, user: User?) {
+		logger.info("Firebase User Auth State Updated")
 		DispatchQueue.main.async {
 			guard user != self.loggedInFirebaseUser else { return }
 			self.loggedInFirebaseUser = user
 		}
 	}
-
-	func login(with loginOption: LoginOption) async throws {
-		logger.info("Login Started")
-		error = nil
-		switch loginOption {
+	
+	func login(with loginOptions: LoginOptions) async {
+		logger.info("Loging In...")
+		
+		logger.info("Logging into Firebase...")
+		do {
+			switch loginOptions {
 			case .googleSignIn:
-				logger.info("Google SignIn Started")
 				try await signInWithGoogle()
-				logger.info("Google SignIn Ended")
 			case .appleSignIn:
-				logger.info("Apple SignIn Started")
 				signInWithApple()
-				logger.info("Apple SignIn Ended")
-		}
-		logger.info("Auth State Ended")
-	}
-
-	private func signInWithGoogle() async throws {
-		guard let screen = await UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+			}
+		} catch {
+			logger.error("Error in logging in: \(error)")
 			return
 		}
-		guard let window = await screen.windows.first?.rootViewController else { return }
-		let signInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: window)
-		let credential = GoogleAuthProvider.credential(
-			withIDToken: signInResult.user.idToken?.tokenString ?? "",
-			accessToken: signInResult.user.accessToken.tokenString
-		)
-		let authUser = try await firebaseAuth.signIn(with: credential)
-		self.loggedInFirebaseUser = authUser.user
-		let userDefaultsStandard = UserDefaults.standard
-		userDefaultsStandard.set(authUser.user.providerID, forKey: UserDefaultKeys.providerIdKey)
-		userDefaultsStandard.set(authUser.user.displayName, forKey: UserDefaultKeys.usernameKey)
+		logger.info("Logged Into Firebase")
+		
+		if (self.loggedInFirebaseUser == nil) {
+			return
+		}
+		
+		logger.info("Logging into Backend...")
+		
 		do {
-			let doesUserExist = try await AuthAPIService.shared.checkUserExists(
-				with: authUser.user.uid
-			)
-			if doesUserExist {
-				loggedInBackendUser = try await AuthAPIService.shared.signInUser(
-					with: AuthRequestBody(uuid: authUser.user.uid, reg_no: "", username: "")
-				)
+			if (try await AuthAPIService.shared.checkUserExists(with: self.loggedInFirebaseUser!.uid)) {
+				self.loggedInBackendUser = try await AuthAPIService.shared.signInUser(
+					with: AuthRequestBody(
+						uuid: self.loggedInFirebaseUser!.uid, reg_no: "", username: "")
+					)
+				
 				UserDefaults.standard.set(
-					loggedInBackendUser?.token,
+					loggedInBackendUser!.token,
 					forKey: UserDefaultKeys.tokenKey
 				)
 				UserDefaults.standard.set(
-					loggedInBackendUser?.username,
-					forKey: UserDefaultKeys.userKey
+					loggedInBackendUser!.username,
+					forKey: UserDefaultKeys.usernameKey
 				)
 				UserDefaults.standard.set(
-					loggedInBackendUser?.name,
+					loggedInBackendUser!.name,
 					forKey: UserDefaultKeys.nameKey
 				)
 				UserDefaults.standard.set(
-					loggedInBackendUser?.picture,
-					forKey: UserDefaultKeys.imageKey
+					loggedInBackendUser!.picture,
+					forKey: UserDefaultKeys.pictureKey
 				)
+				UserDefaults.standard.set(
+					loggedInBackendUser!.role,
+					forKey: UserDefaultKeys.roleKey
+				)
+				
+				logger.debug("\(UserDefaults.standard.string(forKey: UserDefaultKeys.usernameKey)!)")
+			} else {
+				self.loggedInBackendUser = nil // tbh no need for this, but just to make sure
 			}
+		} catch {
+			logger.error("Error in logging in: \(error)")
+			return
 		}
-		catch {
-			logger.error("\(error)")
-			throw error
-		}
+		
 	}
-
+	
+	private func signInWithGoogle() async throws {
+		logger.info("Signing in with Google...")
+		
+		let screen = await UIApplication.shared.connectedScenes.first as! UIWindowScene
+		let window = await screen.windows.first!.rootViewController!
+		
+		let signInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: window)
+		let credential = GoogleAuthProvider.credential(
+			withIDToken: signInResult.user.idToken!.tokenString,
+			accessToken: signInResult.user.accessToken.tokenString
+		)
+		
+		let authDataResult = try await firebaseAuth.signIn(with: credential)
+		self.loggedInFirebaseUser = authDataResult.user
+		
+		logger.info("Signed in with Google")
+	}
+	
 	private func signInWithApple() {
+		logger.info("Signing in with Apple...")
+		
 		let nonce = AppleSignInUtilties.randomNonceString()
 		currentNonce = nonce
 		let provider = ASAuthorizationAppleIDProvider()
@@ -144,133 +174,77 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 		request.requestedScopes = [.email, .fullName]
 		request.nonce = AppleSignInUtilties.sha256(nonce)
 		let authController = ASAuthorizationController(authorizationRequests: [request])
+		
 		authController.delegate = self
 		authController.performRequests()
 	}
-
-	internal func authorizationController(
+	
+	internal func authorizationController (
 		controller: ASAuthorizationController,
 		didCompleteWithError error: Error
 	) {
 		logger.error("Error signing in with Apple: \(error.localizedDescription)")
-		self.error = error as NSError
 	}
-
-	internal func authorizationController(
-		controller: ASAuthorizationController,
-		didCompleteWithAuthorization authorization: ASAuthorization
-	) async throws {
-		if let appleIdCred = authorization.credential as? ASAuthorizationAppleIDCredential {
+	
+	internal func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+		if let appleIDCredential = authorization.credential as? ASAuthorizationAppleIDCredential {
 			guard let nonce = currentNonce else {
-				fatalError(
-					"Invalid state: A login callback was received but no login request was sent"
-				)
+				logger.error("Invalid state: A login callback was received, but no login request was sent.")
+				return
 			}
-			guard let appleIdToken = appleIdCred.identityToken else {
+			guard let appleIDToken = appleIDCredential.identityToken else {
 				logger.error("Unable to fetch identity token")
 				return
 			}
-			guard let idTokenString = String(data: appleIdToken, encoding: .utf8) else {
-				logger.error(
-					"Unable to serialize token string from data: \(appleIdToken.debugDescription)"
-				)
+			guard let idTokenString = String(data: appleIDToken, encoding: .utf8) else {
+				logger.error("Unable to serialize token string from data: \(appleIDToken.debugDescription)")
 				return
 			}
-			guard let authCode = appleIdCred.authorizationCode else {
-				logger.error("Unable to getch Authorization Code")
-				return
-			}
-			guard String(data: authCode, encoding: .utf8) != nil else {
-				logger.error("Unable to serialize Authorization Code")
-				return
-			}
-
-			let credential = OAuthProvider.credential(
-				withProviderID: "apple.com",
-				idToken: idTokenString,
-				rawNonce: nonce
+			
+			let credential = OAuthProvider.appleCredential(
+				withIDToken: idTokenString,
+				rawNonce: nonce,
+				fullName: appleIDCredential.fullName
 			)
-			let authUser = try await firebaseAuth.signIn(with: credential)
-			self.loggedInFirebaseUser = authUser.user
-			let userDefaultsStandard = UserDefaults.standard
-			userDefaultsStandard.set(
-				authUser.user.providerID,
-				forKey: UserDefaultKeys.providerIdKey
-			)
-			userDefaultsStandard.set(authUser.user.displayName, forKey: UserDefaultKeys.usernameKey)
-			do {
-				let doesUserExist = try await AuthAPIService.shared.checkUserExists(
-					with: authUser.user.uid
-				)
-				if doesUserExist {
-					loggedInBackendUser = try await AuthAPIService.shared.signInUser(
-						with: AuthRequestBody(uuid: authUser.user.uid, reg_no: "", username: "")
-					)
-					UserDefaults.standard.set(
-						loggedInBackendUser?.token,
-						forKey: UserDefaultKeys.tokenKey
-					)
-					UserDefaults.standard.set(
-						loggedInBackendUser?.username,
-						forKey: UserDefaultKeys.userKey
-					)
-					UserDefaults.standard.set(
-						loggedInBackendUser?.name,
-						forKey: UserDefaultKeys.nameKey
-					)
-					UserDefaults.standard.set(
-						loggedInBackendUser?.picture,
-						forKey: UserDefaultKeys.imageKey
-					)
+			
+			firebaseAuth.signIn(with: credential) { (authResult, error) in
+				if (error != nil) {
+					self.logger.error("Error signing in with Apple to Firebase: \(error)")
+					return
 				}
+				self.loggedInFirebaseUser = authResult!.user
 			}
-			catch {
-				logger.error("\(error)")
-				throw error
-			}
-		}
-		else {
-			logger.error("Error during authorization")
 		}
 	}
-
+	
 	func signOut() {
 		do {
 			try firebaseAuth.signOut()
 			UserDefaults.resetDefaults()
 		}
-		catch let signOutError as NSError {
-			logger.error("Error Signing Out: \(signOutError)")
-		}
-	}
-
-	func signInServer(username: String, regNo: String) async {
-		logger.info("Signing to Server Started")
-		do {
-			self.loggedInBackendUser = try await AuthAPIService.shared
-				.signInUser(
-					with: AuthRequestBody(
-						uuid: loggedInFirebaseUser?.uid ?? "",
-						reg_no: regNo,
-						username: username
-					)
-				)
-		}
 		catch {
-			logger.error("\(error)")
+			logger.error("Error Signing Out: \(error)")
 		}
-		logger.info("Signing to Server Ended")
 	}
 }
+
+extension UserDefaults {
+	static func resetDefaults() {
+		if let bundleID = Bundle.main.bundleIdentifier {
+			UserDefaults.standard.removePersistentDomain(forName: bundleID)
+		}
+	}
+}
+
 
 private class AppleSignInUtilties {
 	static func randomNonceString(length: Int = 32) -> String {
 		precondition(length > 0)
 		let charset: [Character] =
-			Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
+		Array("0123456789ABCDEFGHIJKLMNOPQRSTUVXYZabcdefghijklmnopqrstuvwxyz-._")
 		var result = ""
 		var remainingLength = length
-
+		
 		while remainingLength > 0 {
 			let randoms: [UInt8] = (0..<16)
 				.map { _ in
@@ -283,37 +257,30 @@ private class AppleSignInUtilties {
 					}
 					return random
 				}
-
+			
 			randoms.forEach { random in
 				if length == 0 {
 					return
 				}
-
+				
 				if random < charset.count {
 					result.append(charset[Int(random)])
 					remainingLength -= 1
 				}
 			}
 		}
-
+		
 		return result
 	}
+	
 	static func sha256(_ input: String) -> String {
 		let inputData = Data(input.utf8)
 		let hashedData = SHA256.hash(data: inputData)
 		let hashString =
-			hashedData.compactMap {
-				String(format: "%02x", $0)
-			}
-			.joined()
-		return hashString
-	}
-}
-
-extension UserDefaults {
-	static func resetDefaults() {
-		if let bundleID = Bundle.main.bundleIdentifier {
-			UserDefaults.standard.removePersistentDomain(forName: bundleID)
+		hashedData.compactMap {
+			String(format: "%02x", $0)
 		}
+		.joined()
+		return hashString
 	}
 }

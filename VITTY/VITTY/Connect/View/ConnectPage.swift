@@ -19,9 +19,7 @@ struct ConnectPage: View {
 	var body: some View {
 		NavigationStack {
 			ZStack {
-				BackgroundView(
-					background: communityPageViewModel.error ? "HomeNoClassesBG" : "HomeBG"
-				)
+				BackgroundView()
 				VStack(alignment: .center) {
 					if communityPageViewModel.error {
 						Spacer()
@@ -55,19 +53,19 @@ struct ConnectPage: View {
 											if friend.currentStatus.status == "free" {
 												Text("Not in a class right now")
 													.font(Font.custom("Poppins-Regular", size: 14))
-													.foregroundColor(Color.vprimary)
+													.foregroundColor(Color("Accent"))
 											}
 											else {
 												Text(friend.currentStatus.class ?? "")
 													.font(Font.custom("Poppins-Regular", size: 14))
-													.foregroundColor(Color.vprimary)
+													.foregroundColor(Color("Accent"))
 											}
 										}
 										Spacer()
 										VStack {
 											Text("NOW")
 												.font(Font.custom("Poppins-Regular", size: 14))
-												.foregroundColor(Color.vprimary)
+												.foregroundColor(Color.white)
 											if friend.currentStatus.status == "free" {
 												Text(friend.currentStatus.status.capitalized)
 													.font(Font.custom("Poppins-SemiBold", size: 16))
@@ -79,10 +77,16 @@ struct ConnectPage: View {
 													.foregroundColor(Color.white)
 											}
 										}
-										.padding(.trailing, 4)
 									}
+									.padding(.bottom)
 								}
-								.listRowBackground(Color("DarkBG"))
+								
+								.listRowBackground(
+									RoundedRectangle(cornerRadius: 15)
+										.fill(Color("Secondary"))
+										.padding(.bottom)
+								)
+								.listRowSeparator(.hidden)
 							}
 							.scrollContentBackground(.hidden)
 							.refreshable {

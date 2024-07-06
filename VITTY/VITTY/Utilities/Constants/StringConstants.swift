@@ -61,7 +61,7 @@ struct StringConstants {
 		"4. Review it",
 		"5. When done, click on Upload.",
 	]
-	static let websiteURL = "https://dscv.it/vitty"
+	static let websiteURL = "https://dscv.it/vittyconnect"
 	static let setupFinalText = "BRAVO! That's it. You did it!"
 	static let followInstructionsText = "Fetching information. Follow the instructions given below"
 

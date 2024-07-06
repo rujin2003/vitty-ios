@@ -9,16 +9,16 @@ import OSLog
 import SwiftUI
 
 struct LoginView: View {
-
+	
 	@Environment(AuthViewModel.self) private var authViewModel
-
+	
 	private let logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
 			describing: LoginView.self
 		)
 	)
-
+	
 	private let carouselItems = [
 		LoginViewCarouselItem(
 			image: "LoginViewIllustration 2",
@@ -36,12 +36,12 @@ struct LoginView: View {
 			subtitle: "Instant Sync across all of your devices via the app"
 		),
 	]
-
+	
 	@State private var animationProgress = 0.0
-
+	
 	var body: some View {
 		ZStack {
-			BackgroundView(background: "SplashScreen13BG")
+			BackgroundView()
 			ScrollViewReader { value in
 				VStack(alignment: .center) {
 					ScrollView(.horizontal) {
@@ -71,17 +71,11 @@ struct LoginView: View {
 										Button(action: {
 											Task {
 												authViewModel.isLoading = true
-												do {
-													try await authViewModel.login(
-														with: .appleSignIn
-													)
-												}
-												catch {
-													logger.error("\(error)")
-												}
+												await authViewModel.login(
+													with: .appleSignIn
+												)
 												authViewModel.isLoading = false
 											}
-											authViewModel.isLoading = false
 										}) {
 											Spacer()
 											if authViewModel.isLoading {
@@ -101,20 +95,15 @@ struct LoginView: View {
 											}
 											Spacer()
 										}
-										.background(Color("brightBlue"))
+										.background(Color("Secondary"))
 										.cornerRadius(18)
 										.padding([.top, .leading, .trailing])
 										Button(action: {
 											Task {
 												authViewModel.isLoading = true
-												do {
-													try await authViewModel.login(
-														with: .googleSignIn
-													)
-												}
-												catch {
-													logger.error("\(error)")
-												}
+												await authViewModel.login(
+													with: .googleSignIn
+												)
 												authViewModel.isLoading = false
 											}
 										}) {
@@ -136,7 +125,7 @@ struct LoginView: View {
 											}
 											Spacer()
 										}
-										.background(Color("brightBlue"))
+										.background(Color("Secondary"))
 										.cornerRadius(18)
 										.padding()
 									}
@@ -148,7 +137,7 @@ struct LoginView: View {
 										.scaleEffect(phase.isIdentity ? 1.0 : 0.8)
 								}
 							}
-
+							
 						}
 						.scrollTargetLayout()
 					}
@@ -173,7 +162,7 @@ struct LoginView: View {
 			}
 		}
 	}
-
+	
 }
 
 #Preview {

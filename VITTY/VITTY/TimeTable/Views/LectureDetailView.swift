@@ -19,9 +19,6 @@ struct LectureDetailView: View {
 					Marker(lecture.venue, coordinate: determineCoordinates(venue: lecture.venue))
 				}
 				.mapStyle(.standard)
-				//				.mapControls{
-				//					MapUserLocationButton()
-				//				}
 				VStack(alignment: .leading) {
 					HStack {
 						Text(lecture.name)
@@ -29,7 +26,7 @@ struct LectureDetailView: View {
 							.bold()
 						Spacer()
 						Text(lecture.slot).font(.caption)
-							.foregroundColor(Color("SecondaryTextColor"))
+							.foregroundColor(Color("Accent"))
 					}
 					HStack {
 						Text(lecture.code)
@@ -38,20 +35,20 @@ struct LectureDetailView: View {
 						Text(
 							"\(formatTime(time: lecture.startTime)) - \(formatTime(time: lecture.endTime))"
 						)
-						.foregroundColor(Color.vprimary)
+						.foregroundColor(Color("Accent"))
 						.font(.caption)
 					}
 				}
 				.padding()
 			}
-			.background(Color("DarkBG"))
+			.background(Color("Background"))
 			Button(action: {
 				dismiss()
 			}) {
 				Image(systemName: "xmark")
 					.padding()
 			}
-			.foregroundColor(Color("Secondary"))
+			.foregroundColor(Color("Background"))
 			.background(.white)
 			.frame(width: 40, height: 40)
 			.clipShape(RoundedRectangle(cornerRadius: 10))

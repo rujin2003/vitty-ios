@@ -31,7 +31,7 @@ struct AddFriendCardSearch: View {
 					.foregroundColor(Color.white)
 				Text(friend.username)
 					.font(Font.custom("Poppins-Regular", size: 14))
-					.foregroundColor(Color.vprimary)
+					.foregroundColor(Color("Accent"))
 			}
 			Spacer()
 			if friend.friendStatus != "sent" && friend.friendStatus != "friends" {
@@ -74,5 +74,6 @@ struct AddFriendCardSearch: View {
 				Image(systemName: "person.fill.checkmark")
 			}
 		}
+		.padding(.bottom)
 	}
 }

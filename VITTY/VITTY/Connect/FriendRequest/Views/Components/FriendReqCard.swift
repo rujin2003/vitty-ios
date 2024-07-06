@@ -30,7 +30,7 @@ struct FriendReqCard: View {
 					.foregroundColor(Color.white)
 				Text(friend.username)
 					.font(Font.custom("Poppins-Regular", size: 14))
-					.foregroundColor(Color.vprimary)
+					.foregroundColor(Color("Accent"))
 			}
 			Spacer()
 			if friend.friendStatus == "received" {

@@ -14,7 +14,7 @@ struct ContentView: View {
 	@State private var friendRequestViewModel = FriendRequestViewModel()
 	@State private var authViewModel = AuthViewModel()
 	var body: some View {
-		NavigationView {
+		Group {
 			if authViewModel.loggedInFirebaseUser != nil {
 				if authViewModel.loggedInBackendUser == nil {
 					InstructionView()
