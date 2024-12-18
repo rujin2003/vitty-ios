@@ -80,7 +80,6 @@ struct ConnectPage: View {
 									}
 									.padding(.bottom)
 								}
-								
 								.listRowBackground(
 									RoundedRectangle(cornerRadius: 15)
 										.fill(Color("Secondary"))
@@ -88,6 +87,7 @@ struct ConnectPage: View {
 								)
 								.listRowSeparator(.hidden)
 							}
+							.safeAreaPadding(EdgeInsets(top: 0, leading: 0, bottom: 100, trailing: 0))
 							.scrollContentBackground(.hidden)
 							.refreshable {
 								communityPageViewModel.fetchData(

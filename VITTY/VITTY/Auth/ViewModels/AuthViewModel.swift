@@ -149,8 +149,8 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
 	private func signInWithGoogle() async throws {
 		logger.info("Signing in with Google...")
 		
-		let screen = await UIApplication.shared.connectedScenes.first as! UIWindowScene
-		let window = await screen.windows.first!.rootViewController!
+		let screen = UIApplication.shared.connectedScenes.first as! UIWindowScene
+		let window = screen.windows.first!.rootViewController!
 		
 		let signInResult = try await GIDSignIn.sharedInstance.signIn(withPresenting: window)
 		let credential = GoogleAuthProvider.credential(
