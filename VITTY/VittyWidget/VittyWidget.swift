@@ -1,21 +1,38 @@
 import WidgetKit
 import SwiftUI
 
+
+struct DueProvider: TimelineProvider {
+    func placeholder(in context: Context) -> DueEntry {
+        DueEntry(date: Date(), title: "Quiz 1", timeRange: "8 AM - 9 AM", subject: "Java Programming", hoursLeft: "02:00 hrs left")
+    }
+    
+    func getSnapshot(in context: Context, completion: @escaping (DueEntry) -> Void) {
+        completion(placeholder(in: context))
+    }
+    
+    func getTimeline(in context: Context, completion: @escaping (Timeline<DueEntry>) -> Void) {
+        let timeline = Timeline(entries: [placeholder(in: context)], policy: .atEnd)
+        completion(timeline)
+    }
+}
+
+
 struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> SimpleEntry {
-        SimpleEntry(date: Date(), progress: 6, total: 7, nextClass: "Software Engineering", nextClassTime: "4:00 PM - 4:50 PM")
+    func placeholder(in context: Context) -> ScheduleEntry {
+        ScheduleEntry(date: Date(), progress: 6, total: 7, nextClass: "Software Engineering", nextClassTime: "4:00 PM - 4:50 PM")
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (SimpleEntry) -> ()) {
-        let entry = SimpleEntry(date: Date(), progress: 6, total: 7, nextClass: "Software Engineering", nextClassTime: "4:00 PM - 4:50 PM")
+    func getSnapshot(in context: Context, completion: @escaping (ScheduleEntry) -> ()) {
+        let entry = ScheduleEntry(date: Date(), progress: 6, total: 7, nextClass: "Software Engineering", nextClassTime: "4:00 PM - 4:50 PM")
         completion(entry)
     }
     
-    func getTimeline(in context: Context, completion: @escaping (Timeline<SimpleEntry>) -> ()) {
-        var entries: [SimpleEntry] = []
+    func getTimeline(in context: Context, completion: @escaping (Timeline<ScheduleEntry>) -> ()) {
+        var entries: [ScheduleEntry] = []
         let currentDate = Date()
         
-        let entry = SimpleEntry(
+        let entry = ScheduleEntry(
             date: currentDate,
             progress: 6,
             total: 7,
@@ -27,14 +44,22 @@ struct Provider: TimelineProvider {
         completion(Timeline(entries: entries, policy: .atEnd))
     }
 }
-
-struct SimpleEntry: TimelineEntry {
+struct ScheduleEntry: TimelineEntry {
     let date: Date
     let progress: Int
     let total: Int
     let nextClass: String
     let nextClassTime: String
 }
+
+struct DueEntry: TimelineEntry {
+    let date: Date
+    let title: String
+    let timeRange: String
+    let subject: String
+    let hoursLeft: String
+}
+
 
 struct VittyWidgetEntryView: View {
     var entry: Provider.Entry
@@ -47,7 +72,7 @@ struct VittyWidgetEntryView: View {
             
             switch family {
             case .systemSmall:
-                SmallWidgetView(entry: entry)
+                ScheduleSmallWidgetView(entry: entry)
             case .systemMedium:
                 MediumWidgetView(entry: entry)
             case .systemLarge:
@@ -60,70 +85,14 @@ struct VittyWidgetEntryView: View {
     }
 }
 
-struct SmallWidgetView: View {
-    var entry: Provider.Entry
-    
-    var body: some View {
-        VStack(alignment: .leading) {
-            Spacer().frame(height: 10)
-            WidgetTitle(title: "Schedule", fontSize: 12.0)
-            
-            Spacer().frame(height: 15)
-            
-         
-            ZStack {
-                Circle()
-                    .trim(from: 0, to: 1)
-                    .stroke(Color(hex: "#BBE7FF").opacity(0.3), lineWidth: 12)
-                    .frame(width: 45, height: 45)
-                
-                Circle()
-                    .trim(from: 0, to: CGFloat(entry.progress) / CGFloat(entry.total))
-                    .stroke(
-                        Color(hex: "#BBE7FF"),
-                        style: StrokeStyle(
-                            lineWidth: 12,
-                            lineCap: .round,
-                            lineJoin: .round
-                        )
-                    )
-                    .frame(width: 45, height: 45)
-                    .rotationEffect(.degrees(-90))
-                
-                Text("\(entry.progress) / \(entry.total)")
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundColor(.white)
-            }
-            .frame(maxWidth: .infinity)
-            
-            Spacer().frame(height: 20)
-            
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Up Next")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.white)
-                
-                Text(entry.nextClass)
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                
-                Text(entry.nextClassTime)
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundColor(Color(hex: "#BBE7FF"))
-            }
-            
-            Spacer()
-        }
-    }
-}
+
 
 struct MediumWidgetView: View {
     var entry: Provider.Entry
     
     var body: some View {
         HStack {
-            // Left side with progress circle
+           
             VStack {
                 WidgetTitle(title: "Schedule", fontSize: 22.0)
                 
@@ -157,12 +126,12 @@ struct MediumWidgetView: View {
             }
             .padding(.leading)
             
-            // Right side with class info
+           
             VStack(alignment: .leading) {
                 Spacer()
                 
                 Text("Up Next")
-                    .font(.system(size: 24, weight: .medium))  // Reduced weight
+                    .font(.system(size: 24, weight: .medium))
                     .foregroundColor(.white)
                 
                 Text(entry.nextClass)
@@ -172,7 +141,7 @@ struct MediumWidgetView: View {
                 
                 Text(entry.nextClassTime)
                     .font(.system(size: 22, weight: .bold))
-                    .foregroundColor(Color(hex: "#BBE7FF"))  // Changed to accent color
+                    .foregroundColor(Color(hex: "#BBE7FF"))
                 
                 Spacer()
             }
@@ -216,10 +185,10 @@ struct LargeWidgetView: View {
                 
                 Spacer()
                 
-                // Class info
+            
                 VStack(alignment: .leading) {
                     Text("Up Next")
-                        .font(.system(size: 32, weight: .medium))  // Reduced weight
+                        .font(.system(size: 32, weight: .medium))
                         .foregroundColor(.white)
                     
                     Text(entry.nextClass)
@@ -228,15 +197,15 @@ struct LargeWidgetView: View {
                     
                     Text(entry.nextClassTime)
                         .font(.system(size: 28, weight: .bold))
-                        .foregroundColor(Color(hex: "#BBE7FF"))  // Changed to accent color
+                        .foregroundColor(Color(hex: "#BBE7FF"))
                 }
             }
             
             Spacer()
             
-            // Additional placeholder for more schedule items
+          
             Text("Coming Up")
-                .font(.system(size: 24, weight: .medium))  // Reduced weight
+                .font(.system(size: 24, weight: .medium))
                 .foregroundColor(.white)
                 .padding(.top)
             
@@ -251,42 +220,6 @@ struct LargeWidgetView: View {
     }
 }
 
-struct ScheduleRow: View {
-    let className: String
-    let time: String
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading) {
-                Text(className)
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.white)
-                
-                Text(time)
-                    .font(.system(size: 14, weight: .medium))
-                    .foregroundColor(Color(hex: "#BBE7FF"))  // Changed to accent color
-            }
-            
-            Spacer()
-        }
-        .padding(.vertical, 5)
-    }
-}
-
-struct WidgetTitle: View {
-    let title: String
-    let fontSize: Double
-    
-    var body: some View {
-        return HStack {
-            Text(title)
-                .font(.system(size: fontSize, weight: .heavy))
-                .foregroundStyle(Color.white)
-            Spacer()
-            Image("widgetIcon").resizable().frame(width: 30, height: 15)
-        }
-    }
-}
 
 struct VittyWidget: Widget {
     let kind: String = "VittyWidget"
@@ -313,8 +246,62 @@ extension Color {
     }
 }
 
+// MARK: - Widget Entry Views
+struct ScheduleWidgetEntryView: View {
+    var entry: ScheduleEntry
+    @Environment(\.widgetFamily) var family
+    
+    var body: some View {
+        ZStack {
+            Color(hex: "#041727")
+                .ignoresSafeArea()
+            
+            switch family {
+            case .systemSmall:
+                ScheduleSmallWidgetView(entry: entry)
+            case .systemMedium:
+                MediumWidgetView(entry: entry)
+            case .systemLarge:
+                LargeWidgetView(entry: entry)
+            default:
+                Text("Unsupported size")
+            }
+        }
+        .containerBackground(for: .widget) { Color(hex: "#041727") }
+    }
+}
+
+struct DueWidget: Widget {
+    let kind: String = "DueWidget"
+    
+    var body: some WidgetConfiguration {
+        StaticConfiguration(kind: kind, provider: DueProvider()) { entry in
+            DueWidgetEntryView(entry: entry)
+        }
+        .configurationDisplayName("Due Today")
+        .description("View your upcoming assignments and due dates.")
+        .supportedFamilies([.systemSmall])
+    }
+}
+
+struct DueWidgetEntryView: View {
+    var entry: DueEntry
+    
+    var body: some View {
+        ZStack {
+            Color(hex: "#041727")
+                .ignoresSafeArea()
+            
+            DueSmallWidgetView(entry: entry)
+        }
+        .containerBackground(for: .widget) { Color(hex: "#041727") }
+    }
+}
+
+
+
 #Preview(as: .systemSmall) {
     VittyWidget()
 } timeline: {
-    SimpleEntry(date: .now, progress: 6, total: 7, nextClass: "Software Engineering", nextClassTime: "4:00 PM - 4:50 PM")
+    ScheduleEntry(date: .now, progress: 6, total: 7, nextClass: "Software Engineering", nextClassTime: "4:00 PM - 4:50 PM")
 }
