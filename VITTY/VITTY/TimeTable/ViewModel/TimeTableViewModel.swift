@@ -51,6 +51,7 @@ extension TimeTableView {
 					self.lectures = []
 			}
 		}
+        
 
 		func fetchTimeTable(username: String, authToken: String) async {
 			logger.info("Fetching TimeTable Started")

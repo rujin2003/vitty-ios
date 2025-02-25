@@ -23,6 +23,10 @@
 		317715DE279F1431009A532E /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317715DD279F1431009A532E /* IndexedCollection.swift */; };
 		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
 		31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */; };
+		4B4FCF632D317AFD002B392C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */; };
+		4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */; };
+		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
+		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */; };
 		520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6442B48013200124850 /* SuggestedFriendsView.swift */; };
 		520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6472B4802EE00124850 /* AddFriendCard.swift */; };
@@ -94,6 +98,16 @@
 		5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5DC0AF542AD2B586006B081D /* UserImage.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		4B8B32DA2D6D75F6004F01BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 314A408327383BEC0058082F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 4B8B32C72D6D75F4004F01BA;
+			remoteInfo = VittyWidgetExtension;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		3105872727A3ECBD00C2FC41 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -101,6 +115,7 @@
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
+				4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */,
 			);
 			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +142,9 @@
 		317715DD279F1431009A532E /* IndexedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
 		317EE1982775D3C6008AEB31 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VittyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsViewModel.swift; sourceTree = "<group>"; };
 		520BA6442B48013200124850 /* SuggestedFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsView.swift; sourceTree = "<group>"; };
 		520BA6472B4802EE00124850 /* AddFriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCard.swift; sourceTree = "<group>"; };
@@ -167,6 +185,20 @@
 		AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTYRelease.entitlements; sourceTree = "<group>"; };
 		AFEFCB6C27C90233007B2029 /* VITTY.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VITTY.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4B8B32DD2D6D75F6004F01BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+		4B8B32CC2D6D75F4004F01BA /* VittyWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4B8B32DD2D6D75F6004F01BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = VittyWidget; sourceTree = "<group>"; };
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		314A408827383BEC0058082F /* Frameworks */ = {
@@ -209,6 +241,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4B8B32C52D6D75F4004F01BA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */,
+				4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -216,6 +257,7 @@
 			isa = PBXGroup;
 			children = (
 				3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */,
+				4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -265,6 +307,7 @@
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
+				4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */,
 				52EE849D2CB9CD1F00CD864C /* GoogleService-Info.plist */,
 				5251A7FF2B46E3C000D44CFE /* .swift-format */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
@@ -273,6 +316,7 @@
 				AFEFCB6C27C90233007B2029 /* VITTY.entitlements */,
 				AFEFCB6B27C90042007B2029 /* VITTYRelease.entitlements */,
 				314A408D27383BEC0058082F /* VITTY */,
+				4B8B32CC2D6D75F4004F01BA /* VittyWidget */,
 				3105871927A3ECBB00C2FC41 /* Frameworks */,
 				314A408C27383BEC0058082F /* Products */,
 			);
@@ -282,6 +326,7 @@
 			isa = PBXGroup;
 			children = (
 				314A408B27383BEC0058082F /* VITTY.app */,
+				4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -667,6 +712,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				4B8B32DB2D6D75F6004F01BA /* PBXTargetDependency */,
 			);
 			name = VITTY;
 			packageProductDependencies = (
@@ -708,6 +754,28 @@
 			productReference = 314A408B27383BEC0058082F /* VITTY.app */;
 			productType = "com.apple.product-type.application";
 		};
+		4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4B8B32DE2D6D75F6004F01BA /* Build configuration list for PBXNativeTarget "VittyWidgetExtension" */;
+			buildPhases = (
+				4B8B32C42D6D75F4004F01BA /* Sources */,
+				4B8B32C52D6D75F4004F01BA /* Frameworks */,
+				4B8B32C62D6D75F4004F01BA /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			fileSystemSynchronizedGroups = (
+				4B8B32CC2D6D75F4004F01BA /* VittyWidget */,
+			);
+			name = VittyWidgetExtension;
+			packageProductDependencies = (
+			);
+			productName = VittyWidgetExtension;
+			productReference = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -715,11 +783,14 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1540;
+				LastSwiftUpdateCheck = 1610;
 				LastUpgradeCheck = 1610;
 				TargetAttributes = {
 					314A408A27383BEC0058082F = {
 						CreatedOnToolsVersion = 13.0;
+					};
+					4B8B32C72D6D75F4004F01BA = {
+						CreatedOnToolsVersion = 16.1;
 					};
 				};
 			};
@@ -743,6 +814,7 @@
 			projectRoot = "";
 			targets = (
 				314A408A27383BEC0058082F /* VITTY */,
+				4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */,
 			);
 		};
 /* End PBXProject section */
@@ -760,8 +832,16 @@
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
 				52EE849E2CB9CD1F00CD864C /* GoogleService-Info.plist in Resources */,
+				4B4FCF632D317AFD002B392C /* GoogleService-Info.plist in Resources */,
 				314A409627383BEE0058082F /* Preview Assets.xcassets in Resources */,
 				314A409327383BEE0058082F /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4B8B32C62D6D75F4004F01BA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -817,7 +897,22 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		4B8B32C42D6D75F4004F01BA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		4B8B32DB2D6D75F6004F01BA /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 4B8B32C72D6D75F4004F01BA /* VittyWidgetExtension */;
+			targetProxy = 4B8B32DA2D6D75F6004F01BA /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		314A409C27383BEE0058082F /* Debug */ = {
@@ -952,7 +1047,7 @@
 				CURRENT_PROJECT_VERSION = 2;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -992,7 +1087,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 2;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = 2TS98F9X52;
+				DEVELOPMENT_TEAM = C7RX29D33F;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;
@@ -1022,6 +1117,73 @@
 			};
 			name = Release;
 		};
+		4B8B32DF2D6D75F6004F01BA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C7RX29D33F;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VittyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VittyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios.VittyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		4B8B32E02D6D75F6004F01BA /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = C7RX29D33F;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = VittyWidget/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = VittyWidget;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios.VittyWidget;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -1039,6 +1201,15 @@
 			buildConfigurations = (
 				314A409F27383BEE0058082F /* Debug */,
 				314A40A027383BEE0058082F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4B8B32DE2D6D75F6004F01BA /* Build configuration list for PBXNativeTarget "VittyWidgetExtension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4B8B32DF2D6D75F6004F01BA /* Debug */,
+				4B8B32E02D6D75F6004F01BA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
