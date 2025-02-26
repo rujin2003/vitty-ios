@@ -32,6 +32,51 @@ struct ScheduleRow: View {
     }
 }
 
+
+struct AssignmentRow: View {
+    var assignment: Assignment
+    var titleFont : Double
+    var subjectFont : Double
+    var hoursLeft : Double
+    
+    var body: some View {
+        ZStack {
+            Color(.secondaryBackground)
+                .clipShape(RoundedRectangle(cornerRadius: 12))
+            
+            HStack {
+                VStack(alignment: .leading, spacing: 4) {
+                    HStack {
+                        Text(assignment.title)
+                            .font(.system(size: titleFont, weight: .bold))
+                            .foregroundColor(.white)
+                        Spacer()
+                       
+                    }
+                    
+                    Text(assignment.subject)
+                        .font(.system(size: subjectFont ))
+                        .foregroundColor(.accentBlue)
+                }
+                
+                Spacer()
+                
+                VStack(alignment: .trailing, spacing: 4) {
+                    Circle()
+                        .fill(assignment.priority.color)
+                        .frame(width: 8, height: 8)
+                    Spacer()
+                    Text(assignment.hoursLeft)
+                        .font(.system(size: hoursLeft, weight: .medium))
+                        .foregroundColor(.accentBlue)
+                }
+            }
+            .padding(10)
+        }
+    }
+}
+
+
 struct WidgetTitle: View {
     let title: String
     let fontSize: Double

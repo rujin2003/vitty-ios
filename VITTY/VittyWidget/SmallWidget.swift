@@ -16,62 +16,59 @@ import WidgetKit
 import SwiftUI
 
 struct DueSmallWidgetView: View {
-    var entry: DueEntry
+    var assignment: Assignment
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-          
             WidgetTitle(title: "Due Today", fontSize: 12.0)
             
             ZStack {
-                Color(hex: "#071F33")
+                Color(.secondaryBackground)
                     .clipShape(RoundedRectangle(cornerRadius: 12))
                 
                 VStack(alignment: .leading, spacing: 8) {
                     HStack {
-                        Text(entry.title)
+                        Text(assignment.title)
                             .font(.system(size: 14, weight: .bold))
                             .foregroundColor(.white)
                         Spacer()
                         Circle()
-                            .fill(Color.red)
+                            .fill(assignment.priority.color)
                             .frame(width: 8, height: 8)
                     }
                     
-                    Text(entry.timeRange)
+                    Text(assignment.timeRange)
                         .font(.system(size: 12, weight: .bold))
                         .foregroundColor(.white)
                     
-                    Text(entry.subject)
+                    Text(assignment.subject)
                         .font(.system(size: 10))
                         .lineLimit(1)
-                        .foregroundColor(Color(hex: "#BBE7FF"))
+                        .foregroundColor(.accentBlue)
                     
-                    Text(entry.hoursLeft)
+                    Text(assignment.hoursLeft)
                         .font(.system(size: 10, weight: .medium))
-                        .foregroundColor(Color(hex: "#BBE7FF"))
+                        .foregroundColor(.accentBlue)
                 }.padding(5)
-                
             }
         }
-       
     }
 }
 
 
+
+
 struct ScheduleSmallWidgetView: View {
-    var entry: Provider.Entry
+    var entry: ScheduleEntry
     
     var body: some View {
         VStack(alignment: .leading) {
             Spacer().frame(height: 10)
             WidgetTitle(title: "Schedule", fontSize: 12.0)
-            
             Spacer().frame(height: 15)
             
-          
             CircleProgressView(
-                progress: entry.progress,
+                progress: entry.classes.count,
                 total: entry.total,
                 circleSize: 45,
                 lineWidth: 12,
@@ -81,21 +78,22 @@ struct ScheduleSmallWidgetView: View {
             
             Spacer().frame(height: 20)
             
-            VStack(alignment: .leading, spacing: 5) {
-                Text("Up Next")
-                    .font(.system(size: 10, weight: .medium))
-                    .foregroundColor(.white)
-                
-                Text(entry.nextClass)
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundColor(.white)
-                    .lineLimit(1)
-                
-                Text(entry.nextClassTime)
-                    .font(.system(size: 10, weight: .bold))
-                    .foregroundColor(Color(hex: "#BBE7FF"))
+            if let nextClass = entry.classes.first {
+                VStack(alignment: .leading, spacing: 5) {
+                    Text("Up Next")
+                        .font(.system(size: 10, weight: .medium))
+                        .foregroundColor(.white)
+                    
+                    Text(nextClass.title)
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(.white)
+                        .lineLimit(1)
+                    
+                    Text(nextClass.time)
+                        .font(.system(size: 10, weight: .bold))
+                        .foregroundColor(Color(.accentBlue))
+                }
             }
-            
             Spacer()
         }
     }
@@ -103,8 +101,14 @@ struct ScheduleSmallWidgetView: View {
 
 
 
-#Preview("Due Small", as: .systemSmall) {
+#Preview("Medium Due Widget", as: .systemMedium) {
     DueWidget()
 } timeline: {
-    DueEntry(date: .now, title: "Quiz 1", timeRange: "8 AM - 9 AM", subject: "Java Programming", hoursLeft: "02:00 hrs left")
+    DueEntry(
+        date: Date(),
+        assignments: [
+            Assignment(title: "Quiz 1", timeRange: "8 AM - 9 AM", subject: "Java Programming - ELA", hoursLeft: "02:00 hrs left", priority: .high,category: nil),
+            Assignment(title: "Digital Assignment I", timeRange: "8 AM - 9 AM", subject: "Java Programming - ELA", hoursLeft: "12:00 hrs left", priority: .medium,category: nil),
+        ]
+    )
 }
