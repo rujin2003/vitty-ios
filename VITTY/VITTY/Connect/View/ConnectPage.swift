@@ -13,7 +13,7 @@ struct ConnectPage: View {
 	@Environment(CommunityPageViewModel.self) private var communityPageViewModel
 	@Environment(FriendRequestViewModel.self) private var friendRequestViewModel
 
-	@State private var isShowingRequestView = false
+	
 	@State private var isAddFriendsViewPresented = false
 
 	var body: some View {
@@ -130,20 +130,10 @@ struct ConnectPage: View {
 
 					}
 				}
-				Button(action: {
-					isShowingRequestView.toggle()
-
-				}) {
-					Image(systemName: "person.fill.badge.plus")
-						.foregroundColor(.white)
-				}
-				.navigationDestination(
-					isPresented: $isShowingRequestView,
-					destination: { AddFriendsView() }
-				)
+				
 
 			}
-			.navigationTitle("Connect")
+			
 		}
 		.onAppear {
 			communityPageViewModel.fetchData(

@@ -24,9 +24,15 @@
 		317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 317EE1982775D3C6008AEB31 /* SettingsView.swift */; };
 		31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */; };
 		4B4FCF632D317AFD002B392C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */; };
+		4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */; };
+		4B7DA5DF2D7094E8007354A3 /* Academics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5DE2D7094E3007354A3 /* Academics.swift */; };
 		4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */; };
 		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8B33742D7029A3004F01BA /* SideBar.swift */; };
+		4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */; };
+		4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */; };
+		4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */; };
 		520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */; };
 		520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6442B48013200124850 /* SuggestedFriendsView.swift */; };
 		520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6472B4802EE00124850 /* AddFriendCard.swift */; };
@@ -143,8 +149,14 @@
 		317EE1982775D3C6008AEB31 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		31A3BF3F27D09AF300B6BB97 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
+		4B7DA5DE2D7094E3007354A3 /* Academics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Academics.swift; sourceTree = "<group>"; };
 		4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VittyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
+		4B8B33742D7029A3004F01BA /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
+		4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClass.swift; sourceTree = "<group>"; };
+		4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassAPIService.swift; sourceTree = "<group>"; };
+		4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassRoomViewModel.swift; sourceTree = "<group>"; };
 		520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsViewModel.swift; sourceTree = "<group>"; };
 		520BA6442B48013200124850 /* SuggestedFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsView.swift; sourceTree = "<group>"; };
 		520BA6472B4802EE00124850 /* AddFriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCard.swift; sourceTree = "<group>"; };
@@ -334,6 +346,9 @@
 		314A408D27383BEC0058082F /* VITTY */ = {
 			isa = PBXGroup;
 			children = (
+				4B7DA5DD2D7094CA007354A3 /* Academics */,
+				4BD63D732D70547E00EEF5D7 /* EmptyClassroom */,
+				4B8B33732D702957004F01BA /* UserProfileSideBar */,
 				527E3E022B76626A0086F23D /* TimeTable */,
 				521562A92B70B0E50054F051 /* Instruction */,
 				52D5AB8A2B6FE4C600B2E66D /* Shared */,
@@ -365,6 +380,56 @@
 				31128CF12772F55D0084C9EA /* Fonts */,
 			);
 			path = Utilities;
+			sourceTree = "<group>";
+		};
+		4B7DA5DD2D7094CA007354A3 /* Academics */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5DE2D7094E3007354A3 /* Academics.swift */,
+			);
+			path = Academics;
+			sourceTree = "<group>";
+		};
+		4B8B33732D702957004F01BA /* UserProfileSideBar */ = {
+			isa = PBXGroup;
+			children = (
+				4B8B33742D7029A3004F01BA /* SideBar.swift */,
+			);
+			path = UserProfileSideBar;
+			sourceTree = "<group>";
+		};
+		4BD63D732D70547E00EEF5D7 /* EmptyClassroom */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D7D2D70638300EEF5D7 /* View */,
+				4BD63D782D70634F00EEF5D7 /* ViewModel */,
+				4BD63D752D7060F800EEF5D7 /* Service */,
+			);
+			path = EmptyClassroom;
+			sourceTree = "<group>";
+		};
+		4BD63D752D7060F800EEF5D7 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		4BD63D782D70634F00EEF5D7 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4BD63D7D2D70638300EEF5D7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		520BA63B2B47FF5700124850 /* SuggestedFriends */ = {
@@ -589,6 +654,7 @@
 			children = (
 				527E3E072B7662920086F23D /* TimeTableView.swift */,
 				525F759C2B809F8400E3B418 /* LectureDetailView.swift */,
+				4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -856,21 +922,25 @@
 				5D72EDDD2AB990BB00704BF5 /* AuthRequestBody.swift in Sources */,
 				528D32232C18C679007C9106 /* BackgroundView.swift in Sources */,
 				520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */,
+				4B7DA5DF2D7094E8007354A3 /* Academics.swift in Sources */,
 				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
 				527E3E082B7662920086F23D /* TimeTableView.swift in Sources */,
 				524B843A2B46F5C6006D18BD /* AddFriendsView.swift in Sources */,
 				5D72EDD82AB98D6D00704BF5 /* URLSession.swift in Sources */,
+				4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */,
 				52D5AB912B6FE90100B2E66D /* Constants.swift in Sources */,
 				317EE1992775D3C6008AEB31 /* SettingsView.swift in Sources */,
 				31A3BF4027D09AF300B6BB97 /* Date+Extension.swift in Sources */,
 				5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */,
 				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
+				4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */,
 				52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				522B8BB02B4732CC00EE686E /* Friend.swift in Sources */,
 				52D5AB8C2B6FE4D600B2E66D /* UserDefaultKeys.swift in Sources */,
 				5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
+				4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */,
 				524B84332B46EF3A006D18BD /* ConnectPage.swift in Sources */,
 				521E1E8B2C21DF0D00E8C7D2 /* AddFriendCardSearch.swift in Sources */,
 				5238C7F12B4AAE8700413946 /* FriendRequestView.swift in Sources */,
@@ -888,10 +958,12 @@
 				52978F8E2C3A7924008CF46C /* BottomBarView.swift in Sources */,
 				52D5AB862B6FE2ED00B2E66D /* AuthViewModel.swift in Sources */,
 				524B843C2B46F6FD006D18BD /* AddFriendsHeader.swift in Sources */,
+				4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */,
 				521562AC2B70B0FD0054F051 /* InstructionView.swift in Sources */,
 				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
 				528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */,
 				52D5AB8F2B6FE82E00B2E66D /* AuthAPIService.swift in Sources */,
+				4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */,
 				528CF1732B769B18007298A0 /* TimeTable.swift in Sources */,
 				521562AE2B710E730054F051 /* UsernameView.swift in Sources */,
 			);
