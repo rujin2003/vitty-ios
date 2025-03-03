@@ -27,6 +27,12 @@
 		4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */; };
 		4B7DA5DF2D7094E8007354A3 /* Academics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5DE2D7094E3007354A3 /* Academics.swift */; };
 		4B7DA5E12D70A728007354A3 /* FriendRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E02D70A71C007354A3 /* FriendRow.swift */; };
+		4B7DA5E32D70B2C3007354A3 /* Freinds.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E22D70B2C1007354A3 /* Freinds.swift */; };
+		4B7DA5E52D70B2CA007354A3 /* Circles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E42D70B2C8007354A3 /* Circles.swift */; };
+		4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */; };
+		4B7DA5F02D721EB1007354A3 /* JoinCreateSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5EF2D721EA9007354A3 /* JoinCreateSlider.swift */; };
+		4B7DA5F22D7228F9007354A3 /* JoinGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */; };
+		4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */; };
 		4B8B32CA2D6D75F4004F01BA /* WidgetKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */; };
 		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -153,6 +159,12 @@
 		4B7DA5DB2D708BCD007354A3 /* LectureItemView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LectureItemView.swift; sourceTree = "<group>"; };
 		4B7DA5DE2D7094E3007354A3 /* Academics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Academics.swift; sourceTree = "<group>"; };
 		4B7DA5E02D70A71C007354A3 /* FriendRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FriendRow.swift; sourceTree = "<group>"; };
+		4B7DA5E22D70B2C1007354A3 /* Freinds.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Freinds.swift; sourceTree = "<group>"; };
+		4B7DA5E42D70B2C8007354A3 /* Circles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circles.swift; sourceTree = "<group>"; };
+		4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CirclesRow.swift; sourceTree = "<group>"; };
+		4B7DA5EF2D721EA9007354A3 /* JoinCreateSlider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinCreateSlider.swift; sourceTree = "<group>"; };
+		4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JoinGroup.swift; sourceTree = "<group>"; };
+		4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateGroup.swift; sourceTree = "<group>"; };
 		4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VittyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4B8B33742D7029A3004F01BA /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
@@ -392,6 +404,60 @@
 			path = Academics;
 			sourceTree = "<group>";
 		};
+		4B7DA5E82D71E0CE007354A3 /* Circles */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5EC2D71E0FB007354A3 /* View */,
+				4B7DA5EB2D71E0F4007354A3 /* Components */,
+			);
+			path = Circles;
+			sourceTree = "<group>";
+		};
+		4B7DA5E92D71E0D7007354A3 /* Freinds */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5ED2D71E100007354A3 /* View */,
+				4B7DA5EA2D71E0E2007354A3 /* Components */,
+			);
+			path = Freinds;
+			sourceTree = "<group>";
+		};
+		4B7DA5EA2D71E0E2007354A3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4B7DA5EB2D71E0F4007354A3 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5EF2D721EA9007354A3 /* JoinCreateSlider.swift */,
+				4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */,
+				4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */,
+				4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		4B7DA5EC2D71E0FB007354A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5E42D70B2C8007354A3 /* Circles.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4B7DA5ED2D71E100007354A3 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B7DA5E02D70A71C007354A3 /* FriendRow.swift */,
+				52DBBE872B47B6B30014C57A /* FriendCard.swift */,
+				4B7DA5E22D70B2C1007354A3 /* Freinds.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
 		4B8B33732D702957004F01BA /* UserProfileSideBar */ = {
 			isa = PBXGroup;
 			children = (
@@ -576,6 +642,8 @@
 		524B84312B46EF28006D18BD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4B7DA5E92D71E0D7007354A3 /* Freinds */,
+				4B7DA5E82D71E0CE007354A3 /* Circles */,
 				524B84342B46F0FE006D18BD /* Components */,
 				524B84322B46EF3A006D18BD /* ConnectPage.swift */,
 			);
@@ -585,8 +653,6 @@
 		524B84342B46F0FE006D18BD /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				52DBBE872B47B6B30014C57A /* FriendCard.swift */,
-				4B7DA5E02D70A71C007354A3 /* FriendRow.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -926,6 +992,7 @@
 				528D32232C18C679007C9106 /* BackgroundView.swift in Sources */,
 				520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */,
 				4B7DA5DF2D7094E8007354A3 /* Academics.swift in Sources */,
+				4B7DA5F22D7228F9007354A3 /* JoinGroup.swift in Sources */,
 				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
 				527E3E082B7662920086F23D /* TimeTableView.swift in Sources */,
 				524B843A2B46F5C6006D18BD /* AddFriendsView.swift in Sources */,
@@ -952,10 +1019,13 @@
 				52D5AB972B6FFC8F00B2E66D /* LoginView.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
 				520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */,
+				4B7DA5E32D70B2C3007354A3 /* Freinds.swift in Sources */,
 				5238C7EE2B4A9E2C00413946 /* FriendRequestRaw.swift in Sources */,
 				525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */,
 				52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
+				4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */,
+				4B7DA5E52D70B2CA007354A3 /* Circles.swift in Sources */,
 				525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */,
 				520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
@@ -966,10 +1036,12 @@
 				521562AC2B70B0FD0054F051 /* InstructionView.swift in Sources */,
 				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
 				528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */,
+				4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */,
 				52D5AB8F2B6FE82E00B2E66D /* AuthAPIService.swift in Sources */,
 				4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */,
 				528CF1732B769B18007298A0 /* TimeTable.swift in Sources */,
 				521562AE2B710E730054F051 /* UsernameView.swift in Sources */,
+				4B7DA5F02D721EB1007354A3 /* JoinCreateSlider.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
