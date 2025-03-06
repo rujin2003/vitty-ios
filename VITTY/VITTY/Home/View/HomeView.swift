@@ -61,7 +61,7 @@ struct HomeView: View {
                         case 2:
                             ConnectPage()
                         case 3:
-                            Academics()
+                            NoteEditorView()
                         default:
                             Text("Error Lol")
                         }

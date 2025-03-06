@@ -37,9 +37,12 @@
 		4B8B32CB2D6D75F4004F01BA /* SwiftUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3105871C27A3ECBB00C2FC41 /* SwiftUI.framework */; };
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8B33742D7029A3004F01BA /* SideBar.swift */; };
+		4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA03C1C2D7584EA000756B0 /* AddFriend.swift */; };
 		4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */; };
 		4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */; };
 		4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */; };
+		4BF03C992D7819E30098C803 /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C982D7819E00098C803 /* Notes.swift */; };
+		4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C9A2D7838C50098C803 /* NotesHelper.swift */; };
 		520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */; };
 		520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6442B48013200124850 /* SuggestedFriendsView.swift */; };
 		520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6472B4802EE00124850 /* AddFriendCard.swift */; };
@@ -168,9 +171,12 @@
 		4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = VittyWidgetExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4B8B33742D7029A3004F01BA /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
+		4BA03C1C2D7584EA000756B0 /* AddFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriend.swift; sourceTree = "<group>"; };
 		4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClass.swift; sourceTree = "<group>"; };
 		4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassAPIService.swift; sourceTree = "<group>"; };
 		4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassRoomViewModel.swift; sourceTree = "<group>"; };
+		4BF03C982D7819E00098C803 /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
+		4BF03C9A2D7838C50098C803 /* NotesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesHelper.swift; sourceTree = "<group>"; };
 		520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsViewModel.swift; sourceTree = "<group>"; };
 		520BA6442B48013200124850 /* SuggestedFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsView.swift; sourceTree = "<group>"; };
 		520BA6472B4802EE00124850 /* AddFriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCard.swift; sourceTree = "<group>"; };
@@ -436,6 +442,7 @@
 				4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */,
 				4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */,
 				4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */,
+				4BA03C1C2D7584EA000756B0 /* AddFriend.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -498,6 +505,15 @@
 				4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		4BF03C972D7819D30098C803 /* Academics */ = {
+			isa = PBXGroup;
+			children = (
+				4BF03C982D7819E00098C803 /* Notes.swift */,
+				4BF03C9A2D7838C50098C803 /* NotesHelper.swift */,
+			);
+			path = Academics;
 			sourceTree = "<group>";
 		};
 		520BA63B2B47FF5700124850 /* SuggestedFriends */ = {
@@ -642,6 +658,7 @@
 		524B84312B46EF28006D18BD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4BF03C972D7819D30098C803 /* Academics */,
 				4B7DA5E92D71E0D7007354A3 /* Freinds */,
 				4B7DA5E82D71E0CE007354A3 /* Circles */,
 				524B84342B46F0FE006D18BD /* Components */,
@@ -943,6 +960,7 @@
 				522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */,
 				5247A3632B963877006C0DF9 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				5247A39A2B9638D9006C0DF9 /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
+				4BF03C9C2D78395D0098C803 /* XCRemoteSwiftPackageReference "Down" */,
 			);
 			productRefGroup = 314A408C27383BEC0058082F /* Products */;
 			projectDirPath = "";
@@ -1010,6 +1028,7 @@
 				522B8BB02B4732CC00EE686E /* Friend.swift in Sources */,
 				52D5AB8C2B6FE4D600B2E66D /* UserDefaultKeys.swift in Sources */,
 				5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */,
+				4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */,
 				524B84332B46EF3A006D18BD /* ConnectPage.swift in Sources */,
@@ -1022,6 +1041,7 @@
 				4B7DA5E32D70B2C3007354A3 /* Freinds.swift in Sources */,
 				5238C7EE2B4A9E2C00413946 /* FriendRequestRaw.swift in Sources */,
 				525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */,
+				4BF03C992D7819E30098C803 /* Notes.swift in Sources */,
 				52DBBE882B47B6B30014C57A /* FriendCard.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
 				4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */,
@@ -1030,6 +1050,7 @@
 				520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */,
 				314A408F27383BEC0058082F /* VITTYApp.swift in Sources */,
 				52978F8E2C3A7924008CF46C /* BottomBarView.swift in Sources */,
+				4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */,
 				52D5AB862B6FE2ED00B2E66D /* AuthViewModel.swift in Sources */,
 				524B843C2B46F6FD006D18BD /* AddFriendsHeader.swift in Sources */,
 				4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */,
@@ -1365,6 +1386,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		4BF03C9C2D78395D0098C803 /* XCRemoteSwiftPackageReference "Down" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/johnxnguyen/Down.git";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
 		522B8BB12B473FEA00EE686E /* XCRemoteSwiftPackageReference "Alamofire" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
