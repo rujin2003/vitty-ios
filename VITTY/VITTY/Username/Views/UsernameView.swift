@@ -90,8 +90,13 @@ struct UsernameView: View {
 						}
 					}) {
 						if isLoading {
-							ProgressView()
-								.padding(.vertical, 16)
+                            HStack{
+                                Spacer()
+                                ProgressView()
+                                    .padding(.vertical, 16)
+                                
+                                Spacer()
+                            }
 						}
 						else {
 							Spacer()
@@ -102,7 +107,7 @@ struct UsernameView: View {
 							Spacer()
 						}
 					}
-//					.disabled(regNoError || usernameError)
+					.disabled(regNoError || usernameError)
 					.background(Color("brightBlue"))
 					.cornerRadius(18)
 				}

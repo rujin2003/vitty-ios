@@ -71,8 +71,10 @@ struct HomeView: View {
                 }
                 
                 
+                // In your HomeView
                 if showProfileSidebar {
-                    HStack {
+                    ZStack {
+                        // Full screen overlay to darken the background
                         Color.black.opacity(0.3)
                             .edgesIgnoringSafeArea(.all)
                             .onTapGesture {
@@ -81,12 +83,20 @@ struct HomeView: View {
                                 }
                             }
                         
-                        UserProfileSidebar(isPresented: $showProfileSidebar)
-                            .frame(width: UIScreen.main.bounds.width * 0.8)
-                            .transition(.move(edge: .trailing))
-                            .background(Color("Background").opacity(0.95))
-                        
+                      
+                        GeometryReader { geometry in
+                            HStack(spacing: 0) {
+                                Spacer()
+                                
+                                UserProfileSidebar(isPresented: $showProfileSidebar)
+                                    .frame(width: geometry.size.width * 0.75)
+                                    .transition(.move(edge: .trailing))
+                                    .background(Color.clear)
+                                    .edgesIgnoringSafeArea(.all)
+                            }
+                        }
                     }
+                    .edgesIgnoringSafeArea(.all)
                 }
                 
             }
