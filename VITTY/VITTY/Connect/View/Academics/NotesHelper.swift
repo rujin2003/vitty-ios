@@ -7,7 +7,9 @@
 //
 
 import Down
+
 import Foundation
+import UIKit
 
 extension NSAttributedString {
     func toMarkdown() -> String {
@@ -16,22 +18,21 @@ extension NSAttributedString {
             let substring = self.attributedSubstring(from: range).string
             var markdownString = substring
 
-            // Handle bold
+            
             if let font = attributes[.font] as? UIFont, font.fontDescriptor.symbolicTraits.contains(.traitBold) {
                 markdownString = "**\(markdownString)**"
             }
 
-            // Handle italic
             if let font = attributes[.font] as? UIFont, font.fontDescriptor.symbolicTraits.contains(.traitItalic) {
                 markdownString = "*\(markdownString)*"
             }
 
-            // Handle underline
+        
             if let underline = attributes[.underlineStyle] as? Int, underline == NSUnderlineStyle.single.rawValue {
                 markdownString = "__\(markdownString)__"
             }
 
-            // Handle headings (assuming you have a way to identify headings)
+          
             if let font = attributes[.font] as? UIFont {
                 switch font.pointSize {
                 case 24:

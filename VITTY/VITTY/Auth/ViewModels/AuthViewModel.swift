@@ -22,7 +22,8 @@ enum LoginOptions {
 class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     var loggedInFirebaseUser: User?
     var loggedInBackendUser: AppUser?
-    var isLoading: Bool = false
+    var isLoadingApple: Bool = false
+    var isLoadingGoogle : Bool = false
     let firebaseAuth = Auth.auth()
     fileprivate var currentNonce: String?
     
@@ -58,23 +59,23 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     }
     
     
-//    private func signInServer(username: String, regNo: String) async {
-//        logger.info("Signing into server...")
-//        do {
-//            self.loggedInBackendUser = try await AuthAPIService.shared
-//                .signInUser(
-//                    with: AuthRequestBody(
-//                        uuid: loggedInFirebaseUser?.uid ?? "",
-//                        reg_no: regNo,
-//                        username: username
-//                    )
-//                )
-//        }
-//        catch {
-//            logger.error("Signing into server error: \(error)")
-//        }
-//        logger.info("Signed into server")
-//    }
+ func signInServer(username: String, regNo: String) async {
+        logger.info("Signing into server...")
+        do {
+            self.loggedInBackendUser = try await AuthAPIService.shared
+                .signInUser(
+                    with: AuthRequestBody(
+                        uuid: loggedInFirebaseUser?.uid ?? "",
+                        reg_no: regNo,
+                        username: username
+                    )
+                )
+        }
+        catch {
+            logger.error("Signing into server error: \(error)")
+        }
+        logger.info("Signed into server")
+    }
     
     private func firebaseUserAuthUpdate(with auth: Auth, user: User?) {
         logger.info("Firebase User Auth State Updated")

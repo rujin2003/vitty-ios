@@ -7,10 +7,15 @@
 
 import SwiftUI
 
+
+
 struct CirclesView : View{
+    @Binding var isCreatingGroup : Bool
     var body : some View{
         HStack{
             
+        }.onAppear{
+            isCreatingGroup = true
         }
     }
 }

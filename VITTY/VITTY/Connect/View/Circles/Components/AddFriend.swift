@@ -5,6 +5,7 @@
 //  Created by Rujin Devkota on 3/3/25.
 //
 
+
 import SwiftUI
 struct AddFriend : View{
     let screenHeight = UIScreen.main.bounds.height

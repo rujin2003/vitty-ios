@@ -57,18 +57,21 @@ struct NoteEditorView: View {
     @State private var showFontPicker = false
     @State private var showHeadingPicker = false
 
-    func loadContent() {
-        
-          if let loadedMarkdown = loadMarkdownFromBackend() {
-              attributedText = NSMutableAttributedString(attributedString: loadedMarkdown.toAttributedString() ?? NSAttributedString(string: ""))
-          }
-      }
+//    func loadContent() {
+//        
+//          if let loadedMarkdown = loadMarkdownFromBackend()
+//        
+//        {
+//              attributedText = NSMutableAttributedString(attributedString: loadedMarkdown.toAttributedString() ?? NSAttributedString(string: ""))
+//          }
+//      }
+    
     func saveContent() {
             let markdown = attributedText.toMarkdown()
             
         }
     
-    // Predefined fonts for the font picker
+    
     private let fonts: [UIFont] = [
         UIFont.systemFont(ofSize: 18),
         UIFont(name: "Times New Roman", size: 18)!,
@@ -76,7 +79,7 @@ struct NoteEditorView: View {
         UIFont(name: "Courier", size: 18)!
     ]
 
-    // Predefined headings
+  
     private let headings: [String: CGFloat] = [
         "R1": 24,
         "R2": 20,
@@ -89,7 +92,7 @@ struct NoteEditorView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack {
-                // Back button
+               
                 HStack {
                     Button(action: {}) {
                         Image(systemName: "chevron.left")
@@ -98,7 +101,7 @@ struct NoteEditorView: View {
                     Spacer()
                     Text("Note")
                         .foregroundColor(.white)
-                        .font(.headline)
+                        .font(.system(size: 25,weight: Font.Weight.bold))
                     Spacer()
                 }
                 .padding()
@@ -111,15 +114,15 @@ struct NoteEditorView: View {
                 .padding()
                 .frame(maxHeight: .infinity)
 
-                // Bottom toolbar
+            
                 HStack(spacing: 20) {
-                    // Font Picker
+                  
                     Button(action: { showFontPicker.toggle() }) {
                         Image(systemName: "textformat")
                             .foregroundColor(Color("Accent"))
                     }
                     
-                    // Heading Picker
+                   
                     Button(action: { showHeadingPicker.toggle() }) {
                         Image(systemName: "textformat.size")
                             .foregroundColor(Color("Accent"))
@@ -149,7 +152,7 @@ struct NoteEditorView: View {
                         }
                     )
                     
-                    // Bold, Italic, Underline
+                  
                     Button(action: { toggleBold() }) {
                         Image(systemName: "bold")
                             .foregroundColor(Color("Accent"))
@@ -186,7 +189,6 @@ struct NoteEditorView: View {
                             )
                     }
 
-                    // Color Picker
                     ColorPicker("", selection: $selectedColor, supportsOpacity: false)
                         .labelsHidden()
                         .frame(width: 30, height: 30)
@@ -194,7 +196,7 @@ struct NoteEditorView: View {
                             applyAttribute(.foregroundColor, value: UIColor(newColor))
                         }
 
-                    // Bullet Point Button
+                    
                     Button(action: { addBulletPoints() }) {
                         Image(systemName: "list.bullet")
                             .foregroundColor(Color("Accent"))
@@ -204,7 +206,7 @@ struct NoteEditorView: View {
                 .background(Color("Background").opacity(0.8))
             }
 
-            // Font Picker Popover
+         
             if showFontPicker {
                 VStack {
                     ForEach(fonts, id: \.fontName) { font in
@@ -227,7 +229,7 @@ struct NoteEditorView: View {
         }
     }
 
-    // Add bullet points to selected text
+
     func addBulletPoints() {
         guard selectedRange.length > 0 else { return }
 
@@ -235,16 +237,15 @@ struct NoteEditorView: View {
         let lines = selectedText.components(separatedBy: "\n")
         var bulletedText = lines.map { "• \($0)" }.joined(separator: "\n")
 
-        // Replace the selected text with bulleted text
+       
         let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
         mutableAttributedString.replaceCharacters(in: selectedRange, with: bulletedText)
 
-        // Update the attributed text and selected range
         attributedText = mutableAttributedString
         selectedRange.length = bulletedText.count
     }
 
-    // Check if bold is active
+   
     func isBoldActive() -> Bool {
         if selectedRange.length > 0 {
             if let font = attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) as? UIFont {
@@ -258,7 +259,7 @@ struct NoteEditorView: View {
         return false
     }
 
-    // Check if italic is active
+    
     func isItalicActive() -> Bool {
         if selectedRange.length > 0 {
             if let font = attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) as? UIFont {
@@ -272,7 +273,7 @@ struct NoteEditorView: View {
         return false
     }
 
-    // Check if underline is active
+
     func isUnderlineActive() -> Bool {
         if selectedRange.length > 0 {
             if let underline = attributedText.attribute(.underlineStyle, at: selectedRange.location, effectiveRange: nil) as? Int {
@@ -286,7 +287,7 @@ struct NoteEditorView: View {
         return false
     }
 
-    // Apply a heading style
+    
     func applyHeadingStyle(_ heading: String) {
         guard let fontSize = headings[heading] else { return }
         let currentFont = (selectedRange.length > 0 ? attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.font]) as? UIFont ?? UIFont.systemFont(ofSize: 18)
@@ -294,7 +295,7 @@ struct NoteEditorView: View {
         applyAttribute(.font, value: newFont)
     }
 
-    // Toggle bold
+
     func toggleBold() {
         let currentFont = (selectedRange.length > 0 ? attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.font]) as? UIFont ?? UIFont.systemFont(ofSize: 18)
         var traits = currentFont.fontDescriptor.symbolicTraits
@@ -309,7 +310,7 @@ struct NoteEditorView: View {
         }
     }
 
-    // Toggle italic
+ 
     func toggleItalic() {
         let currentFont = (selectedRange.length > 0 ? attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.font]) as? UIFont ?? UIFont.systemFont(ofSize: 18)
         var traits = currentFont.fontDescriptor.symbolicTraits
@@ -324,14 +325,14 @@ struct NoteEditorView: View {
         }
     }
 
-    // Toggle underline
+
     func toggleUnderline() {
         let currentUnderline = (selectedRange.length > 0 ? attributedText.attribute(.underlineStyle, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.underlineStyle]) as? Int ?? 0
         let newUnderline = currentUnderline == NSUnderlineStyle.single.rawValue ? 0 : NSUnderlineStyle.single.rawValue
         applyAttribute(.underlineStyle, value: newUnderline)
     }
 
-    // Apply an attribute to the selected text or typing attributes
+    
     func applyAttribute(_ key: NSAttributedString.Key, value: Any) {
         if selectedRange.length > 0 {
             let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)

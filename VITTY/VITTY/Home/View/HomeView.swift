@@ -6,7 +6,9 @@ struct HomeView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @State private var selectedPage = 1
     @State private var showProfileSidebar: Bool = false
-    @State private var isShowingRequestView = false
+
+    @State private var isCreatingGroup = false
+ 
     
     var body: some View {
         NavigationStack {
@@ -37,17 +39,11 @@ struct HomeView: View {
                                 )
                             }
                         }else{
-                            Button(action: {
-                                isShowingRequestView.toggle()
-
-                            }) {
-                                Image(systemName: "person.fill.badge.plus")
-                                    .foregroundColor(.white)
-                            }
-                            .navigationDestination(
-                                isPresented: $isShowingRequestView,
-                                destination: { AddFriendsView() }
-                            )
+                            
+                          
+                            
+                            
+                           
                         }
                     }
                     .padding(.horizontal)
@@ -59,9 +55,9 @@ struct HomeView: View {
                         case 1:
                             TimeTableView(friend: nil)
                         case 2:
-                            ConnectPage()
+                            ConnectPage(isCreatingGroup: $isCreatingGroup)
                         case 3:
-                            NoteEditorView()
+                            Academics()
                         default:
                             Text("Error Lol")
                         }
@@ -74,7 +70,7 @@ struct HomeView: View {
                         .padding(.bottom, 24)
                 }
                 
-                // Sidebar and Overlay
+                
                 if showProfileSidebar {
                     HStack {
                         Color.black.opacity(0.3)
@@ -95,6 +91,7 @@ struct HomeView: View {
                 
             }
             .ignoresSafeArea(edges: .bottom)
+          
         }
     }
 }

@@ -9,13 +9,7 @@ struct JoinCreateSlider: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Spacer().frame(height: 8)
-            }
-            .frame(width: screenWidth * 0.6)
-            .background(Color.gray)
-            .cornerRadius(10)
-            Spacer().frame(height: 40)
+          
           
             HStack(spacing: 40) {
                   
