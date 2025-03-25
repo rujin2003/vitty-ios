@@ -33,7 +33,7 @@ struct TimeTableView: View {
                     case .error:
                         VStack {
                             Spacer()
-                            Text("It's an error!")
+                            Text("It's an error!\(String(describing: authViewModel.loggedInBackendUser?.username))")
                                 .font(Font.custom("Poppins-Bold", size: 24))
                             Text("Sorry if you are late for your class!")
                             Spacer()
@@ -97,12 +97,14 @@ struct TimeTableView: View {
                 LectureDetailView(lecture: lecture)
             }
             .onAppear {
+              
                 Task {
                     await viewModel.fetchTimeTable(
                         username: friend?.username
                             ?? (authViewModel.loggedInBackendUser?.username ?? ""),
                         authToken: authViewModel.loggedInBackendUser?.token ?? ""
                     )
+            
                 }
             }
         }

@@ -42,6 +42,17 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         
         super.init()
         
+        // FOR TESTING - Using constant test credentials
+        self.loggedInBackendUser = AppUser(
+            name: "Rudrank Basant",
+            picture: "https://lh3.googleusercontent.com/a/ACg8ocK7g3mh79yuJOyaOWy4iM4WsFk81VYAeDty5W4A8ETrqbw=s96-c",
+            role: "normal",
+            token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1ZHJhbmsxMjNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicnVkcmFuayJ9.m7YQwp7hLCBO1YXPNvwpaHCOXh5BZVa6BK7sTYVzUT4",
+            username: "rudrank"
+        )
+        
+       
+        /*
         loggedInFirebaseUser = firebaseAuth.currentUser
         firebaseAuth.addStateDidChangeListener(firebaseUserAuthUpdate)
         
@@ -54,12 +65,14 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
                 token: UserDefaults.standard.string(forKey: UserDefaultKeys.tokenKey)!,
                 username: UserDefaults.standard.string(forKey: UserDefaultKeys.usernameKey)!)
         }
+        */
         
         logger.info("Auth Initialisation Complete")
     }
     
-    
- func signInServer(username: String, regNo: String) async {
+   
+    /*
+    func signInServer(username: String, regNo: String) async {
         logger.info("Signing into server...")
         do {
             self.loggedInBackendUser = try await AuthAPIService.shared
@@ -76,6 +89,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         }
         logger.info("Signed into server")
     }
+    */
     
     private func firebaseUserAuthUpdate(with auth: Auth, user: User?) {
         logger.info("Firebase User Auth State Updated")
@@ -85,68 +99,16 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         }
     }
     
+    // FOR TESTING - Modified to just return the test user
     func login(with loginOptions: LoginOptions) async {
-        logger.info("Loging In...")
+        logger.info("Using test credentials - rudrank")
         
-        logger.info("Logging into Firebase...")
-        do {
-            switch loginOptions {
-            case .googleSignIn:
-                try await signInWithGoogle()
-            case .appleSignIn:
-                signInWithApple()
-            }
-        } catch {
-            logger.error("Error in logging in: \(error)")
-            return
-        }
-        logger.info("Logged Into Firebase")
-        
-        if (self.loggedInFirebaseUser == nil) {
-            return
-        }
-        
-        logger.info("Logging into Backend...")
-        
-        do {
-            if (try await AuthAPIService.shared.checkUserExists(with: self.loggedInFirebaseUser!.uid)) {
-                self.loggedInBackendUser = try await AuthAPIService.shared.signInUser(
-                    with: AuthRequestBody(
-                        uuid: self.loggedInFirebaseUser!.uid, reg_no: "", username: "")
-                    )
-                
-                UserDefaults.standard.set(
-                    loggedInBackendUser!.token,
-                    forKey: UserDefaultKeys.tokenKey
-                )
-                UserDefaults.standard.set(
-                    loggedInBackendUser!.username,
-                    forKey: UserDefaultKeys.usernameKey
-                )
-                UserDefaults.standard.set(
-                    loggedInBackendUser!.name,
-                    forKey: UserDefaultKeys.nameKey
-                )
-                UserDefaults.standard.set(
-                    loggedInBackendUser!.picture,
-                    forKey: UserDefaultKeys.pictureKey
-                )
-                UserDefaults.standard.set(
-                    loggedInBackendUser!.role,
-                    forKey: UserDefaultKeys.roleKey
-                )
-                
-                logger.debug("\(UserDefaults.standard.string(forKey: UserDefaultKeys.usernameKey)!)")
-            } else {
-                self.loggedInBackendUser = nil // tbh no need for this, but just to make sure
-            }
-        } catch {
-            logger.error("Error in logging in: \(error)")
-            return
-        }
-        
+        // Return the pre-set test user
+        return
     }
     
+  
+    /*
     private func signInWithGoogle() async throws {
         logger.info("Signing in with Google...")
         
@@ -217,8 +179,14 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
             }
         }
     }
+    */
     
     func signOut() {
+        // FOR TESTING - Just reset the defaults
+        UserDefaults.resetDefaults()
+        
+      
+        /*
         do {
             try firebaseAuth.signOut()
             UserDefaults.resetDefaults()
@@ -226,6 +194,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         catch {
             logger.error("Error Signing Out: \(error)")
         }
+        */
     }
 }
 

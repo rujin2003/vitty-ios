@@ -84,9 +84,9 @@ struct UsernameView: View {
 						Task {
 							// TODO: Important
 
-							isLoading = true
-							await authViewModel.signInServer(username: username, regNo: regNo)
-							isLoading = false
+//							isLoading = true
+//							await authViewModel.signInServer(username: username, regNo: regNo)
+//							isLoading = false
 						}
 					}) {
 						if isLoading {

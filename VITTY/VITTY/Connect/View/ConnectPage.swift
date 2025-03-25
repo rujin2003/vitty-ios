@@ -13,6 +13,8 @@ struct ConnectPage: View {
     @Environment(CommunityPageViewModel.self) private var communityPageViewModel
     @Environment(FriendRequestViewModel.self) private var friendRequestViewModel
     @State private var isShowingRequestView = false
+    @State var isCircleView = false
+    @State var isAddCircleFunc = false
     
     @Binding var isCreatingGroup : Bool
     
@@ -32,7 +34,10 @@ struct ConnectPage: View {
                         selectedTab = 0
                     }
                     AcademicsTabButton(title: "Circles", isActive: selectedTab == 1) {
+                       
                         selectedTab = 1
+                        isCircleView = true
+                 
                     }
                 }
                 .padding(.top,20)
@@ -45,19 +50,35 @@ struct ConnectPage: View {
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
-            Button(action: {
-                isShowingRequestView.toggle()
+            if isCircleView == false {
+                Button(action: {
+                    isShowingRequestView.toggle()
 
-            }) {
-                Image(systemName: "person.fill.badge.plus")
-                    .foregroundColor(.white)
-            }
-            .navigationDestination(
-                isPresented: $isShowingRequestView,
-                destination: {
-                    AddFriendsView()
+                }) {
+                    Image(systemName: "person.fill.badge.plus")
+                        .foregroundColor(.white)
                 }
-            ).offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+                .navigationDestination(
+                    isPresented: $isShowingRequestView,
+                    destination: {
+                        AddFriendsView()
+                    }
+                ).offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+            } else{
+                Button(action: {
+                    isAddCircleFunc.toggle()
+
+                }) {
+                    Image(systemName: "person.fill.badge.plus")
+                        .foregroundColor(.white)
+                }
+               .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+            }
+            
+        }.sheet(isPresented: $isAddCircleFunc){
+            VStack{
+                Text("Hello sir")
+            }
         }
         
         .onAppear {
