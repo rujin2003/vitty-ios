@@ -35,25 +35,7 @@ struct CoursesView: View {
         ScrollView {
             VStack(spacing: 0) {
                
-                HStack {
-                    Image(systemName: "magnifyingglass")
-                        .foregroundColor(.gray)
-                    
-                    TextField("Search", text: $searchText)
-                        .foregroundColor(.white)
-                    
-                    if !searchText.isEmpty {
-                        Button(action: { searchText = "" }) {
-                            Image(systemName: "xmark")
-                                .foregroundColor(.gray)
-                        }
-                    }
-                }
-                .padding(10)
-                .background(Color("Secondary"))
-                .cornerRadius(8)
-                .padding(.horizontal)
-                .padding(.top, 16)
+                SearchBar(searchText: $searchText)
                 
              
                 HStack(spacing: 16) {
