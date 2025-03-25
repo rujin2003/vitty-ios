@@ -7,16 +7,17 @@
 
 import SwiftUI
 
-struct CirlesRow: View {
-    let friend: Friend
+struct CirclesRow: View {
+
+    let circle: CircleModel
 
     var body: some View {
         HStack {
-            UserImage(url: friend.picture, height: 48, width: 48)
+            UserImage(url: "https://picsum.photos/200/300", height: 48, width: 48)
             Spacer().frame(width: 20)
             VStack(alignment: .leading) {
                 
-                Text(cleanName(friend.name))
+                Text(cleanName(circle.circleName))
                     .font(Font.custom("Poppins-SemiBold", size: 18))
                     .foregroundColor(Color.white)
                 

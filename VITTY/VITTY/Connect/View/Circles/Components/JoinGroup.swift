@@ -1,10 +1,3 @@
-//
-//  JoinGroup.swift
-//  VITTY
-//
-//  Created by Rujin Devkota on 2/28/25.
-//
-
 import SwiftUI
 import AVFoundation
 
@@ -18,20 +11,18 @@ struct JoinGroup: View {
     
     var body: some View {
         VStack(spacing: 20) {
-            
-           
             Capsule()
                 .fill(Color.gray.opacity(0.5))
                 .frame(width: 50, height: 5)
                 .padding(.top, 10)
             
             Text("Join Group")
-                .font(.system(size: 23, weight: .bold))
+                .font(.system(size: 21, weight: .bold))
                 .foregroundColor(.white)
             
             VStack(alignment: .leading, spacing: 10) {
                 Text("Enter group code")
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.system(size: 16, weight: .bold))
                         .foregroundColor(Color("Accent"))
                 
                 TextField("", text: $groupCode)
@@ -46,13 +37,12 @@ struct JoinGroup: View {
             }
             .padding(.horizontal, 20)
             
-           
             HStack {
                 Rectangle()
                     .fill(Color.gray.opacity(0.5))
                     .frame(height: 1)
                 Text("OR")
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.system(size: 16, weight: .bold))
                     .foregroundColor(.white)
                     .padding(.horizontal, 10)
                 Rectangle()
@@ -62,13 +52,12 @@ struct JoinGroup: View {
             .padding(.horizontal, 20)
             
             HStack{
-                Text("Scan Qr Code").font(.system(size: 18, weight: .bold))
+                Text("Scan Qr Code").font(.system(size: 16, weight: .bold))
                     .foregroundColor(Color("Accent")).padding(.leading,20)
                 Spacer()
             }
-           
+            
             VStack {
-               
                 Image(systemName: "qrcode.viewfinder")
                     .resizable()
                     .scaledToFit()
@@ -85,19 +74,17 @@ struct JoinGroup: View {
             
             Spacer()
             
-          
             HStack {
                 Spacer()
                 Text("JOIN")
-                    .font(.system(size: 18, weight: .bold))
-                    .foregroundColor(Color("Accent")).padding(.trailing,10)
-               
+                    .font(.system(size: 16, weight: .bold))
+                    .foregroundColor(Color("Accent")).padding(.trailing,20)
             }
             .padding(.leading, 20)
             .padding(.bottom, 20)
-            
         }
-        .frame(width: screenWidth, height: screenHeight * 0.65)
+        
+        .presentationDetents([.height(screenHeight * 0.65)])
         .background(Color("Secondary"))
     }
 }

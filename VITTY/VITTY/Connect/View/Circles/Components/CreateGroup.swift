@@ -138,7 +138,7 @@ struct CreateGroup: View {
             .padding(.bottom, 20)
             
         }
-        .frame(width: screenWidth, height: screenHeight * 0.65)
+        .presentationDetents([.height(screenHeight * 0.65)])
         .background(Color("Secondary"))
     }
 }

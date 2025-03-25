@@ -15,7 +15,7 @@ struct EmptyClassRoom: View {
                 
                 VStack {
                     headerView
-                    SearchBar()
+                    EmptyClassSearchBar()
                     slotsScrollView
                     contentView
                     Spacer()
@@ -130,7 +130,7 @@ struct ClassRoomCard: View {
     }
 }
 
-struct SearchBar: View {
+struct EmptyClassSearchBar: View {
     @State private var searchText = ""
     
     var body: some View {

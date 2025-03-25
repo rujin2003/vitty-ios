@@ -6,35 +6,17 @@
 //
 import SwiftUI
 struct FriendsView: View {
-    @Environment(CommunityPageViewModel.self) private var communityPageViewModel
-    @Environment(AuthViewModel.self) private var authViewModel
     @State private var searchText = ""
     @State private var selectedFilterOption = 0
+    @Environment(CommunityPageViewModel.self) private var communityPageViewModel
+    @Environment(AuthViewModel.self) private var authViewModel
     
     var body: some View {
         VStack(spacing: 12) {
+            Spacer().frame(height: 8)
             
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .foregroundColor(.gray)
-                
-                TextField("Search", text: $searchText)
-                    .font(Font.custom("Poppins-Regular", size: 16))
-                
-                if !searchText.isEmpty {
-                    Button(action: {
-                        searchText = ""
-                    }) {
-                        Image(systemName: "xmark")
-                            .foregroundColor(.gray)
-                    }
-                }
-            }
-            .padding()
-            .background(Color("Secondary").opacity(0.5))
-            .cornerRadius(10)
-            .padding(.horizontal)
-            
+            SearchBar(searchText: $searchText)
+            Spacer().frame(height: 8)
             // Filter pills - always visible
             HStack {
                 FilterPill(title: "Available", isSelected: selectedFilterOption == 0)
@@ -48,11 +30,12 @@ struct FriendsView: View {
                 Spacer()
             }
             .padding(.horizontal)
+            Spacer().frame(height: 7)
             
             // Conditional content based on state
             if communityPageViewModel.error {
                 Spacer()
-                VStack(spacing: 8) {
+                VStack(spacing: 5) {
                     Text("No Friends?")
                         .multilineTextAlignment(.center)
                         .font(Font.custom("Poppins-SemiBold", size: 18))
@@ -96,15 +79,15 @@ struct FriendsView: View {
                         .padding(.horizontal)
                     }
                     .safeAreaPadding(.bottom, 100)
-                    .refreshable {
-                        communityPageViewModel.fetchData(
-                            from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
-                            token: authViewModel.loggedInBackendUser?.token ?? "",
-                            loading: false
-                        )
-                    }
+                    
                 }
             }
+        }.refreshable {
+            communityPageViewModel.fetchFriendsData(
+                from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: true
+            )
         }
     }
 }

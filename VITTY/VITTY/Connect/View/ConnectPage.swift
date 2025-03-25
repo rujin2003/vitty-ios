@@ -15,6 +15,8 @@ struct ConnectPage: View {
     @State private var isShowingRequestView = false
     @State var isCircleView = false
     @State var isAddCircleFunc = false
+    @State var showCreateGroupSheet = false
+    @State var showJoinGroupSheet = false
     
     @Binding var isCreatingGroup : Bool
     
@@ -32,6 +34,7 @@ struct ConnectPage: View {
                 HStack {
                     AcademicsTabButton(title: "Friends", isActive: selectedTab == 0) {
                         selectedTab = 0
+                        isCircleView = false
                     }
                     AcademicsTabButton(title: "Circles", isActive: selectedTab == 1) {
                        
@@ -76,24 +79,64 @@ struct ConnectPage: View {
             }
             
         }.sheet(isPresented: $isAddCircleFunc){
-            VStack{
-                Text("Hello sir")
-            }
+            ZStack{
+                Color("Background")
+                HStack(spacing: 40) {
+                      
+                    Button(action:{
+                        showJoinGroupSheet.toggle()
+                    }) {
+                        VStack {
+                            Image("joingroup")
+                                .resizable()
+                                .frame(width: 55, height: 55)
+                            Text("Join Group")
+                                .font(.system(size: 15))
+                                .foregroundStyle(Color.white)
+                        }
+                    }
+                    
+                    Button(action:{
+                        showJoinGroupSheet.toggle()
+                    }) {
+                        VStack {
+                            Image("creategroup")
+                                .resizable()
+                                .frame(width: 55, height: 55)
+                            Text("Create Group")
+                                .font(.system(size: 15))
+                                .foregroundStyle(Color.white)
+                        }
+                    }
+                }.presentationDetents([.height(200)])
+                .padding(.top, 10)
+            }.background(Color("Background"))
         }
-        
+        .sheet(isPresented: $showCreateGroupSheet) {
+            CreateGroup(groupCode:.constant(""))
+        }
+        .sheet(isPresented: $showJoinGroupSheet) {
+            JoinGroup(groupCode: .constant(""))
+        }
         .onAppear {
-            print()
-            print()
-            communityPageViewModel.fetchData(
-                from: "\(APIConstants.base_url)/api/v2/friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+           
+            communityPageViewModel.fetchFriendsData(
+                from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: true
+            )
+            communityPageViewModel.fetchCircleData(
+                from: "\(APIConstants.base_url)circles",
                 token: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: true
             )
             friendRequestViewModel.fetchFriendRequests(
-                from: URL(string: "\(APIConstants.base_url)/api/v2/requests/")!,
+                from: URL(string: "\(APIConstants.base_url)requests/")!,
                 authToken: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: true
             )
+           
+            
         }
     }
 }
@@ -118,4 +161,5 @@ struct FilterPill: View {
                     )
             )
     }
+    
 }
