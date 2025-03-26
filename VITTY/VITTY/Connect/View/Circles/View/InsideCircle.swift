@@ -60,6 +60,7 @@ struct LeaveCircleAlert: View {
 }
 
 struct InsideCircle: View {
+    var circleName : String
     var groupCode: String
     @State var searchText: String = ""
     @State var showLeaveAlert: Bool = false
@@ -96,7 +97,7 @@ struct InsideCircle: View {
             VStack(alignment: .leading, spacing: 10) {
                 Spacer().frame(height: 8)
                 HStack {
-                    Text("Dholakpur Squad")
+                    Text("\(circleName)")
                         .font(.custom("Poppins-SemiBold", size: 20))
                         .foregroundColor(.white)
                     Spacer()
@@ -164,7 +165,9 @@ struct InsideCircle: View {
         .overlay(
             Group{
                 if showLeaveAlert {
-                    LeaveCircleAlert(circleName: "Dholakpur", onCancel: {}, onLeave: {})
+                    LeaveCircleAlert(circleName: "\(circleName)", onCancel: {
+                        showLeaveAlert = false
+                    }, onLeave: {})
                 }
             }
         )
