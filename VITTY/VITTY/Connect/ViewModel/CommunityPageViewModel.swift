@@ -121,4 +121,28 @@ class CommunityPageViewModel {
             }
     }
     
+    //MARK: leave Circle
+    
+    func leaveCircle(from url: String, token: String) {
+        self.loadingCircleMembers = true
+        
+        AF.request(url, method: .delete, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .response { response in
+                switch response.result {
+                case .success(let value):
+                    if let json = value as? [String: Any], let detail = json["detail"] as? String {
+                        self.logger.info("Success: \(detail)")
+                    }
+                    self.loadingCircleMembers = false
+                
+                case .failure(let error):
+                    self.logger.error("Error leaving circle: \(error)")
+                    self.loadingCircleMembers = false
+                    self.errorCircleMembers.toggle()
+                }
+            }
+    }
+
+    
 }

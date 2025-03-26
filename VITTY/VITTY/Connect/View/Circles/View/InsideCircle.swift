@@ -163,14 +163,26 @@ struct InsideCircle: View {
             )
         }
         .overlay(
-            Group{
+            Group {
                 if showLeaveAlert {
                     LeaveCircleAlert(circleName: "\(circleName)", onCancel: {
                         showLeaveAlert = false
-                    }, onLeave: {})
+                    }, onLeave: {
+                        let url = "\(APIConstants.base_url)circles/\(groupCode)/leave"
+                        let token = authViewModel.loggedInBackendUser?.token ?? ""
+
+                        communityPageViewModel.leaveCircle(from: url, token: token)
+                        
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                            showLeaveAlert = false
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    })
                 }
             }
         )
+
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
     }
