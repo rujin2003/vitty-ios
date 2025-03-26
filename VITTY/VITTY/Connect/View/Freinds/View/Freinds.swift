@@ -33,7 +33,7 @@ struct FriendsView: View {
             Spacer().frame(height: 7)
             
             // Conditional content based on state
-            if communityPageViewModel.error {
+            if communityPageViewModel.errorFreinds {
                 Spacer()
                 VStack(spacing: 5) {
                     Text("No Friends?")
@@ -46,7 +46,7 @@ struct FriendsView: View {
                         .foregroundColor(Color.white)
                 }
                 Spacer()
-            } else if communityPageViewModel.loading {
+            } else if communityPageViewModel.loadingFreinds {
                 Spacer()
                 ProgressView()
                 Spacer()

@@ -92,4 +92,3 @@ struct JoinGroup: View {
 #Preview {
     JoinGroup(groupCode: .constant(""))
 }
-

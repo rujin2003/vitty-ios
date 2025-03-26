@@ -15,8 +15,14 @@ import OSLog
 class CommunityPageViewModel {
     var friends = [Friend]()
     var circles = [CircleModel]()
-    var loading = false
-    var error = false
+    var loadingFreinds = false
+    var loadingCircle = false
+    var loadingCircleMembers = false
+    
+    var errorFreinds = false
+    var errorCircle = false
+    var errorCircleMembers = false
+    var circleMembers = [CircleUserTemp]()
 
     private let logger = Logger(
         subsystem: Bundle.main.bundleIdentifier!,
@@ -24,7 +30,7 @@ class CommunityPageViewModel {
     )
 
     func fetchFriendsData(from url: String, token: String, loading: Bool) {
-        self.loading = loading
+        self.loadingFreinds = loading
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: FriendRaw.self) { response in
@@ -32,19 +38,19 @@ class CommunityPageViewModel {
                 switch response.result {
                     case .success(let data):
                         self.friends = data.data
-                        self.loading = false
+                    self.loadingFreinds = false
                       
                        
                     case .failure(let error):
                         self.logger.error("Error fetching data: \(error)")
-                        self.loading = false
-                        self.error.toggle()
+                    self.loadingFreinds = false
+                    self.errorFreinds.toggle()
                 }
             }
     }
     
     func fetchCircleData(from url: String, token: String, loading: Bool) {
-        self.loading = loading
+        self.loadingCircle = loading
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: CircleResponse.self) { response in
@@ -53,14 +59,38 @@ class CommunityPageViewModel {
                 switch response.result {
                     case .success(let data):
                         self.circles = data.data
-                        self.loading = false
+                    self.loadingCircle = false
                     print(data.data)
                         print("Successfully fetched circles:")
                         print(data.data)
                     case .failure(let error):
                         self.logger.error("Error fetching circles: \(error)")
-                        self.loading = false
-                        self.error.toggle()
+                    self.loadingCircle = false
+                    self.errorCircle.toggle()
+                }
+            }
+    }
+    
+    func fetchCircleMemberData(from url: String, token: String, loading: Bool) {
+        self.loadingCircleMembers = loading
+        
+        AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: CircleUserResponseTemp.self) { response in
+            print("***********")
+               
+                switch response.result {
+                    
+                    case .success(let data):
+                    self.circleMembers = data.data
+                    self.loadingCircleMembers = false
+                    print(data.data)
+                        print("Successfully fetched circles members :")
+                        print(data.data)
+                    case .failure(let error):
+                        self.logger.error("Error fetching circles members: \(error)")
+                    self.loadingCircleMembers = false
+                        self.errorCircleMembers.toggle()
                 }
             }
     }

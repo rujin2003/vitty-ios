@@ -48,7 +48,9 @@
 		4BF03C992D7819E30098C803 /* Notes.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C982D7819E00098C803 /* Notes.swift */; };
 		4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF03C9A2D7838C50098C803 /* NotesHelper.swift */; };
 		4BF0C77B2D93108B00016202 /* SearchBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C77A2D93108500016202 /* SearchBar.swift */; };
-		4BF0C77D2D932B8E00016202 /* Circle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C77C2D932B8A00016202 /* Circle.swift */; };
+		4BF0C77D2D932B8E00016202 /* CircleModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C77C2D932B8A00016202 /* CircleModel.swift */; };
+		4BF0C79D2D94681000016202 /* InsideCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C79C2D94680A00016202 /* InsideCircle.swift */; };
+		4BF0C79F2D94694900016202 /* InsideCircleCards.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BF0C79E2D94694000016202 /* InsideCircleCards.swift */; };
 		520BA6432B47FFF900124850 /* SuggestedFriendsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */; };
 		520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6442B48013200124850 /* SuggestedFriendsView.swift */; };
 		520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520BA6472B4802EE00124850 /* AddFriendCard.swift */; };
@@ -187,7 +189,9 @@
 		4BF03C982D7819E00098C803 /* Notes.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Notes.swift; sourceTree = "<group>"; };
 		4BF03C9A2D7838C50098C803 /* NotesHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesHelper.swift; sourceTree = "<group>"; };
 		4BF0C77A2D93108500016202 /* SearchBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBar.swift; sourceTree = "<group>"; };
-		4BF0C77C2D932B8A00016202 /* Circle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Circle.swift; sourceTree = "<group>"; };
+		4BF0C77C2D932B8A00016202 /* CircleModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleModel.swift; sourceTree = "<group>"; };
+		4BF0C79C2D94680A00016202 /* InsideCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsideCircle.swift; sourceTree = "<group>"; };
+		4BF0C79E2D94694000016202 /* InsideCircleCards.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InsideCircleCards.swift; sourceTree = "<group>"; };
 		520BA6422B47FFF900124850 /* SuggestedFriendsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsViewModel.swift; sourceTree = "<group>"; };
 		520BA6442B48013200124850 /* SuggestedFriendsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuggestedFriendsView.swift; sourceTree = "<group>"; };
 		520BA6472B4802EE00124850 /* AddFriendCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriendCard.swift; sourceTree = "<group>"; };
@@ -454,6 +458,7 @@
 		4B7DA5EB2D71E0F4007354A3 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				4BF0C79E2D94694000016202 /* InsideCircleCards.swift */,
 				4B7DA5E62D71AC51007354A3 /* CirclesRow.swift */,
 				4B7DA5F12D7228E5007354A3 /* JoinGroup.swift */,
 				4B7DA5F42D7237B8007354A3 /* CreateGroup.swift */,
@@ -466,6 +471,7 @@
 			isa = PBXGroup;
 			children = (
 				4B7DA5E42D70B2C8007354A3 /* Circles.swift */,
+				4BF0C79C2D94680A00016202 /* InsideCircle.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -592,7 +598,7 @@
 		522B8BAE2B4732C200EE686E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				4BF0C77C2D932B8A00016202 /* Circle.swift */,
+				4BF0C77C2D932B8A00016202 /* CircleModel.swift */,
 				522B8BAF2B4732CC00EE686E /* Friend.swift */,
 			);
 			path = Models;
@@ -1050,6 +1056,7 @@
 				4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */,
+				4BF0C79D2D94681000016202 /* InsideCircle.swift in Sources */,
 				524B84332B46EF3A006D18BD /* ConnectPage.swift in Sources */,
 				521E1E8B2C21DF0D00E8C7D2 /* AddFriendCardSearch.swift in Sources */,
 				4B183EE82D7C78B600C9D801 /* Courses.swift in Sources */,
@@ -1075,11 +1082,12 @@
 				52978F8E2C3A7924008CF46C /* BottomBarView.swift in Sources */,
 				4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */,
 				52D5AB862B6FE2ED00B2E66D /* AuthViewModel.swift in Sources */,
+				4BF0C79F2D94694900016202 /* InsideCircleCards.swift in Sources */,
 				524B843C2B46F6FD006D18BD /* AddFriendsHeader.swift in Sources */,
 				4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */,
 				521562AC2B70B0FD0054F051 /* InstructionView.swift in Sources */,
 				522B8BAD2B47297A00EE686E /* CommunityPageViewModel.swift in Sources */,
-				4BF0C77D2D932B8E00016202 /* Circle.swift in Sources */,
+				4BF0C77D2D932B8E00016202 /* CircleModel.swift in Sources */,
 				528CF1762B769E22007298A0 /* TimeTableViewModel.swift in Sources */,
 				4B7DA5F52D7237BE007354A3 /* CreateGroup.swift in Sources */,
 				52D5AB8F2B6FE82E00B2E66D /* AuthAPIService.swift in Sources */,
