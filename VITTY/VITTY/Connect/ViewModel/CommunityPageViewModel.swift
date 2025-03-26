@@ -49,6 +49,8 @@ class CommunityPageViewModel {
             }
     }
     
+    //MARK: Circle DATA
+    
     func fetchCircleData(from url: String, token: String, loading: Bool) {
         self.loadingCircle = loading
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
@@ -70,7 +72,7 @@ class CommunityPageViewModel {
                 }
             }
     }
-    
+    //MARK : Circle Members NetwrokCall
     func fetchCircleMemberData(from url: String, token: String, loading: Bool) {
         self.loadingCircleMembers = loading
         
@@ -94,4 +96,29 @@ class CommunityPageViewModel {
                 }
             }
     }
+    //MARK : Circle Leave
+    func fetchCircleLeave(from url: String, token: String, loading: Bool) {
+        self.loadingCircleMembers = loading
+        
+        AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseDecodable(of: CircleUserResponseTemp.self) { response in
+            print("***********")
+               
+                switch response.result {
+                    
+                    case .success(let data):
+                    self.circleMembers = data.data
+                    self.loadingCircleMembers = false
+                    print(data.data)
+                        print("Successfully fetched circles members :")
+                        print(data.data)
+                    case .failure(let error):
+                        self.logger.error("Error fetching circles members: \(error)")
+                    self.loadingCircleMembers = false
+                        self.errorCircleMembers.toggle()
+                }
+            }
+    }
+    
 }

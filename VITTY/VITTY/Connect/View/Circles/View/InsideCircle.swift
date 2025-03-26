@@ -6,11 +6,63 @@
 
 
 import SwiftUI
-import SwiftUI
+
+struct LeaveCircleAlert: View {
+    let circleName: String
+    let onCancel: () -> Void
+    let onLeave: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 12) {
+                Text("Leave circle?")
+                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .foregroundColor(.white)
+                
+                Text("Are you sure you want to leave \(circleName)?")
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                HStack(spacing: 10) {
+                    Button(action: onCancel) {
+                        Text("Cancel")
+                            .font(.custom("Poppins-Regular", size: 14))
+                            .padding(.vertical, 8)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.gray.opacity(0.3))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    
+                    Button(action: onLeave) {
+                        Text("Leave")
+                            .font(.custom("Poppins-Regular", size: 14))
+                            .padding(.vertical, 8)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                }
+            }
+            .frame(height: 150)
+            .padding(20)
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
+    }
+}
 
 struct InsideCircle: View {
     var groupCode: String
     @State var searchText: String = ""
+    @State var showLeaveAlert: Bool = false
     @Environment(CommunityPageViewModel.self) private var communityPageViewModel
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(\.presentationMode) var presentationMode
@@ -22,19 +74,17 @@ struct InsideCircle: View {
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "chevron.left")
-                        
                         .foregroundColor(.white)
                 }
                 Spacer()
                 Text("Circle")
-                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .font(.custom("Poppins-SemiBold", size: 22))
                     .foregroundColor(.white)
                 Spacer()
                 Button(action: {
-                   
+                    showLeaveAlert = true
                 }) {
-                    Image("leave")
-                       
+                    Image(systemName: "rectangle.portrait.and.arrow.right")
                         .foregroundColor(.white)
                 }
             }
@@ -110,8 +160,15 @@ struct InsideCircle: View {
                 token: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: true
             )
-        }.navigationBarHidden(true)
+        }
+        .overlay(
+            Group{
+                if showLeaveAlert {
+                    LeaveCircleAlert(circleName: "Dholakpur", onCancel: {}, onLeave: {})
+                }
+            }
+        )
+        .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
-
     }
 }
