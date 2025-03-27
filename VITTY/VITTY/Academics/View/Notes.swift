@@ -5,6 +5,8 @@ struct RichTextView: UIViewRepresentable {
     @Binding var attributedText: NSMutableAttributedString
     @Binding var selectedRange: NSRange
     @Binding var typingAttributes: [NSAttributedString.Key: Any]
+    
+    
 
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
@@ -45,8 +47,22 @@ struct RichTextView: UIViewRepresentable {
     }
 }
 
+
+
 struct NoteEditorView: View {
-    @State private var attributedText = NSMutableAttributedString(string: "Start typing here...")
+    @Environment(\.dismiss) private var dismiss
+    @Environment(AcademicsViewModel.self) private var academicsViewModel
+    @Environment(AuthViewModel.self) private var authViewModel
+    
+    
+    
+ @State private var attributedText = NSMutableAttributedString(
+        string: "Start typing here...",
+        attributes: [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.systemFont(ofSize: 18)
+        ]
+    )
     @State private var selectedRange = NSRange(location: 0, length: 0)
     @State private var typingAttributes: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 18),
@@ -57,6 +73,7 @@ struct NoteEditorView: View {
     @State private var showFontPicker = false
     @State private var showHeadingPicker = false
 
+    
 //    func loadContent() {
 //        
 //          if let loadedMarkdown = loadMarkdownFromBackend()
@@ -67,9 +84,26 @@ struct NoteEditorView: View {
 //      }
     
     func saveContent() {
-            let markdown = attributedText.toMarkdown()
+        
+        //MARK: adding real values left here
+        let markdown = attributedText.toMarkdown()
+        let note = CreateNoteModel(
+            noteName:"",
+            userName: "",
+            courseId:"",
+            courseName: "",
+            noteContent: markdown,
+            createdAt: Date.now
+           )
+
+        let uRL = URL(string: "\(APIConstants.base_url)notes/save")!
+        
+
+        academicsViewModel.createNote(at: uRL ,
+                                      authToken:authViewModel.loggedInBackendUser?.token ?? "", note: note)
             
         }
+    
     
     
     private let fonts: [UIFont] = [
@@ -94,7 +128,9 @@ struct NoteEditorView: View {
             VStack {
                
                 HStack {
-                    Button(action: {}) {
+                    Button(action: {
+                        dismiss()
+                    }) {
                         Image(systemName: "chevron.left")
                             .foregroundColor(Color("Accent"))
                     }
@@ -103,6 +139,11 @@ struct NoteEditorView: View {
                         .foregroundColor(.white)
                         .font(.system(size: 25,weight: Font.Weight.bold))
                     Spacer()
+                    Button(action:{
+                        saveContent()
+                    }){
+                        Image("save").resizable().frame(width: 30,height: 30)
+                    }
                 }
                 .padding()
 
@@ -147,7 +188,7 @@ struct NoteEditorView: View {
                                 .cornerRadius(10)
                                 .shadow(radius: 10)
                                 .transition(.opacity)
-                                .offset(y: -150) // Adjust this value to position the popover
+                                .offset(y: -150)
                             }
                         }
                     )
@@ -226,7 +267,8 @@ struct NoteEditorView: View {
                 .cornerRadius(10)
                 .shadow(radius: 10)
             }
-        }
+        }            .navigationBarHidden(true)
+            .navigationBarBackButtonHidden(true)
     }
 
 

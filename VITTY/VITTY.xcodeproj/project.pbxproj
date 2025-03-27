@@ -42,6 +42,8 @@
 		4B8B32DC2D6D75F6004F01BA /* VittyWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 4B8B32C82D6D75F4004F01BA /* VittyWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		4B8B33752D7029AA004F01BA /* SideBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8B33742D7029A3004F01BA /* SideBar.swift */; };
 		4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA03C1C2D7584EA000756B0 /* AddFriend.swift */; };
+		4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */; };
+		4BBB00332D957A6A003B8FE2 /* NotesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00322D957A6A003B8FE2 /* NotesModel.swift */; };
 		4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */; };
 		4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */; };
 		4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */; };
@@ -183,6 +185,8 @@
 		4B8B32C92D6D75F4004F01BA /* WidgetKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WidgetKit.framework; path = System/Library/Frameworks/WidgetKit.framework; sourceTree = SDKROOT; };
 		4B8B33742D7029A3004F01BA /* SideBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBar.swift; sourceTree = "<group>"; };
 		4BA03C1C2D7584EA000756B0 /* AddFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriend.swift; sourceTree = "<group>"; };
+		4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcademicsViewModel.swift; sourceTree = "<group>"; };
+		4BBB00322D957A6A003B8FE2 /* NotesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesModel.swift; sourceTree = "<group>"; };
 		4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClass.swift; sourceTree = "<group>"; };
 		4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassAPIService.swift; sourceTree = "<group>"; };
 		4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassRoomViewModel.swift; sourceTree = "<group>"; };
@@ -421,11 +425,9 @@
 		4B7DA5DD2D7094CA007354A3 /* Academics */ = {
 			isa = PBXGroup;
 			children = (
-				4B183EE72D7C78B300C9D801 /* Courses.swift */,
-				4B183EE92D7C791400C9D801 /* Reminders.swift */,
-				4B7DA5DE2D7094E3007354A3 /* Academics.swift */,
-				4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */,
-				4B47CD7A2D7DCB8400A46FEF /* Reminder.swift */,
+				4BBB002F2D95510B003B8FE2 /* Model */,
+				4BBB002E2D955104003B8FE2 /* VIewModel */,
+				4BBB002D2D9550F8003B8FE2 /* View */,
 			);
 			path = Academics;
 			sourceTree = "<group>";
@@ -494,6 +496,36 @@
 			path = UserProfileSideBar;
 			sourceTree = "<group>";
 		};
+		4BBB002D2D9550F8003B8FE2 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				4B183EE72D7C78B300C9D801 /* Courses.swift */,
+				4BF03C982D7819E00098C803 /* Notes.swift */,
+				4BF03C9A2D7838C50098C803 /* NotesHelper.swift */,
+				4B183EE92D7C791400C9D801 /* Reminders.swift */,
+				4B7DA5DE2D7094E3007354A3 /* Academics.swift */,
+				4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */,
+				4B47CD7A2D7DCB8400A46FEF /* Reminder.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		4BBB002E2D955104003B8FE2 /* VIewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */,
+			);
+			path = VIewModel;
+			sourceTree = "<group>";
+		};
+		4BBB002F2D95510B003B8FE2 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				4BBB00322D957A6A003B8FE2 /* NotesModel.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		4BD63D732D70547E00EEF5D7 /* EmptyClassroom */ = {
 			isa = PBXGroup;
 			children = (
@@ -531,8 +563,6 @@
 		4BF03C972D7819D30098C803 /* Academics */ = {
 			isa = PBXGroup;
 			children = (
-				4BF03C982D7819E00098C803 /* Notes.swift */,
-				4BF03C9A2D7838C50098C803 /* NotesHelper.swift */,
 			);
 			path = Academics;
 			sourceTree = "<group>";
@@ -1064,9 +1094,11 @@
 				528CF1782B769E64007298A0 /* TimeTableAPIService.swift in Sources */,
 				52D5AB972B6FFC8F00B2E66D /* LoginView.swift in Sources */,
 				4B183EEC2D7CB15800C9D801 /* CourseRefs.swift in Sources */,
+				4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
 				520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */,
 				4B7DA5E32D70B2C3007354A3 /* Freinds.swift in Sources */,
+				4BBB00332D957A6A003B8FE2 /* NotesModel.swift in Sources */,
 				4BF0C77B2D93108B00016202 /* SearchBar.swift in Sources */,
 				5238C7EE2B4A9E2C00413946 /* FriendRequestRaw.swift in Sources */,
 				525AA7A92B4B0164003C6A12 /* SearchView.swift in Sources */,
