@@ -13,6 +13,8 @@ struct ContentView: View {
 	@State private var suggestedFriendsViewModel = SuggestedFriendsViewModel()
 	@State private var friendRequestViewModel = FriendRequestViewModel()
 	@State private var authViewModel = AuthViewModel()
+    @State private var academicsViewModel = AcademicsViewModel()
+    
 	var body: some View {
 		Group {
 			if authViewModel.loggedInFirebaseUser != nil {
@@ -32,6 +34,8 @@ struct ContentView: View {
 		.environment(communityPageViewModel)
 		.environment(suggestedFriendsViewModel)
 		.environment(friendRequestViewModel)
+        .environment(academicsViewModel)
+        
 	}
 }
 
