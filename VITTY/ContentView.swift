@@ -15,18 +15,18 @@ struct ContentView: View {
 	@State private var authViewModel = AuthViewModel()
 	var body: some View {
 		Group {
-//			if authViewModel.loggedInFirebaseUser != nil {
-//				if authViewModel.loggedInBackendUser == nil {
-//					InstructionView()
-//				}
-//				else {
-//					HomeView()
-//				}
-//			}
-//			else {
-//				LoginView()
-//			}
-            HomeView()
+			if authViewModel.loggedInFirebaseUser != nil {
+				if authViewModel.loggedInBackendUser == nil {
+					InstructionView()
+				}
+				else {
+					HomeView()
+				}
+			}
+			else {
+				LoginView()
+			}
+           
 		}
 		.environment(authViewModel)
 		.environment(communityPageViewModel)

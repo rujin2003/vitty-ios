@@ -9,9 +9,11 @@ import SwiftUI
 import OSLog
 import Alamofire
 
-@Observable
-class AcademicsViewModel{
-    var notes = [CreateNote]()
+
+@Observable class AcademicsViewModel {
+    
+    
+    var notes = [CreateNoteModel]()
        var loading = false
        var error = false
 
