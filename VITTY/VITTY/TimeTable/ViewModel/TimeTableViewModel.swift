@@ -31,6 +31,7 @@ extension TimeTableView {
 			)
 		)
 
+
 		func changeDay() {
 			switch dayNo {
 				case 0:
@@ -72,5 +73,8 @@ extension TimeTableView {
 			}
 			logger.info("Fetching TimeTable Ended")
 		}
+        
+     
+        
 	}
 }

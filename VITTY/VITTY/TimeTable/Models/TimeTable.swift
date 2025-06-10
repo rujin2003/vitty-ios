@@ -7,8 +7,9 @@
 
 import Foundation
 import OSLog
+import SwiftData
 
-//import SwiftData
+
 
 class TimeTableRaw: Codable {
 	let data: TimeTable
@@ -18,22 +19,25 @@ class TimeTableRaw: Codable {
 	}
 }
 
-//@Model
-class TimeTable: Codable {
-	let monday: [Lecture]
-	let tuesday: [Lecture]
-	let wednesday: [Lecture]
-	let thursday: [Lecture]
-	let friday: [Lecture]
-	let saturday: [Lecture]
-	let sunday: [Lecture]
-	private let logger = Logger(
+
+
+@Model
+class TimeTable: Codable  {
+	var monday: [Lecture]
+	var tuesday: [Lecture]
+	var wednesday: [Lecture]
+	var thursday: [Lecture]
+	var friday: [Lecture]
+	var  saturday: [Lecture]
+	var sunday: [Lecture]
+    // Macro tells swift data to ignore this var
+    @Transient
+	var logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,
 		category: String(
 			describing: TimeTable.self
 		)
 	)
-
 	init(
 		monday: [Lecture],
 		tuesday: [Lecture],
@@ -52,7 +56,7 @@ class TimeTable: Codable {
 		self.sunday = sunday
 	}
 
-	enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey,Codable {
 		case monday = "Monday"
 		case tuesday = "Tuesday"
 		case wednesday = "Wednesday"
@@ -134,7 +138,7 @@ class TimeTable: Codable {
 	}
 }
 
-//@Model
+@Model
 class Lecture: Codable, Identifiable, Comparable {
 	static func == (lhs: Lecture, rhs: Lecture) -> Bool {
 		return lhs.name == rhs.name
@@ -144,13 +148,13 @@ class Lecture: Codable, Identifiable, Comparable {
 		return lhs.startTime < rhs.startTime
 	}
 
-	let name: String
-	let code: String
-	let venue: String
-	let slot: String
-	let type: String
-	let startTime: String
-	let endTime: String
+	var  name: String
+    var code: String
+    var venue: String
+    var slot: String
+    var type: String
+    var startTime: String
+	var endTime: String
 
 	init(
 		name: String,
@@ -170,7 +174,7 @@ class Lecture: Codable, Identifiable, Comparable {
 		self.endTime = endTime
 	}
 
-	enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey,Codable {
 		case name, code, venue, slot, type
 		case startTime = "start_time"
 		case endTime = "end_time"
@@ -197,4 +201,10 @@ class Lecture: Codable, Identifiable, Comparable {
 		try container.encode(startTime, forKey: .startTime)
 		try container.encode(endTime, forKey: .endTime)
 	}
+}
+extension TimeTable {
+    var isEmpty: Bool {
+        monday.isEmpty && tuesday.isEmpty && wednesday.isEmpty &&
+        thursday.isEmpty && friday.isEmpty && saturday.isEmpty && sunday.isEmpty
+    }
 }

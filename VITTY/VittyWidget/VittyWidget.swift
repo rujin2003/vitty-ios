@@ -1,36 +1,95 @@
 import WidgetKit
 import SwiftUI
+import SwiftData
+
 
 // MARK: - Providers
-struct Provider: TimelineProvider {
-    func placeholder(in context: Context) -> ScheduleEntry {
-        ScheduleEntry(
-            date: Date(),
-            total: 7,
-            classes: [
-                Class(title: "Software Engineering", time: "4:00 PM - 4:50 PM", slot: "A1 + TA1")
-            ]
-        )
+    struct Provider: TimelineProvider {
+        
+        
+        @MainActor @preconcurrency
+        func placeholder(in context: Context) -> ScheduleEntry {
+            let timeTable = getTimetable()
+            let parsed = parseTimeTable(timeTable: timeTable)
+
+            return ScheduleEntry(
+                date: parsed.firstLectureDate,
+                total: parsed.count,
+                classes: parsed.classes
+            )
+        }
+
+        // GET TIME TABLE FUNCTION
+        @MainActor
+        private func getTimetable() -> TimeTable {
+            guard let modelContainer  = try? ModelContainer(for:TimeTable.self)else{
+                return TimeTable(monday: [], tuesday: [], wednesday: [], thursday: [], friday: [], saturday: [], sunday: [])
+            }
+            print("stage 1: this timetable is sucessfull")
+            
+            let descriptor = FetchDescriptor<TimeTable>()
+            print("stage 2: this timetable is sucessfull")
+            
+            let timeTable = try? modelContainer.mainContext.fetch(descriptor)
+            print("stage 3: this timetable is sucessfull")
+            print("\(String(describing: timeTable))")
+            return timeTable?[0] ?? TimeTable(monday: [], tuesday: [], wednesday: [], thursday: [], friday: [], saturday: [], sunday: [])
+          
+            
+        }
+
+        @MainActor @preconcurrency func getSnapshot(in context: Context, completion: @escaping (ScheduleEntry) -> ()) {
+            completion(placeholder(in: context))
+        }
+        
+        func parseTimeTable(timeTable: TimeTable) -> (classes: [Class], firstLectureDate: Date, count: Int) {
+            let calendar = Calendar.current
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            
+            let weekday = calendar.component(.weekday, from: Date()) // Sunday = 1
+            let lecturesForToday: [Lecture]
+
+            switch weekday {
+                case 2: lecturesForToday = timeTable.monday
+                case 3: lecturesForToday = timeTable.tuesday
+                case 4: lecturesForToday = timeTable.wednesday
+                case 5: lecturesForToday = timeTable.thursday
+                case 6: lecturesForToday = timeTable.friday
+                case 7: lecturesForToday = timeTable.saturday
+                case 1: lecturesForToday = timeTable.sunday
+                default: lecturesForToday = []
+            }
+
+            let classes = lecturesForToday.map {
+                Class(title: $0.name, time: "\($0.startTime) - \($0.endTime)", slot: $0.slot)
+            }
+
+            // Convert first lecture startTime to Date (today + time)
+            let today = calendar.startOfDay(for: Date())
+            let firstTime = lecturesForToday.first?.startTime ?? "00:00"
+            let components = formatter.date(from: firstTime).flatMap { calendar.date(bySettingHour: calendar.component(.hour, from: $0), minute: calendar.component(.minute, from: $0), second: 0, of: today) } ?? Date()
+
+            return (classes, components, lecturesForToday.count)
+        }
+
+
+        
+        @MainActor @preconcurrency
+        func getTimeline(in context: Context, completion: @escaping (Timeline<ScheduleEntry>) -> ()) {
+            let timeTable = getTimetable()
+            let parsed = parseTimeTable(timeTable: timeTable)
+            
+       
+            let entry =  ScheduleEntry(
+                date: parsed.firstLectureDate,
+                total: parsed.count,
+                classes: parsed.classes
+            )
+            completion(Timeline(entries: [entry], policy: .atEnd))
+        }
     }
 
-    func getSnapshot(in context: Context, completion: @escaping (ScheduleEntry) -> ()) {
-        completion(placeholder(in: context))
-    }
-    
-    func getTimeline(in context: Context, completion: @escaping (Timeline<ScheduleEntry>) -> ()) {
-        let currentDate = Date()
-        let entry = ScheduleEntry(
-            date: currentDate,
-            total: 7,
-            classes: [
-                Class(title: "Software Engineering", time: "4:00 PM - 4:50 PM", slot: "A1 + TA1"),
-                Class(title: "Java Programming", time: "5:00 PM - 5:50 PM", slot: "A1 + TA1"),
-                Class(title: "Machine Learning", time: "6:00 PM - 6:50 PM", slot: "B2 + TB2")
-            ]
-        )
-        completion(Timeline(entries: [entry], policy: .atEnd))
-    }
-}
 
 struct VittyWidgetEntryView: View {
     var entry: Provider.Entry

@@ -5,11 +5,13 @@ import SwiftUI
 
 struct TimeTableView: View {
     @Environment(AuthViewModel.self) private var authViewModel
+    @Environment(\.modelContext) private var context
+    
     private let daysOfWeek = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
 
     @State private var viewModel = TimeTableViewModel()
     @State private var selectedLecture: Lecture? = nil
-
+    @Query private var timetableItem : [TimeTable]
     let friend: Friend?
 
     private let logger = Logger(
@@ -97,16 +99,44 @@ struct TimeTableView: View {
                 LectureDetailView(lecture: lecture)
             }
             .onAppear {
-              
-                Task {
-                    await viewModel.fetchTimeTable(
-                        username: friend?.username
-                            ?? (authViewModel.loggedInBackendUser?.username ?? ""),
-                        authToken: authViewModel.loggedInBackendUser?.token ?? ""
-                    )
-            
+                logger.debug("onAppear triggered")
+                if let existing = timetableItem.first {
+                    logger.debug("exixting")
+                    
+                    if existing.isEmpty {
+                     
+                        logger.debug("is empty")
+                        Task {
+                            await viewModel.fetchTimeTable(
+                                username: friend?.username ?? (authViewModel.loggedInBackendUser?.username ?? ""),
+                                authToken: authViewModel.loggedInBackendUser?.token ?? ""
+                            )
+                            if let fetched = viewModel.timeTable {
+                                context.insert(fetched)
+                            }
+                        }
+                    } else {
+                       
+                       
+                        viewModel.timeTable = existing
+                        viewModel.changeDay()
+                        viewModel.stage = .data
+                    }
+                } else {
+                    logger.debug("fetching")
+                    Task {
+                        await viewModel.fetchTimeTable(
+                            username: friend?.username ?? (authViewModel.loggedInBackendUser?.username ?? ""),
+                            authToken: authViewModel.loggedInBackendUser?.token ?? ""
+                        )
+                        if let fetched = viewModel.timeTable {
+                            context.insert(fetched)
+                           
+                        }
+                    }
                 }
             }
+
         }
     }
 }

@@ -8,6 +8,7 @@
 import Firebase
 import OSLog
 import SwiftUI
+import SwiftData
 
 /**
  `NOTE FOR FUTURE/NEW DEVS:`
@@ -55,7 +56,7 @@ struct VITTYApp: App {
 		WindowGroup {
 			ContentView()
 				.preferredColorScheme(.dark)
-		}
+        }.modelContainer(for: [TimeTable.self])
 	}
 }
 

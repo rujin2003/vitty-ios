@@ -44,6 +44,8 @@
 		4BA03C1D2D7584F3000756B0 /* AddFriend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA03C1C2D7584EA000756B0 /* AddFriend.swift */; };
 		4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */; };
 		4BBB00332D957A6A003B8FE2 /* NotesModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BBB00322D957A6A003B8FE2 /* NotesModel.swift */; };
+		4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC853C22DF6936E0092B2E2 /* SaveTimeTableView.swift */; };
+		4BC853C42DF6DA7A0092B2E2 /* TimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528CF1722B769B18007298A0 /* TimeTable.swift */; };
 		4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */; };
 		4BD63D772D70610B00EEF5D7 /* EmptyClassAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */; };
 		4BD63D7A2D70636400EEF5D7 /* EmptyClassRoomViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */; };
@@ -187,6 +189,8 @@
 		4BA03C1C2D7584EA000756B0 /* AddFriend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFriend.swift; sourceTree = "<group>"; };
 		4BBB00302D95515C003B8FE2 /* AcademicsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AcademicsViewModel.swift; sourceTree = "<group>"; };
 		4BBB00322D957A6A003B8FE2 /* NotesModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotesModel.swift; sourceTree = "<group>"; };
+		4BC853C22DF6936E0092B2E2 /* SaveTimeTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveTimeTableView.swift; sourceTree = "<group>"; };
+		4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VittyWidgetExtension.entitlements; sourceTree = "<group>"; };
 		4BD63D722D70547E00EEF5D7 /* EmptyClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClass.swift; sourceTree = "<group>"; };
 		4BD63D762D70610000EEF5D7 /* EmptyClassAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassAPIService.swift; sourceTree = "<group>"; };
 		4BD63D792D70635D00EEF5D7 /* EmptyClassRoomViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyClassRoomViewModel.swift; sourceTree = "<group>"; };
@@ -359,6 +363,7 @@
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
+				4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */,
 				4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */,
 				52EE849D2CB9CD1F00CD864C /* GoogleService-Info.plist */,
 				5251A7FF2B46E3C000D44CFE /* .swift-format */,
@@ -783,6 +788,7 @@
 		527E3E032B7662710086F23D /* Service */ = {
 			isa = PBXGroup;
 			children = (
+				4BC853C22DF6936E0092B2E2 /* SaveTimeTableView.swift */,
 				528CF1772B769E64007298A0 /* TimeTableAPIService.swift */,
 			);
 			path = Service;
@@ -1078,6 +1084,7 @@
 				5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */,
 				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
 				4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */,
+				4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */,
 				52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
 				522B8BB02B4732CC00EE686E /* Friend.swift in Sources */,
@@ -1133,6 +1140,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BC853C42DF6DA7A0092B2E2 /* TimeTable.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1355,6 +1363,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = VittyWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1389,6 +1398,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_WIDGET_BACKGROUND_COLOR_NAME = WidgetBackground;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CODE_SIGN_ENTITLEMENTS = VittyWidgetExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
