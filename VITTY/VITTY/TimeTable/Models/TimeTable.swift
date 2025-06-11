@@ -207,4 +207,64 @@ extension TimeTable {
         monday.isEmpty && tuesday.isEmpty && wednesday.isEmpty &&
         thursday.isEmpty && friday.isEmpty && saturday.isEmpty && sunday.isEmpty
     }
+    private func extractStartDate(from timeString: String) -> Date? {
+        let components = timeString.components(separatedBy: " - ")
+        guard let startTimeString = components.first else { return nil }
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+
+        return formatter.date(from: startTimeString)
+    }
+
+    func classesFor(date: Date) -> [Classes] {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: date)
+
+        let lectures: [Lecture]
+        switch weekday {
+        case 1: lectures = sunday
+        case 2: lectures = monday
+        case 3: lectures = tuesday
+        case 4: lectures = wednesday
+        case 5: lectures = thursday
+        case 6: lectures = friday
+        case 7: lectures = saturday
+        default: lectures = []
+        }
+
+        let mapped = lectures.map {
+            Classes(
+                title: $0.name,
+                time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
+                slot: $0.slot
+            )
+        }
+
+        return mapped.sorted {
+            guard let d1 = extractStartDate(from: $0.time),
+                  let d2 = extractStartDate(from: $1.time) else {
+                return false
+            }
+            return d1 < d2
+        }
+    }
+
+    
+
+    private func formatTime(time: String) -> String {      
+        var timeComponents = time.components(separatedBy: "T").last ?? ""
+        timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        if let date = dateFormatter.date(from: timeComponents) {
+            dateFormatter.dateFormat = "h:mm a"
+            let formattedTime = dateFormatter.string(from: date)
+            return formattedTime
+        } else {
+            return "Failed to parse the time string."
+        }
+    }
 }

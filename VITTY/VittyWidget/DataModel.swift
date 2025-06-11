@@ -11,10 +11,11 @@ import WidgetKit
 struct ScheduleEntry: TimelineEntry {
     var date: Date
     var total: Int
-    var classes: [Class]
+    var classes: [Classes]
+    var completed: Int
 }
 
-struct Class {
+struct Classes {
     let title: String
     let time: String
     var slot: String?

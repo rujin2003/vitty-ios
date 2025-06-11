@@ -56,8 +56,16 @@ struct VITTYApp: App {
 		WindowGroup {
 			ContentView()
 				.preferredColorScheme(.dark)
-        }.modelContainer(for: [TimeTable.self])
+        }.modelContainer(sharedModelContainer)
 	}
+    var sharedModelContainer: ModelContainer {
+            let schema = Schema([TimeTable.self])
+            let config = ModelConfiguration(
+                "group.com.gdscvit.vittyioswidget"
+        
+            )
+            return try! ModelContainer(for: schema, configurations: config)
+        }
 }
 
 extension VITTYApp {

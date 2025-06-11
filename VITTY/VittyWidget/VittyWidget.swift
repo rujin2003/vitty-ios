@@ -3,94 +3,113 @@ import SwiftUI
 import SwiftData
 
 
-// MARK: - Providers
-    struct Provider: TimelineProvider {
+struct Provider: TimelineProvider {
+    
+    private func getSharedContainer() -> ModelContainer? {
+          let appGroupContainerID = "group.com.gdscvit.vittyioswidget"
+          let config = ModelConfiguration(
+            appGroupContainerID)
         
-        
-        @MainActor @preconcurrency
-        func placeholder(in context: Context) -> ScheduleEntry {
-            let timeTable = getTimetable()
-            let parsed = parseTimeTable(timeTable: timeTable)
-
-            return ScheduleEntry(
-                date: parsed.firstLectureDate,
-                total: parsed.count,
-                classes: parsed.classes
-            )
-        }
-
-        // GET TIME TABLE FUNCTION
-        @MainActor
-        private func getTimetable() -> TimeTable {
-            guard let modelContainer  = try? ModelContainer(for:TimeTable.self)else{
-                return TimeTable(monday: [], tuesday: [], wednesday: [], thursday: [], friday: [], saturday: [], sunday: [])
-            }
-            print("stage 1: this timetable is sucessfull")
-            
-            let descriptor = FetchDescriptor<TimeTable>()
-            print("stage 2: this timetable is sucessfull")
-            
-            let timeTable = try? modelContainer.mainContext.fetch(descriptor)
-            print("stage 3: this timetable is sucessfull")
-            print("\(String(describing: timeTable))")
-            return timeTable?[0] ?? TimeTable(monday: [], tuesday: [], wednesday: [], thursday: [], friday: [], saturday: [], sunday: [])
-          
-            
-        }
-
-        @MainActor @preconcurrency func getSnapshot(in context: Context, completion: @escaping (ScheduleEntry) -> ()) {
-            completion(placeholder(in: context))
-        }
-        
-        func parseTimeTable(timeTable: TimeTable) -> (classes: [Class], firstLectureDate: Date, count: Int) {
-            let calendar = Calendar.current
-            let formatter = DateFormatter()
-            formatter.dateFormat = "HH:mm"
-            
-            let weekday = calendar.component(.weekday, from: Date()) // Sunday = 1
-            let lecturesForToday: [Lecture]
-
-            switch weekday {
-                case 2: lecturesForToday = timeTable.monday
-                case 3: lecturesForToday = timeTable.tuesday
-                case 4: lecturesForToday = timeTable.wednesday
-                case 5: lecturesForToday = timeTable.thursday
-                case 6: lecturesForToday = timeTable.friday
-                case 7: lecturesForToday = timeTable.saturday
-                case 1: lecturesForToday = timeTable.sunday
-                default: lecturesForToday = []
-            }
-
-            let classes = lecturesForToday.map {
-                Class(title: $0.name, time: "\($0.startTime) - \($0.endTime)", slot: $0.slot)
-            }
-
-            // Convert first lecture startTime to Date (today + time)
-            let today = calendar.startOfDay(for: Date())
-            let firstTime = lecturesForToday.first?.startTime ?? "00:00"
-            let components = formatter.date(from: firstTime).flatMap { calendar.date(bySettingHour: calendar.component(.hour, from: $0), minute: calendar.component(.minute, from: $0), second: 0, of: today) } ?? Date()
-
-            return (classes, components, lecturesForToday.count)
-        }
-
-
-        
-        @MainActor @preconcurrency
-        func getTimeline(in context: Context, completion: @escaping (Timeline<ScheduleEntry>) -> ()) {
-            let timeTable = getTimetable()
-            let parsed = parseTimeTable(timeTable: timeTable)
-            
+          return try? ModelContainer(for: TimeTable.self, configurations: config)
+      }
+    
+    private func parseTimeString(_ timeString: String) -> Date? {
+           let formatter = DateFormatter()
+           formatter.dateFormat = "h:mm a"
+           
+           // Clean the time string (remove extra spaces, etc.)
+           let cleanedTime = timeString.trimmingCharacters(in: .whitespacesAndNewlines)
+           
+           if let time = formatter.date(from: cleanedTime) {
+               // Combine with today's date
+               let calendar = Calendar.current
+               let now = Date()
+               let timeComponents = calendar.dateComponents([.hour, .minute], from: time)
+               return calendar.date(bySettingHour: timeComponents.hour ?? 0,
+                                  minute: timeComponents.minute ?? 0,
+                                  second: 0,
+                                  of: now)
+           }
+           return nil
+       }
        
-            let entry =  ScheduleEntry(
-                date: parsed.firstLectureDate,
-                total: parsed.count,
-                classes: parsed.classes
-            )
-            completion(Timeline(entries: [entry], policy: .atEnd))
+    private func fetchTodaysLectures() -> [Classes] {
+        guard let container = getSharedContainer() else { return [] }
+        let context = ModelContext(container)
+        
+        // Get current day
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        _ = formatter.string(from: Date())
+        
+        // Fetch timetable
+        let descriptor = FetchDescriptor<TimeTable>()
+        guard let timetable = try? context.fetch(descriptor).first else {
+            return []
         }
+       return  timetable.classesFor(date: Date())
+       
+    }
+    
+    
+          
+    func placeholder(in context: Context) -> ScheduleEntry {
+        ScheduleEntry(
+            date: Date(),
+            total: 7,
+            classes: [
+                Classes(title: "Software Engineering", time: "4:00 PM - 4:50 PM", slot: "A1 + TA1")
+            ], completed: 2
+        )
+    }
+    func getSnapshot(in context: Context, completion: @escaping (ScheduleEntry) -> ()) {
+        let lectures = fetchTodaysLectures()
+        
+        completion(ScheduleEntry(date: Date(), total: lectures.count, classes: lectures, completed: 4))
+    }
+    
+    
+    func getTimeline(in context: Context, completion: @escaping (Timeline<ScheduleEntry>) -> ()) {
+        
+        let lectures = fetchTodaysLectures()
+        let completed = calculateCompletedClasses(lectures)
+        let entry = ScheduleEntry(date: Date(), total: lectures.count, classes: lectures,completed: completed)
+        
+       
+
+        let nextRefresh = Calendar.current.date(byAdding: .hour, value: 1, to: Date())
+        let timeline = Timeline(entries: [entry], policy: .after(nextRefresh ?? Date()))
+        completion(timeline)
+    }
+    private func calculateCompletedClasses(_ classes: [Classes]) -> Int {
+        let now = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+        return classes.filter { classItem in
+            let timeComponents = classItem.time.components(separatedBy: " - ")
+            guard timeComponents.count == 2,
+                  let endTime = dateFormatter.date(from: timeComponents[1]) else {
+                return false
+            }
+
+            // Set today's date with class end time
+            let calendar = Calendar.current
+            let endTimeToday = calendar.date(
+                bySettingHour: calendar.component(.hour, from: endTime),
+                minute: calendar.component(.minute, from: endTime),
+                second: 0,
+                of: now
+            )
+
+            guard let endTimeTodayUnwrapped = endTimeToday else { return false }
+
+            return now > endTimeTodayUnwrapped
+        }.count
     }
 
-
+}
 struct VittyWidgetEntryView: View {
     var entry: Provider.Entry
     @Environment(\.widgetFamily) var family
@@ -105,7 +124,7 @@ struct VittyWidgetEntryView: View {
                 ScheduleSmallWidgetView(entry: entry)
             case .systemMedium:
                 ScheduleMediumWidgetView(entry: entry)
-                
+
             default:
                 Text("Unsupported size")
             }
@@ -149,11 +168,11 @@ struct DueProvider: TimelineProvider {
             ]
         )
     }
-    
+
     func getSnapshot(in context: Context, completion: @escaping (DueEntry) -> Void) {
         completion(placeholder(in: context))
     }
-    
+
     func getTimeline(in context: Context, completion: @escaping (Timeline<DueEntry>) -> Void) {
         let timeline = Timeline(entries: [placeholder(in: context)], policy: .atEnd)
         completion(timeline)
@@ -163,7 +182,7 @@ struct DueProvider: TimelineProvider {
 
 struct DueWidget: Widget {
     let kind: String = "DueWidget"
-    
+
     var body: some WidgetConfiguration {
         StaticConfiguration(kind: kind, provider: DueProvider()) { entry in
             DueWidgetEntryView(entry: entry)
@@ -173,15 +192,16 @@ struct DueWidget: Widget {
         .supportedFamilies([.systemSmall, .systemMedium,.systemLarge])
     }
 }
+
 struct DueWidgetEntryView: View {
     var entry: DueEntry
     @Environment(\.widgetFamily) var family
-    
+
     var body: some View {
         ZStack {
             Color(hex: "#041727")
                 .ignoresSafeArea()
-            
+
             switch family {
             case .systemSmall:
                 if !entry.assignments.isEmpty {
@@ -199,24 +219,3 @@ struct DueWidgetEntryView: View {
     }
 }
 
-// MARK: - Preview
-#Preview("Large Due Widget", as: .systemLarge) {
-    DueWidget()
-} timeline: {
-    DueEntry(
-        date: Date(),
-        assignments: [
-            
-            Assignment(title: "Quiz 1", timeRange: "8 AM - 9 AM", subject: "Java Programming - ELA",
-                       hoursLeft: "02:00 hrs left", priority: .high, category: .dueToday),
-            Assignment(title: "Digital Assignment I", timeRange: "8 AM - 9 AM", subject: "Java Programming - ELA",
-                       hoursLeft: "12:00 hrs left", priority: .medium, category: .dueToday),
-            
-            // Upcoming
-            Assignment(title: "Digital Assignment I", timeRange: "8 AM - 9 AM", subject: "Software Engineering - ETH",
-                       hoursLeft: "2 days left", priority: .low, category: .upcoming),
-            Assignment(title: "Digital Assignment I", timeRange: "8 AM - 9 AM", subject: "Software Engineering - ETH",
-                       hoursLeft: "3 days left", priority: .low, category: .upcoming)
-        ]
-    )
-}

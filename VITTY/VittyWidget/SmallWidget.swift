@@ -68,7 +68,7 @@ struct ScheduleSmallWidgetView: View {
             Spacer().frame(height: 15)
             
             CircleProgressView(
-                progress: entry.classes.count,
+                progress: entry.completed,
                 total: entry.total,
                 circleSize: 45,
                 lineWidth: 12,

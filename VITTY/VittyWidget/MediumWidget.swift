@@ -23,10 +23,10 @@ struct ScheduleMediumWidgetView: View {
                         }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
-                    else if entry.classes.count == entry.total {
+                    else if entry.completed == entry.total {
                       
                         CircleProgressView(
-                            progress: entry.classes.count,
+                            progress: entry.completed,
                             total: entry.total,
                             circleSize: 50,
                             lineWidth: 10,
@@ -53,7 +53,7 @@ struct ScheduleMediumWidgetView: View {
                     } else {
                      
                         CircleProgressView(
-                            progress: entry.classes.count,
+                            progress: entry.completed,
                             total: entry.total,
                             circleSize: 50,
                             lineWidth: 10,
@@ -64,18 +64,43 @@ struct ScheduleMediumWidgetView: View {
                         Image("twoclassline").resizable().frame(width: 10, height: 85)
                         
                         VStack(alignment: .leading, spacing: 8) {
-                            ForEach(entry.classes.prefix(2), id: \.title) { classItem in
+                            let upcomingClasses = entry.classes.filter {
+                                classItem in
+                                let timeComponents = classItem.time.components(separatedBy: " - ")
+                                guard timeComponents.count == 2 else { return false }
+
+                                let dateFormatter = DateFormatter()
+                                dateFormatter.dateFormat = "h:mm a"
+                                dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
+                                guard let endTime = dateFormatter.date(from: timeComponents[1]) else { return false }
+
+                              
+                                let calendar = Calendar.current
+                                if let todayEnd = calendar.date(
+                                    bySettingHour: calendar.component(.hour, from: endTime),
+                                    minute: calendar.component(.minute, from: endTime),
+                                    second: 0,
+                                    of: Date()
+                                ) {
+                                    return Date() <= todayEnd
+                                }
+                                return false
+                            }
+
+                            ForEach(upcomingClasses.prefix(2), id: \.title) { classItem in
                                 ScheduleItemView(
                                     title: classItem.title,
                                     time: "\(classItem.time) | \(classItem.slot ?? "")"
                                 )
                             }
-                            
-                            if entry.classes.count > 2 {
-                                Text("+\(entry.classes.count - 2) More")
+
+                            if upcomingClasses.count > 2 {
+                                Text("+\(upcomingClasses.count - 2) More")
                                     .foregroundColor(.white)
                                     .font(.system(size: 14))
                             }
+
                         }
                     }
                 }
@@ -124,16 +149,16 @@ struct ScheduleItemView: View {
     }
 }
 
-#Preview("Medium Schedule Widget", as: .systemMedium) {
-    VittyWidget()
-} timeline: {
-    ScheduleEntry(
-        date: Date(),
-        total: 5,
-        classes: [
-            Class(title: "Software Engineering", time: "4:00 PM - 4:50 PM", slot: "A1 + TA1"),
-                Class(title: "Java Programming", time: "5:00 PM - 5:50 PM", slot: "A1 + TA1"),
-            Class(title: "Machine Learning", time: "6:00 PM - 6:50 PM", slot: "B2 + TB2")
-        ]
-    )
-}
+//#Preview("Medium Schedule Widget", as: .systemMedium) {
+//    VittyWidget()
+//} timeline: {
+//    ScheduleEntry(
+//        date: Date(),
+//        total: 5,
+//        classes: [
+//            Classes(title: "Software Engineering", time: "4:00 PM - 4:50 PM", slot: "A1 + TA1"),
+//                Classes(title: "Java Programming", time: "5:00 PM - 5:50 PM", slot: "A1 + TA1"),
+//            Classes(title: "Machine Learning", time: "6:00 PM - 6:50 PM", slot: "B2 + TB2")
+//        ]
+//    )
+//}

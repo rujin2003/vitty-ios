@@ -242,6 +242,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		4B5977432DF85757009CC224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				DataModel.swift,
+			);
+			target = 314A408A27383BEC0058082F /* VITTY */;
+		};
 		4B8B32DD2D6D75F6004F01BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -252,7 +259,7 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		4B8B32CC2D6D75F4004F01BA /* VittyWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4B8B32DD2D6D75F6004F01BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = VittyWidget; sourceTree = "<group>"; };
+		4B8B32CC2D6D75F4004F01BA /* VittyWidget */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (4B5977432DF85757009CC224 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, 4B8B32DD2D6D75F6004F01BA /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = VittyWidget; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1345,7 +1352,7 @@
 				);
 				MARKETING_VERSION = 2.0.0;
 				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_BUNDLE_IDENTIFIER = com.gdscvit.vittyios;
+				PRODUCT_BUNDLE_IDENTIFIER = com.gdcvit.vittyios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
