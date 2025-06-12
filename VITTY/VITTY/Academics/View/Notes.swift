@@ -5,6 +5,7 @@ struct RichTextView: UIViewRepresentable {
     @Binding var attributedText: NSMutableAttributedString
     @Binding var selectedRange: NSRange
     @Binding var typingAttributes: [NSAttributedString.Key: Any]
+    @Binding var isEmpty: Bool
     
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
@@ -37,6 +38,8 @@ struct RichTextView: UIViewRepresentable {
 
         func textViewDidChange(_ textView: UITextView) {
             parent.attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
+            // Update isEmpty state based on text content
+            parent.isEmpty = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
 
         func textViewDidChangeSelection(_ textView: UITextView) {
@@ -50,13 +53,7 @@ struct NoteEditorView: View {
     @Environment(AcademicsViewModel.self) private var academicsViewModel
     @Environment(AuthViewModel.self) private var authViewModel
     
-    @State private var attributedText = NSMutableAttributedString(
-        string: "Start typing here...",
-        attributes: [
-            .foregroundColor: UIColor.white,
-            .font: UIFont.systemFont(ofSize: 18)
-        ]
-    )
+    @State private var attributedText = NSMutableAttributedString() // Start with empty text
     @State private var selectedRange = NSRange(location: 0, length: 0)
     @State private var typingAttributes: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 18),
@@ -66,6 +63,7 @@ struct NoteEditorView: View {
     @State private var selectedColor: Color = .white
     @State private var showFontPicker = false
     @State private var showFontSizePicker = false
+    @State private var isEmpty = true // Track if the text view is empty
 
     func saveContent() {
         let markdown = attributedText.toMarkdown()
@@ -120,13 +118,26 @@ struct NoteEditorView: View {
                 }
                 .padding()
 
-                RichTextView(
-                    attributedText: $attributedText,
-                    selectedRange: $selectedRange,
-                    typingAttributes: $typingAttributes
-                )
-                .padding()
-                .frame(maxHeight: .infinity)
+                ZStack(alignment: .topLeading) {
+                    RichTextView(
+                        attributedText: $attributedText,
+                        selectedRange: $selectedRange,
+                        typingAttributes: $typingAttributes,
+                        isEmpty: $isEmpty
+                    )
+                    .padding()
+                    .frame(maxHeight: .infinity)
+                    
+                    // Placeholder overlay
+                    if isEmpty {
+                        Text("Start typing here...")
+                            .foregroundColor(.gray.opacity(0.6))
+                            .font(.system(size: 18))
+                            .padding(.horizontal, 20)
+                            .padding(.vertical, 24)
+                            .allowsHitTesting(false) // Allow taps to pass through to the text view
+                    }
+                }
 
                 HStack(spacing: 20) {
                     // Font family picker
@@ -395,6 +406,3 @@ struct NoteEditorView: View {
         }
     }
 }
-
- 
-

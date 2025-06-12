@@ -27,6 +27,7 @@ struct DueEntry: TimelineEntry {
     let assignments: [Assignment]
     
     
+    
     func dueTodayAssignments() -> [Assignment] {
         return assignments.filter { $0.category == .dueToday }
     }
@@ -35,6 +36,14 @@ struct DueEntry: TimelineEntry {
         return assignments.filter { $0.category == .upcoming }
     }
 }
+
+struct SmartDueEntry: TimelineEntry {
+    let date: Date
+    let assignments: [Assignment]
+    let widgetTitle: String
+    let isEmpty: Bool
+}
+
 
 struct Assignment {
     let title: String
@@ -45,9 +54,10 @@ struct Assignment {
     let category: AssignmentCategory?
 }
 
-enum AssignmentCategory: String {
-    case dueToday = "Due Today"
-    case upcoming = "Upcoming"
+enum AssignmentCategory {
+    case dueToday
+    case dueTomorrow
+    case upcoming
 }
 
 

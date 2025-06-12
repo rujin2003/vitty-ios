@@ -30,7 +30,7 @@ class TimeTable: Codable  {
 	var friday: [Lecture]
 	var  saturday: [Lecture]
 	var sunday: [Lecture]
-    // Macro tells swift data to ignore this var
+   
     @Transient
 	var logger = Logger(
 		subsystem: Bundle.main.bundleIdentifier!,

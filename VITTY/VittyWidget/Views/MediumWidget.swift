@@ -111,19 +111,42 @@ struct ScheduleMediumWidgetView: View {
 }
 
 
+
+
 struct DueMediumWidgetView: View {
-    var assignments: [Assignment]
+    var entry: SmartDueEntry
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            WidgetTitle(title: "Due Today", fontSize: 16.0)
+          
+            Spacer().frame(height: 5)
+            WidgetTitle(title: entry.widgetTitle, fontSize: 12.0)
+          
             
-            VStack(spacing: 6) {
-                ForEach(assignments.indices, id: \.self) { index in
-                    if index < 3 {
-                        AssignmentRow(assignment: assignments[index],titleFont: 14,subjectFont: 10,hoursLeft: 10)
+            if entry.isEmpty {
+                VStack(spacing: 6) {
+                    Image(systemName: "calendar.badge.exclamationmark")
+                        .font(.system(size: 24))
+                        .foregroundColor(.gray)
+                    
+                    Text("No reminders")
+                        .font(.system(size: 14, weight: .medium))
+                        .foregroundColor(.gray)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                VStack(spacing: 6) {
+                 
+                    ForEach(Array(entry.assignments.prefix(2).enumerated()), id: \.offset) { index, assignment in
+                        AssignmentRow(
+                            assignment: assignment,
+                            titleFont: 14,
+                            subjectFont: 10,
+                            hoursLeft: 10
+                        )
                     }
                 }
+                Spacer()
             }
         }
         .padding(12)
@@ -131,7 +154,8 @@ struct DueMediumWidgetView: View {
 }
 
 
-// MARK: - Schedule Item View
+
+
 struct ScheduleItemView: View {
     var title: String
     var time: String

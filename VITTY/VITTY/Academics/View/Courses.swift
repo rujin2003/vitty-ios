@@ -1,59 +1,35 @@
 import SwiftUI
+import SwiftData
 
 struct CoursesView: View {
+    @Query private var timeTables: [TimeTable]
     @State private var searchText = ""
     @State private var isCurrentSemester = true
-    
-    @State private var courses: [Course] = [
-        Course(
-            title: "Software Engineering - ETH",
-            code: "C2 + TC2",
-            semester: "Winter 2023-24",
-            isFavorite: true
-        ),
-        Course(
-            title: "Java Programming - ELA",
-            code: "C2 + TC2",
-            semester: "Winter 2023-24",
-            isFavorite: false
-        ),
-        Course(
-            title: "Data Structures - CSE",
-            code: "C2 + TC2",
-            semester: "Winter 2023-24",
-            isFavorite: false
-        ),
-        Course(
-            title: "Computer Networks - ETH",
-            code: "C2 + TC2",
-            semester: "Winter 2023-24",
-            isFavorite: false
-        )
-    ]
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
+        let courses = timeTables.first.map { extractCourses(from: $0) } ?? []
+        let filtered = filteredCourses(from: courses)
+
         ScrollView {
             VStack(spacing: 0) {
-               
                 SearchBar(searchText: $searchText)
-                
-             
+
                 HStack(spacing: 16) {
                     SemesterFilterButton(isSelected: isCurrentSemester, title: "Current Semester")
                         .onTapGesture { isCurrentSemester = true }
-                    
+
                     SemesterFilterButton(isSelected: !isCurrentSemester, title: "All Semesters")
                         .onTapGesture { isCurrentSemester = false }
-                    
+
                     Spacer()
                 }
                 .padding(.horizontal)
                 .padding(.top, 16)
-                
-                // Course List
+
                 VStack(spacing: 16) {
-                    ForEach(filteredCourses) { course in
-                        NavigationLink(destination: CourseRefs(courseName: course.title, courseInstitution: course.code)) {
+                    ForEach(filtered) { course in
+                        NavigationLink(destination: CourseRefs(courseName: course.title, courseInstitution: course.code,slot:course.slot,courseCode: course.code)) {
                             CourseCardView(course: course)
                         }
                     }
@@ -66,19 +42,75 @@ struct CoursesView: View {
         .scrollIndicators(.hidden)
         .background(Color("Background").edgesIgnoringSafeArea(.all))
     }
-    
-    private var filteredCourses: [Course] {
-        courses.filter { course in
-            let matchesSearch = searchText.isEmpty ||
-                course.title.lowercased().contains(searchText.lowercased())
-            
+    private func filteredCourses(from allCourses: [Course]) -> [Course] {
+        allCourses.filter { course in
+            let matchesSearch = searchText.isEmpty || course.title.lowercased().contains(searchText.lowercased())
             if isCurrentSemester {
-                return matchesSearch && course.semester.contains("Winter 2023-24")
+                return matchesSearch && course.semester == determineSemester(for: Date())
             } else {
                 return matchesSearch
             }
         }
     }
+
+    private func extractCourses(from timetable: TimeTable) -> [Course] {
+        let allLectures = timetable.monday + timetable.tuesday + timetable.wednesday +
+                          timetable.thursday + timetable.friday + timetable.saturday +
+                          timetable.sunday
+
+        let currentSemester = determineSemester(for: Date())
+
+       
+        let groupedLectures = Dictionary(grouping: allLectures, by: { $0.name })
+
+        var result: [Course] = []
+
+        for (title, lectures) in groupedLectures {
+            _ = lectures.map { $0.slot }.joined(separator: " + ")
+            let uniqueSlot = Set(lectures.map { $0.slot }).joined(separator: " + ")
+            _ = Set(lectures.map { $0.code }).joined(separator: " / ")
+            
+
+            result.append(
+                Course(
+                    title: title,
+                    slot: uniqueSlot,
+                    code: uniqueSlot,
+                    semester: currentSemester,
+                    isFavorite: false
+                )
+            )
+        }
+
+        return result
+    }
+
+
+    private func determineSemester(for date: Date) -> String {
+        let month = Calendar.current.component(.month, from: date)
+        
+        switch month {
+        case 12, 1, 2:
+            return "Winter \(academicYear(for: date))"
+        case 3...6:
+            return "Summer \(academicYear(for: date))"
+        case 7...11:
+            return "Fall \(academicYear(for: date))"
+        default:
+            return "Unknown"
+        }
+    }
+
+    private func academicYear(for date: Date) -> String {
+        let year = Calendar.current.component(.year, from: date)
+        let month = Calendar.current.component(.month, from: date)
+        if month < 3 {
+            return "\(year - 1)-\(String(format: "%02d", year % 100))"
+        } else {
+            return "\(year)-\(String(format: "%02d", (year + 1) % 100))"
+        }
+    }
+
 }
 
 struct SemesterFilterButton: View {
@@ -141,7 +173,8 @@ struct CourseCardView: View {
 struct Course: Identifiable {
     let id = UUID()
     let title: String
-    let code: String
+    let slot: String
+    let code : String
     let semester: String
     let isFavorite: Bool
 }

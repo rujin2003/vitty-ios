@@ -99,6 +99,7 @@ struct TimeTableView: View {
                 LectureDetailView(lecture: lecture)
             }
             .onAppear {
+                print(authViewModel.loggedInBackendUser?.token ?? "auth auth token")
                 logger.debug("onAppear triggered")
                 if let existing = timetableItem.first {
                     logger.debug("exixting")

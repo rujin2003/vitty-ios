@@ -12,6 +12,7 @@ import SwiftUI
 struct VittyWidgetBundle: WidgetBundle {
     var body: some Widget {
         VittyWidget()
+        RemindersWidget()
         VittyWidgetControl()
         VittyWidgetLiveActivity()
     }

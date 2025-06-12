@@ -6,50 +6,61 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct RemindersView: View {
+    @Environment(\.modelContext) private var modelContext
+    @Query private var allReminders: [Remainder]
+    
     @State private var searchText = ""
     @State private var selectedTab = 0
     
-    @State private var reminders: [ReminderGroup] = [
-        ReminderGroup(
-            date: "27th February",
-            daysToGo: 2,
-            items: [
-                ReminderItem(
-                    title: "Digital Assignment I",
-                    course: "Software Engineering - ETH",
-                    isQuiz: false,
-                    time: nil,
-                    isCompleted: false
-                ),
-                ReminderItem(
-                    title: "Quiz 1",
-                    course: "Java Programming - ELA",
-                    isQuiz: true,
-                    time: "8 AM - 9 AM",
-                    isCompleted: false
-                )
-            ]
-        ),
-        ReminderGroup(
-            date: "1st March",
-            daysToGo: 5,
-            items: [
-                ReminderItem(
-                    title: "Digital Assignment I",
-                    course: "Data Structures - CSE",
-                    isQuiz: false,
-                    time: nil,
-                    isCompleted: false
-                )
-            ]
-        )
-    ]
+    // Filtered reminders based on search text
+    private var filteredReminders: [Remainder] {
+        if searchText.isEmpty {
+            return allReminders
+        } else {
+            return allReminders.filter { reminder in
+                reminder.title.localizedCaseInsensitiveContains(searchText) ||
+                reminder.subject.localizedCaseInsensitiveContains(searchText) ||
+                reminder.courseCode.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+    
+    // Group reminders by date
+    private var groupedReminders: [ReminderGroup] {
+        let grouped = Dictionary(grouping: filteredReminders) { reminder in
+            Calendar.current.startOfDay(for: reminder.date)
+        }
+        
+        return grouped.map { (date, reminders) in
+            let daysToGo = Calendar.current.dateComponents([.day], from: Date(), to: date).day ?? 0
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "d MMMM"
+            
+            return ReminderGroup(
+                date: dateFormatter.string(from: date),
+                daysToGo: max(0, daysToGo),
+                items: reminders.map { remainder in
+                    ReminderItem(
+                        id: remainder.persistentModelID,
+                        title: remainder.title,
+                        course: "\(remainder.subject) - \(remainder.courseCode)",
+                        isQuiz: remainder.title.lowercased().contains("quiz"),
+                        time: remainder.slot.isEmpty ? nil : remainder.slot,
+                        isCompleted: remainder.isCompleted,
+                        subjectDescription: remainder.subjectDescription
+                    )
+                }
+            )
+        }.sorted { $0.daysToGo < $1.daysToGo }
+    }
     
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
+                // Search Bar
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
@@ -70,6 +81,7 @@ struct RemindersView: View {
                 .padding(.horizontal)
                 .padding(.top, 16)
                 
+                // Status Tabs
                 HStack(spacing: 16) {
                     StatusTabView(isSelected: selectedTab == 0, title: "Pending")
                         .onTapGesture { selectedTab = 0 }
@@ -80,8 +92,9 @@ struct RemindersView: View {
                 .padding(.horizontal)
                 .padding(.top, 16)
                 
+                // Reminder Groups
                 VStack(spacing: 24) {
-                    ForEach(Array(reminders.enumerated()), id: \.element.id) { groupIndex, group in
+                    ForEach(groupedReminders, id: \.id) { group in
                         if selectedTab == 0 && !group.items.filter({ !$0.isCompleted }).isEmpty {
                             ReminderGroupView(
                                 group: ReminderGroup(
@@ -90,7 +103,7 @@ struct RemindersView: View {
                                     items: group.items.filter { !$0.isCompleted }
                                 ),
                                 completeItem: { itemId in
-                                    completeReminderItem(groupIndex: groupIndex, itemId: itemId)
+                                    completeReminderItem(itemId: itemId)
                                 }
                             )
                             .transition(.move(edge: .trailing))
@@ -109,16 +122,37 @@ struct RemindersView: View {
                 }
                 .padding(.horizontal)
                 .padding(.top, 16)
+                
+                // Empty state
+                if groupedReminders.isEmpty {
+                    VStack(spacing: 16) {
+                        Image(systemName: "calendar.badge.exclamationmark")
+                            .font(.system(size: 48))
+                            .foregroundColor(.gray)
+                        
+                        Text(searchText.isEmpty ? "No reminders yet" : "No reminders found")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(.gray)
+                        
+                        if !searchText.isEmpty {
+                            Text("Try adjusting your search terms")
+                                .font(.system(size: 14))
+                                .foregroundColor(.gray.opacity(0.7))
+                        }
+                    }
+                    .padding(.top, 60)
+                }
             }
         }
         .scrollIndicators(.hidden)
         .background(Color("Background").edgesIgnoringSafeArea(.all))
     }
     
-    private func completeReminderItem(groupIndex: Int, itemId: UUID) {
-        if let itemIndex = reminders[groupIndex].items.firstIndex(where: { $0.id == itemId }) {
+    private func completeReminderItem(itemId: PersistentIdentifier) {
+        if let remainder = allReminders.first(where: { $0.persistentModelID == itemId }) {
             withAnimation(.easeInOut(duration: 0.3)) {
-                reminders[groupIndex].items[itemIndex].isCompleted = true
+                remainder.isCompleted = true
+                try? modelContext.save()
             }
         }
     }
@@ -152,7 +186,7 @@ struct StatusTabView: View {
 
 struct ReminderGroupView: View {
     let group: ReminderGroup
-    let completeItem: (UUID) -> Void
+    let completeItem: (PersistentIdentifier) -> Void
     
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -168,19 +202,17 @@ struct ReminderGroupView: View {
                         .fill(group.daysToGo <= 2 ? Color.red : Color.yellow)
                         .frame(width: 8, height: 8)
                     
-                    Text("\(group.daysToGo) days to go")
+                    Text(group.daysToGo == 0 ? "Today" : "\(group.daysToGo) days to go")
                         .font(.system(size: 12))
                         .foregroundColor(.white.opacity(0.7))
                 }
             }
             
             VStack(spacing: 12) {
-                ForEach(group.items) { item in
+                ForEach(group.items, id: \.id) { item in
                     if item.isCompleted {
-                       
                         ReminderItemView(item: item)
                     } else {
-                      
                         SwipeableReminderItemView(
                             item: item,
                             onComplete: { completeItem(item.id) }
@@ -191,7 +223,6 @@ struct ReminderGroupView: View {
         }
     }
 }
-
 
 struct SwipeableReminderItemView: View {
     let item: ReminderItem
@@ -233,27 +264,25 @@ struct SwipeableReminderItemView: View {
                         }
                         .onEnded { _ in
                             if offset < -75 {
-                              
-                               
+                                withAnimation(.easeInOut(duration: 0.3)) {
                                     offset = -UIScreen.main.bounds.width
                                     isRemoved = true
+                                }
                                 
-                               
                                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
                                     onComplete()
                                 }
                             } else {
-                               
+                                withAnimation(.easeInOut(duration: 0.2)) {
                                     offset = 0
-                                
+                                }
                             }
                         }
                 )
         }
-       
-        .frame(height: isRemoved ? 0 : 80)
+        .frame(height: isRemoved ? 0 : nil)
         .opacity(isRemoved ? 0 : 1)
-        
+        .animation(.easeInOut(duration: 0.3), value: isRemoved)
     }
 }
 
@@ -262,27 +291,58 @@ struct ReminderItemView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(item.title + " | " + (item.time ?? ""))
-                .font(.system(size: 16, weight: .semibold))
-                .foregroundColor(.white)
-                .padding(.top, 16)
-                .padding(.horizontal, 16)
+            HStack {
+                Text(item.title)
+                    .font(.system(size: 16, weight: .semibold))
+                    .foregroundColor(.white)
+                
+                if let time = item.time {
+                    Spacer()
+                    Text(time)
+                        .font(.system(size: 14))
+                        .foregroundColor(.white.opacity(0.7))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color("Accent").opacity(0.3))
+                        .cornerRadius(8)
+                }
+            }
+            .padding(.top, 16)
+            .padding(.horizontal, 16)
             
             HStack {
                 Text(item.course)
                     .font(.system(size: 14))
                     .foregroundColor(Color("Accent"))
-                Spacer()
+                
+                if item.isQuiz {
+                    Spacer()
+                    HStack(spacing: 4) {
+                        Image(systemName: "questionmark.circle.fill")
+                            .font(.system(size: 12))
+                            .foregroundColor(.orange)
+                        Text("Quiz")
+                            .font(.system(size: 12))
+                            .foregroundColor(.orange)
+                    }
+                }
             }
             .padding(.horizontal, 16)
-            .padding(.bottom, 16)
+            
+            if let description = item.subjectDescription, !description.isEmpty {
+                Text(description)
+                    .font(.system(size: 12))
+                    .foregroundColor(.white.opacity(0.6))
+                    .padding(.horizontal, 16)
+            }
         }
-        .frame(maxWidth: .infinity)
-        
+        .padding(.bottom, 16)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 16).fill(Color("Secondary")))
     }
 }
 
+// Updated models to work with SwiftData
 struct ReminderGroup: Identifiable {
     let id = UUID()
     let date: String
@@ -291,10 +351,11 @@ struct ReminderGroup: Identifiable {
 }
 
 struct ReminderItem: Identifiable {
-    let id = UUID()
+    let id: PersistentIdentifier
     let title: String
     let course: String
     let isQuiz: Bool
     let time: String?
     var isCompleted: Bool
+    let subjectDescription: String?
 }

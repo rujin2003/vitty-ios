@@ -1,13 +1,41 @@
 import SwiftUI
-
+import SwiftData
 
 struct CourseRefs: View {
     var courseName: String
     var courseInstitution: String
+    var slot: String
+    var courseCode: String
+
     @State private var showBottomSheet = false
     @State private var showReminderSheet = false
     @State private var navigateToNotesEditor = false
+
     @Environment(\.dismiss) private var dismiss
+
+    private let maxVisible = 4
+
+    // Fetch remainders with dynamic predicate
+    @Query private var filteredRemainders: [Remainder]
+
+    init(courseName: String, courseInstitution: String, slot: String, courseCode: String) {
+        self.courseName = courseName
+        self.courseInstitution = courseInstitution
+        self.slot = slot
+        self.courseCode = courseCode
+
+        // Dynamic predicate and descriptor
+        let predicate = #Predicate<Remainder> {
+            $0.subject == courseName && $0.isCompleted == false
+        }
+
+        let descriptor = FetchDescriptor<Remainder>(
+            predicate: predicate,
+            sortBy: [SortDescriptor(\.date, order: .forward)]
+        )
+
+        _filteredRemainders = Query(descriptor)
+    }
 
     var body: some View {
         NavigationStack {
@@ -50,7 +78,7 @@ struct CourseRefs: View {
                             .padding(.horizontal)
                         Spacer()
                     }
-                    Spacer().frame(height: 10)
+                    Spacer().frame(height: 20)
 
                     Text("\(courseName) - \(courseInstitution)")
                         .font(.title2)
@@ -60,17 +88,14 @@ struct CourseRefs: View {
 
                     ScrollView(.horizontal, showsIndicators: false) {
                         HStack(spacing: 8) {
-                            TagView(title: "DA I by 24 May", color: .red)
-                            TagView(title: "DA II by 2 June", color: .yellow)
-                            TagView(title: "Quiz I on 2 Jan", color: .green)
-                            TagView(title: "+3", color: .yellow)
+                            let visible = Array(filteredRemainders.prefix(maxVisible))
+                            ForEach(visible, id: \.self) { reminder in
+                                TagView(reminder: reminder)
+                            }
 
-                            Button(action: {}) {
-                                Image(systemName: "plus")
-                                    .font(.system(size: 18, weight: .bold))
-                                    .padding(10)
-                                    .background(Color.white.opacity(0.2))
-                                    .clipShape(Circle())
+                            let remainingCount = filteredRemainders.count - maxVisible
+                            if remainingCount > 0 {
+                                MoreTagView(count: remainingCount)
                             }
                         }
                         .padding(.horizontal)
@@ -110,13 +135,13 @@ struct CourseRefs: View {
             .sheet(isPresented: $showBottomSheet) {
                 ZStack {
                     Color("Secondary").edgesIgnoringSafeArea(.all)
-                    
+
                     HStack {
                         BottomSheetButton(icon: "upload", title: "Write Note") {
                             showBottomSheet = false
                             navigateToNotesEditor = true
                         }
-                        
+
                         BottomSheetButton(icon: "edit_document", title: "Upload File")
                         BottomSheetButton(icon: "alarm", title: "Set Reminder") {
                             showBottomSheet = false
@@ -130,7 +155,8 @@ struct CourseRefs: View {
                 .presentationDragIndicator(.visible)
             }
             .sheet(isPresented: $showReminderSheet) {
-                ReminderView(courseName: courseName)
+                ReminderView(courseName: courseName, slot: slot, courseCode: courseCode)
+                    .presentationDetents([.fraction(0.8)])
             }
             .navigationDestination(isPresented: $navigateToNotesEditor) {
                 NoteEditorView()
@@ -138,6 +164,7 @@ struct CourseRefs: View {
         }
     }
 }
+
 
 struct BottomSheetButton: View {
     var icon: String
@@ -165,16 +192,15 @@ struct BottomSheetButton: View {
 }
 
 struct TagView: View {
-    var title: String
-    var color: Color
-    
+    var reminder: Remainder
+
     var body: some View {
         HStack {
             Circle()
                 .frame(width: 8, height: 8)
-                .foregroundColor(color)
-            
-            Text(title)
+                .foregroundColor(tagColor)
+
+            Text(reminder.title)
                 .font(.system(size: 14, weight: .medium))
                 .foregroundColor(.white)
         }
@@ -183,7 +209,32 @@ struct TagView: View {
         .background(Color.white.opacity(0.1))
         .clipShape(Capsule())
     }
+
+    private var tagColor: Color {
+        let now = Date()
+        let calendar = Calendar.current
+        if let daysBetween = calendar.dateComponents([.day], from: now, to: reminder.date).day,
+           daysBetween >= 0 && daysBetween <= 7 {
+            return .red
+        } else {
+            return .green
+        }
+    }
 }
+struct MoreTagView: View {
+    var count: Int
+
+    var body: some View {
+        Text("+\(count) more")
+            .font(.system(size: 14, weight: .medium))
+            .foregroundColor(.white)
+            .padding(.horizontal, 12)
+            .padding(.vertical, 6)
+            .background(Color.white.opacity(0.1))
+            .clipShape(Capsule())
+    }
+}
+
 
 struct CourseCardNotes: View {
     var title: String
@@ -223,4 +274,5 @@ struct RoundedCorner: Shape {
         return Path(path.cgPath)
     }
 }
+
 
