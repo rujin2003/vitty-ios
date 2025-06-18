@@ -53,12 +53,21 @@ struct ReminderView: View {
                             modelContext.insert(newReminder)
                             try modelContext.save()
                             print("Saved successfully")
+
+                            // Schedule local notifications
+                            NotificationManager.shared.scheduleReminderNotifications(
+                                title: title,
+                                date: startTime,
+                                subject: courseName
+                            )
+
                         } catch {
                             print("Failed to save: \(error.localizedDescription)")
                         }
 
                         presentationMode.wrappedValue.dismiss()
                     }
+
                     .disabled(!isFormValid)
                     .foregroundColor(isFormValid ? .red : .gray)
                 }

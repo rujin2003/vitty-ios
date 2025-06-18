@@ -50,6 +50,7 @@ struct VITTYApp: App {
 
 	init() {
 		setupFirebase()
+        NotificationManager.shared.requestAuthorization()
 	}
 
 	var body: some Scene {
