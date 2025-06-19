@@ -4,197 +4,273 @@
 //
 //  Created by Chandram Dutta on 09/02/24.
 //
+//
+//  TimeTable.swift
+//  VITTY
+//
+//  Created by Chandram Dutta on 09/02/24.
+//
 
 import Foundation
 import OSLog
+import SwiftData
 
-//import SwiftData
+
 
 class TimeTableRaw: Codable {
-	let data: TimeTable
+    let data: TimeTable
 
-	enum CodingKeys: String, CodingKey {
-		case data
-	}
+    enum CodingKeys: String, CodingKey {
+        case data
+    }
 }
 
-//@Model
-class TimeTable: Codable {
-	let monday: [Lecture]
-	let tuesday: [Lecture]
-	let wednesday: [Lecture]
-	let thursday: [Lecture]
-	let friday: [Lecture]
-	let saturday: [Lecture]
-	let sunday: [Lecture]
-	private let logger = Logger(
-		subsystem: Bundle.main.bundleIdentifier!,
-		category: String(
-			describing: TimeTable.self
-		)
-	)
 
-	init(
-		monday: [Lecture],
-		tuesday: [Lecture],
-		wednesday: [Lecture],
-		thursday: [Lecture],
-		friday: [Lecture],
-		saturday: [Lecture],
-		sunday: [Lecture]
-	) {
-		self.monday = monday
-		self.tuesday = tuesday
-		self.wednesday = wednesday
-		self.thursday = thursday
-		self.friday = friday
-		self.saturday = saturday
-		self.sunday = sunday
-	}
 
-	enum CodingKeys: String, CodingKey {
-		case monday = "Monday"
-		case tuesday = "Tuesday"
-		case wednesday = "Wednesday"
-		case thursday = "Thursday"
-		case friday = "Friday"
-		case saturday = "Saturday"
-		case sunday = "Sunday"
-	}
+@Model
+class TimeTable: Codable  {
+    var monday: [Lecture]
+    var tuesday: [Lecture]
+    var wednesday: [Lecture]
+    var thursday: [Lecture]
+    var friday: [Lecture]
+    var  saturday: [Lecture]
+    var sunday: [Lecture]
+   
+    @Transient
+    var logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(
+            describing: TimeTable.self
+        )
+    )
+    init(
+        monday: [Lecture],
+        tuesday: [Lecture],
+        wednesday: [Lecture],
+        thursday: [Lecture],
+        friday: [Lecture],
+        saturday: [Lecture],
+        sunday: [Lecture]
+    ) {
+        self.monday = monday
+        self.tuesday = tuesday
+        self.wednesday = wednesday
+        self.thursday = thursday
+        self.friday = friday
+        self.saturday = saturday
+        self.sunday = sunday
+    }
 
-	required init(from decoder: Decoder) throws {
-		let container = try decoder.container(keyedBy: CodingKeys.self)
+    enum CodingKeys: String, CodingKey,Codable {
+        case monday = "Monday"
+        case tuesday = "Tuesday"
+        case wednesday = "Wednesday"
+        case thursday = "Thursday"
+        case friday = "Friday"
+        case saturday = "Saturday"
+        case sunday = "Sunday"
+    }
 
-		do {
-			monday = try container.decode([Lecture].self, forKey: .monday)
-		}
-		catch {
-			logger.error("Error decoding Monday lectures: \(error)")
-			monday = []
-		}
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
 
-		do {
-			tuesday = try container.decode([Lecture].self, forKey: .tuesday)
-		}
-		catch {
-			logger.error("Error decoding Tuesday lectures: \(error)")
-			tuesday = []
-		}
+        do {
+            monday = try container.decode([Lecture].self, forKey: .monday)
+        }
+        catch {
+            logger.error("Error decoding Monday lectures: \(error)")
+            monday = []
+        }
 
-		do {
-			wednesday = try container.decode([Lecture].self, forKey: .wednesday)
-		}
-		catch {
-			logger.error("Error decoding Wednesday lectures: \(error)")
-			wednesday = []
-		}
+        do {
+            tuesday = try container.decode([Lecture].self, forKey: .tuesday)
+        }
+        catch {
+            logger.error("Error decoding Tuesday lectures: \(error)")
+            tuesday = []
+        }
 
-		do {
-			thursday = try container.decode([Lecture].self, forKey: .thursday)
-		}
-		catch {
-			logger.error("Error decoding Thursday lectures: \(error)")
-			thursday = []
-		}
+        do {
+            wednesday = try container.decode([Lecture].self, forKey: .wednesday)
+        }
+        catch {
+            logger.error("Error decoding Wednesday lectures: \(error)")
+            wednesday = []
+        }
 
-		do {
-			friday = try container.decode([Lecture].self, forKey: .friday)
-		}
-		catch {
-			logger.error("Error decoding Friday lectures: \(error)")
-			friday = []
-		}
+        do {
+            thursday = try container.decode([Lecture].self, forKey: .thursday)
+        }
+        catch {
+            logger.error("Error decoding Thursday lectures: \(error)")
+            thursday = []
+        }
 
-		do {
-			saturday = try container.decode([Lecture].self, forKey: .saturday)
-		}
-		catch {
-			logger.error("Error decoding Saturday lectures: \(error)")
-			saturday = []
-		}
+        do {
+            friday = try container.decode([Lecture].self, forKey: .friday)
+        }
+        catch {
+            logger.error("Error decoding Friday lectures: \(error)")
+            friday = []
+        }
 
-		do {
-			sunday = try container.decode([Lecture].self, forKey: .sunday)
-		}
-		catch {
-			logger.error("Error decoding Sunday lectures: \(error)")
-			sunday = []
-		}
-	}
+        do {
+            saturday = try container.decode([Lecture].self, forKey: .saturday)
+        }
+        catch {
+            logger.error("Error decoding Saturday lectures: \(error)")
+            saturday = []
+        }
 
-	func encode(to encoder: Encoder) throws {
-		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encode(monday, forKey: .monday)
-		try container.encode(tuesday, forKey: .tuesday)
-		try container.encode(wednesday, forKey: .wednesday)
-		try container.encode(thursday, forKey: .thursday)
-		try container.encode(friday, forKey: .friday)
-		try container.encode(saturday, forKey: .saturday)
-		try container.encode(sunday, forKey: .sunday)
-	}
+        do {
+            sunday = try container.decode([Lecture].self, forKey: .sunday)
+        }
+        catch {
+            logger.error("Error decoding Sunday lectures: \(error)")
+            sunday = []
+        }
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(monday, forKey: .monday)
+        try container.encode(tuesday, forKey: .tuesday)
+        try container.encode(wednesday, forKey: .wednesday)
+        try container.encode(thursday, forKey: .thursday)
+        try container.encode(friday, forKey: .friday)
+        try container.encode(saturday, forKey: .saturday)
+        try container.encode(sunday, forKey: .sunday)
+    }
 }
 
-//@Model
+@Model
 class Lecture: Codable, Identifiable, Comparable {
-	static func == (lhs: Lecture, rhs: Lecture) -> Bool {
-		return lhs.name == rhs.name
-	}
+    static func == (lhs: Lecture, rhs: Lecture) -> Bool {
+        return lhs.name == rhs.name
+    }
 
-	static func < (lhs: Lecture, rhs: Lecture) -> Bool {
-		return lhs.startTime < rhs.startTime
-	}
+    static func < (lhs: Lecture, rhs: Lecture) -> Bool {
+        return lhs.startTime < rhs.startTime
+    }
 
-	let name: String
-	let code: String
-	let venue: String
-	let slot: String
-	let type: String
-	let startTime: String
-	let endTime: String
+    var  name: String
+    var code: String
+    var venue: String
+    var slot: String
+    var type: String
+    var startTime: String
+    var endTime: String
 
-	init(
-		name: String,
-		code: String,
-		venue: String,
-		slot: String,
-		type: String,
-		startTime: String,
-		endTime: String
-	) {
-		self.name = name
-		self.code = code
-		self.venue = venue
-		self.slot = slot
-		self.type = type
-		self.startTime = startTime
-		self.endTime = endTime
-	}
+    init(
+        name: String,
+        code: String,
+        venue: String,
+        slot: String,
+        type: String,
+        startTime: String,
+        endTime: String
+    ) {
+        self.name = name
+        self.code = code
+        self.venue = venue
+        self.slot = slot
+        self.type = type
+        self.startTime = startTime
+        self.endTime = endTime
+    }
 
-	enum CodingKeys: String, CodingKey {
-		case name, code, venue, slot, type
-		case startTime = "start_time"
-		case endTime = "end_time"
-	}
+    enum CodingKeys: String, CodingKey,Codable {
+        case name, code, venue, slot, type
+        case startTime = "start_time"
+        case endTime = "end_time"
+    }
 
-	required init(from decoder: Decoder) throws {
-		let container = try decoder.container(keyedBy: CodingKeys.self)
-		name = try container.decode(String.self, forKey: .name)
-		code = try container.decode(String.self, forKey: .code)
-		venue = try container.decode(String.self, forKey: .venue)
-		slot = try container.decode(String.self, forKey: .slot)
-		type = try container.decode(String.self, forKey: .type)
-		startTime = try container.decode(String.self, forKey: .startTime)
-		endTime = try container.decode(String.self, forKey: .endTime)
-	}
+    required init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        name = try container.decode(String.self, forKey: .name)
+        code = try container.decode(String.self, forKey: .code)
+        venue = try container.decode(String.self, forKey: .venue)
+        slot = try container.decode(String.self, forKey: .slot)
+        type = try container.decode(String.self, forKey: .type)
+        startTime = try container.decode(String.self, forKey: .startTime)
+        endTime = try container.decode(String.self, forKey: .endTime)
+    }
 
-	func encode(to encoder: Encoder) throws {
-		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encode(name, forKey: .name)
-		try container.encode(code, forKey: .code)
-		try container.encode(venue, forKey: .venue)
-		try container.encode(slot, forKey: .slot)
-		try container.encode(type, forKey: .type)
-		try container.encode(startTime, forKey: .startTime)
-		try container.encode(endTime, forKey: .endTime)
-	}
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(name, forKey: .name)
+        try container.encode(code, forKey: .code)
+        try container.encode(venue, forKey: .venue)
+        try container.encode(slot, forKey: .slot)
+        try container.encode(type, forKey: .type)
+        try container.encode(startTime, forKey: .startTime)
+        try container.encode(endTime, forKey: .endTime)
+    }
+}
+extension TimeTable {
+    var isEmpty: Bool {
+        monday.isEmpty && tuesday.isEmpty && wednesday.isEmpty &&
+        thursday.isEmpty && friday.isEmpty && saturday.isEmpty && sunday.isEmpty
+    }
+    private func extractStartDate(from timeString: String) -> Date? {
+        let components = timeString.components(separatedBy: " - ")
+        guard let startTimeString = components.first else { return nil }
+
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+
+        return formatter.date(from: startTimeString)
+    }
+
+    func classesFor(date: Date) -> [Classes] {
+        let calendar = Calendar.current
+        let weekday = calendar.component(.weekday, from: date)
+
+        let lectures: [Lecture]
+        switch weekday {
+        case 1: lectures = sunday
+        case 2: lectures = monday
+        case 3: lectures = tuesday
+        case 4: lectures = wednesday
+        case 5: lectures = thursday
+        case 6: lectures = friday
+        case 7: lectures = saturday
+        default: lectures = []
+        }
+
+        let mapped = lectures.map {
+            Classes(
+                title: $0.name,
+                time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
+                slot: $0.slot
+            )
+        }
+
+        return mapped.sorted {
+            guard let d1 = extractStartDate(from: $0.time),
+                  let d2 = extractStartDate(from: $1.time) else {
+                return false
+            }
+            return d1 < d2
+        }
+    }
+
+    
+
+    private func formatTime(time: String) -> String {
+        var timeComponents = time.components(separatedBy: "T").last ?? ""
+        timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "HH:mm:ss"
+        if let date = dateFormatter.date(from: timeComponents) {
+            dateFormatter.dateFormat = "h:mm a"
+            let formattedTime = dateFormatter.string(from: date)
+            return formattedTime
+        } else {
+            return "Failed to parse the time string."
+        }
+    }
 }
