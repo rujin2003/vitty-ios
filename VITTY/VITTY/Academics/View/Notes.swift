@@ -6,7 +6,7 @@ struct RichTextView: UIViewRepresentable {
     @Binding var selectedRange: NSRange
     @Binding var typingAttributes: [NSAttributedString.Key: Any]
     @Binding var isEmpty: Bool
-    
+   
     func makeUIView(context: Context) -> UITextView {
         let textView = UITextView()
         textView.isEditable = true
@@ -16,13 +16,46 @@ struct RichTextView: UIViewRepresentable {
         textView.typingAttributes = typingAttributes
         textView.backgroundColor = .clear
         textView.textColor = .white
+        
+        // Set initial content
+        textView.attributedText = attributedText
+        textView.selectedRange = selectedRange
+        
         return textView
     }
 
     func updateUIView(_ uiView: UITextView, context: Context) {
-        uiView.attributedText = attributedText
-        uiView.selectedRange = selectedRange
-        uiView.typingAttributes = typingAttributes
+        // Prevent infinite loops by checking if coordinator is updating
+        if context.coordinator.isUpdating {
+            return
+        }
+        
+        // Only update if the content is actually different
+        if !uiView.attributedText.isEqual(to: attributedText) {
+            let previousSelectedRange = uiView.selectedRange
+            context.coordinator.isUpdating = true
+            uiView.attributedText = attributedText
+            
+            // Restore selection if valid
+            if previousSelectedRange.location <= uiView.attributedText.length {
+                uiView.selectedRange = previousSelectedRange
+            }
+            context.coordinator.isUpdating = false
+        }
+        
+        // Only update selection if it's different and valid
+        if !NSEqualRanges(uiView.selectedRange, selectedRange) &&
+           selectedRange.location <= uiView.attributedText.length &&
+           NSMaxRange(selectedRange) <= uiView.attributedText.length {
+            context.coordinator.isUpdating = true
+            uiView.selectedRange = selectedRange
+            context.coordinator.isUpdating = false
+        }
+        
+        // Update typing attributes if they're different
+        if !NSDictionary(dictionary: uiView.typingAttributes).isEqual(to: typingAttributes) {
+            uiView.typingAttributes = typingAttributes
+        }
     }
 
     func makeCoordinator() -> Coordinator {
@@ -31,65 +64,168 @@ struct RichTextView: UIViewRepresentable {
 
     class Coordinator: NSObject, UITextViewDelegate {
         var parent: RichTextView
+        var isUpdating = false
 
         init(_ parent: RichTextView) {
             self.parent = parent
         }
 
         func textViewDidChange(_ textView: UITextView) {
+            // Prevent recursive updates
+            guard !isUpdating else { return }
+            
+            isUpdating = true
+            defer { isUpdating = false }
+            
+            // Update parent state
             parent.attributedText = NSMutableAttributedString(attributedString: textView.attributedText)
-            // Update isEmpty state based on text content
             parent.isEmpty = textView.text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
         }
 
         func textViewDidChangeSelection(_ textView: UITextView) {
+            // Prevent recursive updates
+            guard !isUpdating else { return }
+            
+            isUpdating = true
+            defer { isUpdating = false }
+            
             parent.selectedRange = textView.selectedRange
         }
     }
 }
 
+// Optimized NoteEditorView with better state management
 struct NoteEditorView: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(AcademicsViewModel.self) private var academicsViewModel
     @Environment(AuthViewModel.self) private var authViewModel
     
-    @State private var attributedText = NSMutableAttributedString() // Start with empty text
+    @State private var attributedText = NSMutableAttributedString()
     @State private var selectedRange = NSRange(location: 0, length: 0)
     @State private var typingAttributes: [NSAttributedString.Key: Any] = [
         .font: UIFont.systemFont(ofSize: 18),
         .foregroundColor: UIColor.white
     ]
+    
+    let existingNote: CreateNoteModel?
     @State private var selectedFont: UIFont = UIFont.systemFont(ofSize: 18)
     @State private var selectedColor: Color = .white
     @State private var showFontPicker = false
     @State private var showFontSizePicker = false
-    @State private var isEmpty = true // Track if the text view is empty
-
-    func saveContent() {
-        let markdown = attributedText.toMarkdown()
-        let note = CreateNoteModel(
-            noteName:"",
-            userName: "",
-            courseId:"",
-            courseName: "",
-            noteContent: markdown,
-            createdAt: Date.now
-           )
-
-        let uRL = URL(string: "\(APIConstants.base_url)notes/save")!
-        
-        academicsViewModel.createNote(at: uRL ,
-                                      authToken:authViewModel.loggedInBackendUser?.token ?? "", note: note)
+    @State private var isEmpty = true
+    @State private var hasUnsavedChanges = false
+    @State private var isInitialized = false
+    
+    @Environment(\.modelContext) private var modelContext
+    let courseCode: String
+    let courseName: String
+    
+    init(existingNote: CreateNoteModel? = nil, courseCode: String, courseName: String) {
+        self.existingNote = existingNote
+        self.courseCode = existingNote?.courseId ?? courseCode
+        self.courseName = existingNote?.courseName ?? courseName
     }
     
+    private func initializeContent() {
+        guard !isInitialized else { return }
+        
+        if let note = existingNote {
+            Task { @MainActor in
+                await loadNoteContent(note)
+                isInitialized = true
+            }
+        } else {
+            // New note - initialize with empty content
+            attributedText = NSMutableAttributedString()
+            isEmpty = true
+            isInitialized = true
+        }
+    }
+    
+    @MainActor
+    private func loadNoteContent(_ note: CreateNoteModel) async {
+        do {
+            // Parse the base64 encoded attributed string
+            guard let data = Data(base64Encoded: note.noteContent) else {
+                print("Failed to decode base64 data")
+                // Fallback to plain text
+                attributedText = NSMutableAttributedString(string: note.noteContent)
+                isEmpty = note.noteContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+                return
+            }
+            
+            // Try to unarchive the attributed string
+            if let loadedAttributedString = try NSKeyedUnarchiver.unarchivedObject(ofClass: NSAttributedString.self, from: data) {
+                attributedText = NSMutableAttributedString(attributedString: loadedAttributedString)
+                isEmpty = loadedAttributedString.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            } else {
+                print("Failed to unarchive attributed string")
+                // Fallback to plain text
+                attributedText = NSMutableAttributedString(string: note.noteContent)
+                isEmpty = note.noteContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+            }
+        } catch {
+            print("Error loading note content: \(error)")
+            // Fallback to plain text
+            attributedText = NSMutableAttributedString(string: note.noteContent)
+            isEmpty = note.noteContent.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
+        }
+    }
+
+    func saveContent() {
+      
+        guard hasUnsavedChanges || existingNote == nil else {
+            dismiss()
+            return
+        }
+        
+      
+        do {
+            let data = try NSKeyedArchiver.archivedData(withRootObject: attributedText, requiringSecureCoding: false)
+            let dataString = data.base64EncodedString()
+            let title = generateSmartTitle(from: attributedText.string)
+
+            if let note = existingNote {
+                note.noteName = title
+                note.noteContent = dataString
+                note.createdAt = Date.now
+            } else {
+                let newNote = CreateNoteModel(
+                    noteName: title,
+                    userName: authViewModel.loggedInBackendUser?.name ?? "",
+                    courseId: courseCode,
+                    courseName: courseName,
+                    noteContent: dataString,
+                    createdAt: Date.now
+                )
+                modelContext.insert(newNote)
+            }
+
+            try modelContext.save()
+            print("Note saved/updated in SwiftData.")
+            hasUnsavedChanges = false
+            dismiss()
+        } catch {
+            print("Error saving note: \(error)")
+        }
+    }
+    
+    func generateSmartTitle(from plainText: String) -> String {
+        let lines = plainText.components(separatedBy: .newlines)
+            .filter { !$0.trimmingCharacters(in: .whitespaces).isEmpty }
+        if let firstLine = lines.first {
+            return String(firstLine.prefix(40)).trimmingCharacters(in: .whitespaces)
+        }
+        return "Untitled Note"
+    }
+
     private let fonts: [UIFont] = [
         UIFont.systemFont(ofSize: 18),
-        UIFont(name: "Times New Roman", size: 18)!,
-        UIFont(name: "Helvetica", size: 18)!,
-        UIFont(name: "Courier", size: 18)!
+        UIFont(name: "Times New Roman", size: 18) ?? UIFont.systemFont(ofSize: 18),
+        UIFont(name: "Helvetica", size: 18) ?? UIFont.systemFont(ofSize: 18),
+        UIFont(name: "Courier", size: 18) ?? UIFont.systemFont(ofSize: 18)
     ]
 
-    // Font sizes for the aA picker
     private let fontSizes: [CGFloat] = [12, 14, 16, 18, 20, 22, 24, 28, 32, 36, 42, 48]
 
     var body: some View {
@@ -97,198 +233,38 @@ struct NoteEditorView: View {
             Color("Background")
                 .edgesIgnoringSafeArea(.all)
             
-            VStack {
-                HStack {
-                    Button(action: {
-                        dismiss()
-                    }) {
-                        Image(systemName: "chevron.left")
-                            .foregroundColor(Color("Accent"))
-                    }
-                    Spacer()
-                    Text("Note")
-                        .foregroundColor(.white)
-                        .font(.system(size: 25,weight: Font.Weight.bold))
-                    Spacer()
-                    Button(action:{
-                        saveContent()
-                    }){
-                        Image("save").resizable().frame(width: 30,height: 30)
-                    }
+            if isInitialized {
+                VStack {
+                    // Header
+                    headerView
+                    
+                    // Text Editor
+                    textEditorView
+                    
+                    // Toolbar
+                    toolbarView
                 }
-                .padding()
-
-                ZStack(alignment: .topLeading) {
-                    RichTextView(
-                        attributedText: $attributedText,
-                        selectedRange: $selectedRange,
-                        typingAttributes: $typingAttributes,
-                        isEmpty: $isEmpty
-                    )
-                    .padding()
-                    .frame(maxHeight: .infinity)
-                    
-                    // Placeholder overlay
-                    if isEmpty {
-                        Text("Start typing here...")
-                            .foregroundColor(.gray.opacity(0.6))
-                            .font(.system(size: 18))
-                            .padding(.horizontal, 20)
-                            .padding(.vertical, 24)
-                            .allowsHitTesting(false) // Allow taps to pass through to the text view
-                    }
-                }
-
-                HStack(spacing: 20) {
-                    // Font family picker
-                    Button(action: {
-                        showFontPicker.toggle()
-                        showFontSizePicker = false
-                    }) {
-                        Image(systemName: "textformat")
-                            .foregroundColor(Color("Accent"))
-                    }
-                    
-                    // Font size picker (aA icon)
-                    Button(action: {
-                        showFontSizePicker.toggle()
-                        showFontPicker = false
-                    }) {
-                        HStack(spacing: 2) {
-                            Text("a")
-                                .font(.system(size: 12))
-                                .foregroundColor(Color("Accent"))
-                            Text("A")
-                                .font(.system(size: 18, weight: .bold))
-                                .foregroundColor(Color("Accent"))
-                        }
-                    }
-                    
-                    Button(action: { toggleBold() }) {
-                        Image(systemName: "bold")
-                            .foregroundColor(Color("Accent"))
-                            .padding(8)
-                            .background(isBoldActive() ? Color("Accent").opacity(0.2) : Color.clear)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(isBoldActive() ? Color("Accent") : Color.clear, lineWidth: 1)
-                            )
-                    }
-                    
-                    Button(action: { toggleItalic() }) {
-                        Image(systemName: "italic")
-                            .foregroundColor(Color("Accent"))
-                            .padding(8)
-                            .background(isItalicActive() ? Color("Accent").opacity(0.2) : Color.clear)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(isItalicActive() ? Color("Accent") : Color.clear, lineWidth: 1)
-                            )
-                    }
-                    
-                    Button(action: { toggleUnderline() }) {
-                        Image(systemName: "underline")
-                            .foregroundColor(Color("Accent"))
-                            .padding(8)
-                            .background(isUnderlineActive() ? Color("Accent").opacity(0.2) : Color.clear)
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(isUnderlineActive() ? Color("Accent") : Color.clear, lineWidth: 1)
-                            )
-                    }
-
-                    ColorPicker("", selection: $selectedColor, supportsOpacity: false)
-                        .labelsHidden()
-                        .frame(width: 30, height: 30)
-                        .onChange(of: selectedColor) { newColor in
-                            applyAttribute(.foregroundColor, value: UIColor(newColor))
-                        }
-
-                    Button(action: { addBulletPoints() }) {
-                        Image(systemName: "list.bullet")
-                            .foregroundColor(Color("Accent"))
-                    }
-                }
-                .padding()
-                .background(Color("Background").opacity(0.8))
+            } else {
+                // Loading state
+                ProgressView("Loading...")
+                    .foregroundColor(.white)
             }
 
-            // Font family picker overlay
+            // Overlays
             if showFontPicker {
-                VStack {
-                    Spacer()
-                    VStack(spacing: 0) {
-                        ForEach(fonts, id: \.fontName) { font in
-                            Button(action: {
-                                selectedFont = font
-                                applyFontFamily(font)
-                                showFontPicker = false
-                            }) {
-                                Text(font.fontName.replacingOccurrences(of: "-", with: " "))
-                                    .foregroundColor(.white)
-                                    .font(Font(font as CTFont))
-                                    .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 12)
-                            }
-                            if font != fonts.last {
-                                Divider().background(Color.gray.opacity(0.3))
-                            }
-                        }
-                    }
-                    .background(Color("Background"))
-                    .cornerRadius(10)
-                    .shadow(color: .black.opacity(0.3), radius: 10)
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 100)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-                .background(Color.black.opacity(0.3))
-                .onTapGesture {
-                    showFontPicker = false
-                }
+                fontPickerOverlay
             }
             
-            // Font size picker overlay
             if showFontSizePicker {
-                VStack {
-                    Spacer()
-                    ScrollView {
-                        LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 10) {
-                            ForEach(fontSizes, id: \.self) { size in
-                                Button(action: {
-                                    applyFontSize(size)
-                                    showFontSizePicker = false
-                                }) {
-                                    Text("\(Int(size))")
-                                        .foregroundColor(.white)
-                                        .font(.system(size: min(size, 24)))
-                                        .frame(width: 50, height: 40)
-                                        .background(Color("Accent").opacity(0.2))
-                                        .cornerRadius(8)
-                                        .overlay(
-                                            RoundedRectangle(cornerRadius: 8)
-                                                .stroke(Color("Accent"), lineWidth: 1)
-                                        )
-                                }
-                            }
-                        }
-                        .padding()
-                    }
-                    .frame(maxHeight: 300)
-                    .background(Color("Background"))
-                    .cornerRadius(10)
-                    .shadow(color: .black.opacity(0.3), radius: 10)
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 100)
-                    .transition(.move(edge: .bottom).combined(with: .opacity))
-                }
-                .background(Color.black.opacity(0.3))
-                .onTapGesture {
-                    showFontSizePicker = false
-                }
+                fontSizePickerOverlay
+            }
+        }
+        .onAppear {
+            initializeContent()
+        }
+        .onChange(of: attributedText) { _, _ in
+            if isInitialized {
+                hasUnsavedChanges = true
             }
         }
         .navigationBarHidden(true)
@@ -296,13 +272,197 @@ struct NoteEditorView: View {
         .animation(.easeInOut(duration: 0.3), value: showFontPicker)
         .animation(.easeInOut(duration: 0.3), value: showFontSizePicker)
     }
+    
+    // MARK: - View Components
+    
+    private var headerView: some View {
+        HStack {
+            Button(action: { dismiss() }) {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(Color("Accent"))
+            }
+            Spacer()
+            Text("Note")
+                .foregroundColor(.white)
+                .font(.system(size: 25, weight: .bold))
+            Spacer()
+            Button(action: { saveContent() }) {
+                Image("save")
+                    .resizable()
+                    .frame(width: 30, height: 30)
+            }
+        }
+        .padding()
+    }
+    
+    private var textEditorView: some View {
+        ZStack(alignment: .topLeading) {
+            RichTextView(
+                attributedText: $attributedText,
+                selectedRange: $selectedRange,
+                typingAttributes: $typingAttributes,
+                isEmpty: $isEmpty
+            )
+            .padding()
+            .frame(maxHeight: .infinity)
+            
+            if isEmpty {
+                Text("Start typing here...")
+                    .foregroundColor(.gray.opacity(0.6))
+                    .font(.system(size: 18))
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 24)
+                    .allowsHitTesting(false)
+            }
+        }
+    }
+    
+    private var toolbarView: some View {
+        HStack(spacing: 20) {
+            // Font picker button
+            Button(action: {
+                showFontPicker.toggle()
+                showFontSizePicker = false
+            }) {
+                Image(systemName: "textformat")
+                    .foregroundColor(Color("Accent"))
+            }
+            
+            // Font size button
+            Button(action: {
+                showFontSizePicker.toggle()
+                showFontPicker = false
+            }) {
+                HStack(spacing: 2) {
+                    Text("a")
+                        .font(.system(size: 12))
+                        .foregroundColor(Color("Accent"))
+                    Text("A")
+                        .font(.system(size: 18, weight: .bold))
+                        .foregroundColor(Color("Accent"))
+                }
+            }
+            
+            // Formatting buttons
+            formatButton(action: toggleBold, icon: "bold", isActive: isBoldActive())
+            formatButton(action: toggleItalic, icon: "italic", isActive: isItalicActive())
+            formatButton(action: toggleUnderline, icon: "underline", isActive: isUnderlineActive())
 
+            // Color picker
+            ColorPicker("", selection: $selectedColor, supportsOpacity: false)
+                .labelsHidden()
+                .frame(width: 30, height: 30)
+                .onChange(of: selectedColor) { _, newColor in
+                    applyAttribute(.foregroundColor, value: UIColor(newColor))
+                }
+
+            // Bullet points button
+            Button(action: addBulletPoints) {
+                Image(systemName: "list.bullet")
+                    .foregroundColor(Color("Accent"))
+            }
+        }
+        .padding()
+        .background(Color("Background").opacity(0.8))
+    }
+    
+    private func formatButton(action: @escaping () -> Void, icon: String, isActive: Bool) -> some View {
+        Button(action: action) {
+            Image(systemName: icon)
+                .foregroundColor(Color("Accent"))
+                .padding(8)
+                .background(isActive ? Color("Accent").opacity(0.2) : Color.clear)
+                .cornerRadius(8)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(isActive ? Color("Accent") : Color.clear, lineWidth: 1)
+                )
+        }
+    }
+    
+    // MARK: - Overlay Views
+    
+    private var fontPickerOverlay: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 0) {
+                ForEach(fonts, id: \.fontName) { font in
+                    Button(action: {
+                        selectedFont = font
+                        applyFontFamily(font)
+                        showFontPicker = false
+                    }) {
+                        Text(font.fontName.replacingOccurrences(of: "-", with: " "))
+                            .foregroundColor(.white)
+                            .font(Font(font as CTFont))
+                            .frame(maxWidth: .infinity)
+                            .padding(.vertical, 12)
+                    }
+                    if font != fonts.last {
+                        Divider().background(Color.gray.opacity(0.3))
+                    }
+                }
+            }
+            .background(Color("Background"))
+            .cornerRadius(10)
+            .shadow(color: .black.opacity(0.3), radius: 10)
+            .padding(.horizontal, 40)
+            .padding(.bottom, 100)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+        .background(Color.black.opacity(0.3))
+        .onTapGesture {
+            showFontPicker = false
+        }
+    }
+    
+    private var fontSizePickerOverlay: some View {
+        VStack {
+            Spacer()
+            ScrollView {
+                LazyVGrid(columns: Array(repeating: GridItem(.flexible()), count: 4), spacing: 10) {
+                    ForEach(fontSizes, id: \.self) { size in
+                        Button(action: {
+                            applyFontSize(size)
+                            showFontSizePicker = false
+                        }) {
+                            Text("\(Int(size))")
+                                .foregroundColor(.white)
+                                .font(.system(size: min(size, 24)))
+                                .frame(width: 50, height: 40)
+                                .background(Color("Accent").opacity(0.2))
+                                .cornerRadius(8)
+                                .overlay(
+                                    RoundedRectangle(cornerRadius: 8)
+                                        .stroke(Color("Accent"), lineWidth: 1)
+                                )
+                        }
+                    }
+                }
+                .padding()
+            }
+            .frame(maxHeight: 300)
+            .background(Color("Background"))
+            .cornerRadius(10)
+            .shadow(color: .black.opacity(0.3), radius: 10)
+            .padding(.horizontal, 40)
+            .padding(.bottom, 100)
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+        }
+        .background(Color.black.opacity(0.3))
+        .onTapGesture {
+            showFontSizePicker = false
+        }
+    }
+
+    // MARK: - Text Formatting Functions
+    
     func addBulletPoints() {
         guard selectedRange.length > 0 else { return }
 
         let selectedText = attributedText.attributedSubstring(from: selectedRange).string
         let lines = selectedText.components(separatedBy: "\n")
-        var bulletedText = lines.map { "• \($0)" }.joined(separator: "\n")
+        let bulletedText = lines.map { "• \($0)" }.joined(separator: "\n")
 
         let mutableAttributedString = NSMutableAttributedString(attributedString: attributedText)
         mutableAttributedString.replaceCharacters(in: selectedRange, with: bulletedText)
@@ -312,58 +472,50 @@ struct NoteEditorView: View {
     }
 
     func isBoldActive() -> Bool {
-        if selectedRange.length > 0 {
-            if let font = attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) as? UIFont {
-                return font.fontDescriptor.symbolicTraits.contains(.traitBold)
-            }
-        } else {
-            if let font = typingAttributes[.font] as? UIFont {
-                return font.fontDescriptor.symbolicTraits.contains(.traitBold)
-            }
-        }
-        return false
+        let font = getCurrentFont()
+        return font.fontDescriptor.symbolicTraits.contains(.traitBold)
     }
 
     func isItalicActive() -> Bool {
-        if selectedRange.length > 0 {
-            if let font = attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) as? UIFont {
-                return font.fontDescriptor.symbolicTraits.contains(.traitItalic)
-            }
-        } else {
-            if let font = typingAttributes[.font] as? UIFont {
-                return font.fontDescriptor.symbolicTraits.contains(.traitItalic)
-            }
-        }
-        return false
+        let font = getCurrentFont()
+        return font.fontDescriptor.symbolicTraits.contains(.traitItalic)
     }
 
     func isUnderlineActive() -> Bool {
-        if selectedRange.length > 0 {
-            if let underline = attributedText.attribute(.underlineStyle, at: selectedRange.location, effectiveRange: nil) as? Int {
-                return underline == NSUnderlineStyle.single.rawValue
-            }
+        let underline = getCurrentUnderlineStyle()
+        return underline == NSUnderlineStyle.single.rawValue
+    }
+    
+    private func getCurrentFont() -> UIFont {
+        if selectedRange.length > 0 && selectedRange.location < attributedText.length {
+            return attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) as? UIFont ?? UIFont.systemFont(ofSize: 18)
         } else {
-            if let underline = typingAttributes[.underlineStyle] as? Int {
-                return underline == NSUnderlineStyle.single.rawValue
-            }
+            return typingAttributes[.font] as? UIFont ?? UIFont.systemFont(ofSize: 18)
         }
-        return false
+    }
+    
+    private func getCurrentUnderlineStyle() -> Int {
+        if selectedRange.length > 0 && selectedRange.location < attributedText.length {
+            return attributedText.attribute(.underlineStyle, at: selectedRange.location, effectiveRange: nil) as? Int ?? 0
+        } else {
+            return typingAttributes[.underlineStyle] as? Int ?? 0
+        }
     }
     
     func applyFontFamily(_ font: UIFont) {
-        let currentFont = (selectedRange.length > 0 ? attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.font]) as? UIFont ?? UIFont.systemFont(ofSize: 18)
+        let currentFont = getCurrentFont()
         let newFont = UIFont(name: font.fontName, size: currentFont.pointSize) ?? font
         applyAttribute(.font, value: newFont)
     }
     
     func applyFontSize(_ size: CGFloat) {
-        let currentFont = (selectedRange.length > 0 ? attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.font]) as? UIFont ?? UIFont.systemFont(ofSize: 18)
+        let currentFont = getCurrentFont()
         let newFont = UIFont(descriptor: currentFont.fontDescriptor, size: size)
         applyAttribute(.font, value: newFont)
     }
 
     func toggleBold() {
-        let currentFont = (selectedRange.length > 0 ? attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.font]) as? UIFont ?? UIFont.systemFont(ofSize: 18)
+        let currentFont = getCurrentFont()
         var traits = currentFont.fontDescriptor.symbolicTraits
         if traits.contains(.traitBold) {
             traits.remove(.traitBold)
@@ -377,7 +529,7 @@ struct NoteEditorView: View {
     }
 
     func toggleItalic() {
-        let currentFont = (selectedRange.length > 0 ? attributedText.attribute(.font, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.font]) as? UIFont ?? UIFont.systemFont(ofSize: 18)
+        let currentFont = getCurrentFont()
         var traits = currentFont.fontDescriptor.symbolicTraits
         if traits.contains(.traitItalic) {
             traits.remove(.traitItalic)
@@ -391,7 +543,7 @@ struct NoteEditorView: View {
     }
 
     func toggleUnderline() {
-        let currentUnderline = (selectedRange.length > 0 ? attributedText.attribute(.underlineStyle, at: selectedRange.location, effectiveRange: nil) : typingAttributes[.underlineStyle]) as? Int ?? 0
+        let currentUnderline = getCurrentUnderlineStyle()
         let newUnderline = currentUnderline == NSUnderlineStyle.single.rawValue ? 0 : NSUnderlineStyle.single.rawValue
         applyAttribute(.underlineStyle, value: newUnderline)
     }
@@ -404,5 +556,6 @@ struct NoteEditorView: View {
         } else {
             typingAttributes[key] = value
         }
+        hasUnsavedChanges = true
     }
 }

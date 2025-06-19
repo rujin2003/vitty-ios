@@ -60,30 +60,33 @@ struct CoursesView: View {
 
         let currentSemester = determineSemester(for: Date())
 
-       
+      
         let groupedLectures = Dictionary(grouping: allLectures, by: { $0.name })
 
         var result: [Course] = []
 
-        for (title, lectures) in groupedLectures {
-            _ = lectures.map { $0.slot }.joined(separator: " + ")
-            let uniqueSlot = Set(lectures.map { $0.slot }).joined(separator: " + ")
-            _ = Set(lectures.map { $0.code }).joined(separator: " / ")
-            
+        
+        for title in groupedLectures.keys.sorted() {
+            if let lectures = groupedLectures[title] {
+                let uniqueSlot = Set(lectures.map { $0.slot }).sorted().joined(separator: " + ")
+                let uniqueCode = Set(lectures.map { $0.code }).sorted().joined(separator: " / ")
 
-            result.append(
-                Course(
-                    title: title,
-                    slot: uniqueSlot,
-                    code: uniqueSlot,
-                    semester: currentSemester,
-                    isFavorite: false
+                result.append(
+                    Course(
+                        title: title,
+                        slot: uniqueSlot,
+                        code: uniqueCode,
+                        semester: currentSemester,
+                        isFavorite: false
+                    )
                 )
-            )
+            }
         }
 
-        return result
+      
+        return result.sorted { $0.title < $1.title }
     }
+
 
 
     private func determineSemester(for date: Date) -> String {

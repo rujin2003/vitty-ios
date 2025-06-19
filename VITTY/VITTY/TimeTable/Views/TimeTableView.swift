@@ -99,32 +99,16 @@ struct TimeTableView: View {
                 LectureDetailView(lecture: lecture)
             }
             .onAppear {
-                print(authViewModel.loggedInBackendUser?.token ?? "auth auth token")
                 logger.debug("onAppear triggered")
+
+       
                 if let existing = timetableItem.first {
-                    logger.debug("exixting")
-                    
-                    if existing.isEmpty {
-                     
-                        logger.debug("is empty")
-                        Task {
-                            await viewModel.fetchTimeTable(
-                                username: friend?.username ?? (authViewModel.loggedInBackendUser?.username ?? ""),
-                                authToken: authViewModel.loggedInBackendUser?.token ?? ""
-                            )
-                            if let fetched = viewModel.timeTable {
-                                context.insert(fetched)
-                            }
-                        }
-                    } else {
-                       
-                       
-                        viewModel.timeTable = existing
-                        viewModel.changeDay()
-                        viewModel.stage = .data
-                    }
+                    logger.debug("existing timetable found")
+                    viewModel.timeTable = existing
+                    viewModel.changeDay()
+                    viewModel.stage = .data
                 } else {
-                    logger.debug("fetching")
+                    logger.debug("no local timetable, fetching from API")
                     Task {
                         await viewModel.fetchTimeTable(
                             username: friend?.username ?? (authViewModel.loggedInBackendUser?.username ?? ""),
@@ -132,11 +116,11 @@ struct TimeTableView: View {
                         )
                         if let fetched = viewModel.timeTable {
                             context.insert(fetched)
-                           
                         }
                     }
                 }
             }
+
 
         }
     }

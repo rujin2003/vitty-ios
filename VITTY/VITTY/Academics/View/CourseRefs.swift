@@ -10,13 +10,18 @@ struct CourseRefs: View {
     @State private var showBottomSheet = false
     @State private var showReminderSheet = false
     @State private var navigateToNotesEditor = false
+    
+    @State private var showSheet = false
+    
+    @State private var myExistingNote: CreateNoteModel =  CreateNoteModel(noteName: "", userName: "", courseId: "", courseName: "", noteContent: "")
 
     @Environment(\.dismiss) private var dismiss
-
+  
     private let maxVisible = 4
 
     // Fetch remainders with dynamic predicate
     @Query private var filteredRemainders: [Remainder]
+    @Query private var courseNotes: [CreateNoteModel]
 
     init(courseName: String, courseInstitution: String, slot: String, courseCode: String) {
         self.courseName = courseName
@@ -24,17 +29,19 @@ struct CourseRefs: View {
         self.slot = slot
         self.courseCode = courseCode
 
-        // Dynamic predicate and descriptor
-        let predicate = #Predicate<Remainder> {
+        let reminderPredicate = #Predicate<Remainder> {
             $0.subject == courseName && $0.isCompleted == false
         }
-
-        let descriptor = FetchDescriptor<Remainder>(
-            predicate: predicate,
-            sortBy: [SortDescriptor(\.date, order: .forward)]
+        _filteredRemainders = Query(
+            FetchDescriptor(predicate: reminderPredicate, sortBy: [SortDescriptor(\.date, order: .forward)])
         )
 
-        _filteredRemainders = Query(descriptor)
+        let notesPredicate = #Predicate<CreateNoteModel> {
+            $0.courseId ==  courseCode
+        }
+        _courseNotes = Query(
+            FetchDescriptor(predicate: notesPredicate, sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
+        )
     }
 
     var body: some View {
@@ -104,10 +111,36 @@ struct CourseRefs: View {
 
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 15) {
-                            CourseCardNotes(title: "Sample Title", description: "Data science and software engineering experience is recommended.")
-                            CourseCardNotes(title: "More Information", description: "This certification is intended for you if you have both technical and non-technical backgrounds.")
+                            if courseNotes.isEmpty {
+                                Text("No notes found for this course")
+                                    .foregroundColor(.gray)
+                                    .padding()
+                            } else {
+                                ForEach(courseNotes, id: \.createdAt) { note in
+                                    
+                                    NavigationLink(
+                                        destination : NoteEditorView(existingNote: note, courseCode: courseCode, courseName: courseName)
+                                    ){
+                                        CourseCardNotes(
+                                            title: note.noteName,
+                                            description: extractPlainTextFromNote(note.noteContent)
+                                        )
+                                    }
+                                 
+//                                    CourseCardNotes(
+//                                        title: note.noteName,
+//                                        description: extractPlainTextFromNote(note.noteContent)
+//                                    ).onTapGesture {
+//                                        myExistingNote = note
+//                                        showSheet.toggle()
+//                                    }
+//                                    
+                                  
+                                }
+                            }
                         }
                         .padding()
+
                     }
                 }
 
@@ -129,7 +162,13 @@ struct CourseRefs: View {
                         .padding(.bottom, 30)
                     }
                 }
+            }.onAppear{
+                print("this is course code")
+                print(courseCode)
             }
+            .sheet(isPresented: $showSheet, content: {
+                ExistingHotelView(existingNote: myExistingNote)
+            })
             .navigationBarHidden(true)
             .edgesIgnoringSafeArea(.bottom)
             .sheet(isPresented: $showBottomSheet) {
@@ -159,9 +198,20 @@ struct CourseRefs: View {
                     .presentationDetents([.fraction(0.8)])
             }
             .navigationDestination(isPresented: $navigateToNotesEditor) {
-                NoteEditorView()
+                NoteEditorView(courseCode: courseCode, courseName:  courseName)
             }
         }
+    }
+
+    private func extractPlainTextFromNote(_ noteContent: String) -> String {
+        
+        guard let data = Data(base64Encoded: noteContent),
+              let attributedString = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSAttributedString.self, from: data) else {
+           
+            return noteContent
+        }
+        
+        return attributedString.string
     }
 }
 

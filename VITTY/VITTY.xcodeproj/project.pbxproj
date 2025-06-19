@@ -28,6 +28,8 @@
 		4B183EEA2D7C793800C9D801 /* RemindersData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE92D7C791400C9D801 /* RemindersData.swift */; };
 		4B183EEC2D7CB15800C9D801 /* CourseRefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */; };
 		4B37F1E42E02AA7800DCEE5F /* ReminderNotifcationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E32E02AA6E00DCEE5F /* ReminderNotifcationManager.swift */; };
+		4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */; };
+		4B37F1E92E04173A00DCEE5F /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */; };
 		4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */; };
 		4B4FCF632D317AFD002B392C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */; };
 		4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5977462DF97D5A009CC224 /* RemainderModel.swift */; };
@@ -177,6 +179,8 @@
 		4B183EE92D7C791400C9D801 /* RemindersData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersData.swift; sourceTree = "<group>"; };
 		4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRefs.swift; sourceTree = "<group>"; };
 		4B37F1E32E02AA6E00DCEE5F /* ReminderNotifcationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderNotifcationManager.swift; sourceTree = "<group>"; };
+		4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistingHotelView.swift; sourceTree = "<group>"; };
+		4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReminder.swift; sourceTree = "<group>"; };
 		4B4FCF622D317AFD002B392C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B5977462DF97D5A009CC224 /* RemainderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemainderModel.swift; sourceTree = "<group>"; };
@@ -439,6 +443,14 @@
 			path = Utilities;
 			sourceTree = "<group>";
 		};
+		4B37F1E72E04172E00DCEE5F /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
 		4B7DA5DD2D7094CA007354A3 /* Academics */ = {
 			isa = PBXGroup;
 			children = (
@@ -523,6 +535,7 @@
 				4B7DA5DE2D7094E3007354A3 /* Academics.swift */,
 				4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */,
 				4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */,
+				4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -893,6 +906,7 @@
 		5D1FF2632A32643400B0620A /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				4B37F1E72E04172E00DCEE5F /* ViewModel */,
 				5D1FF2642A32643B00B0620A /* View */,
 			);
 			path = Settings;
@@ -1099,6 +1113,7 @@
 				5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */,
 				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
 				4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */,
+				4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */,
 				4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */,
 				52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
@@ -1119,6 +1134,7 @@
 				4BBB00312D955163003B8FE2 /* AcademicsViewModel.swift in Sources */,
 				4B37F1E42E02AA7800DCEE5F /* ReminderNotifcationManager.swift in Sources */,
 				314A409127383BEC0058082F /* ContentView.swift in Sources */,
+				4B37F1E92E04173A00DCEE5F /* SettingsViewModel.swift in Sources */,
 				520BA6482B4802EE00124850 /* AddFriendCard.swift in Sources */,
 				4B7DA5E32D70B2C3007354A3 /* Freinds.swift in Sources */,
 				4BBB00332D957A6A003B8FE2 /* NotesModel.swift in Sources */,
