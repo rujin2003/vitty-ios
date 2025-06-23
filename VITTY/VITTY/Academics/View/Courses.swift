@@ -29,7 +29,7 @@ struct CoursesView: View {
 
                 VStack(spacing: 16) {
                     ForEach(filtered) { course in
-                        NavigationLink(destination: CourseRefs(courseName: course.title, courseInstitution: course.code,slot:course.slot,courseCode: course.code)) {
+                        NavigationLink(destination: OCourseRefs(courseName: course.title, courseInstitution: course.code,slot:course.slot,courseCode: course.code)) {
                             CourseCardView(course: course)
                         }
                     }

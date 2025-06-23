@@ -273,4 +273,12 @@ extension TimeTable {
             return "Failed to parse the time string."
         }
     }
+    func isDifferentFrom(_ other: TimeTable) -> Bool {
+           return monday != other.monday ||
+                  tuesday != other.tuesday ||
+                  wednesday != other.wednesday ||
+                  thursday != other.thursday ||
+                  friday != other.friday ||
+                  sunday != other.sunday
+       }
 }

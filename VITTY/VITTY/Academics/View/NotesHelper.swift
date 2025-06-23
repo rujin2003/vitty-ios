@@ -202,13 +202,13 @@ extension String {
         var workingLine = line
         let result = NSMutableAttributedString()
         
-        // Default attributes
+
         var attributes: [NSAttributedString.Key: Any] = [
             .font: UIFont.systemFont(ofSize: 18),
             .foregroundColor: UIColor.white
         ]
         
-        // Handle headings
+    
         if workingLine.hasPrefix("### ") {
             workingLine = String(workingLine.dropFirst(4))
             attributes[.font] = UIFont.boldSystemFont(ofSize: 20)
@@ -220,12 +220,12 @@ extension String {
             attributes[.font] = UIFont.boldSystemFont(ofSize: 28)
         }
         
-        // Handle bullet points
+        
         if workingLine.trimmingCharacters(in: .whitespaces).hasPrefix("- ") {
             workingLine = workingLine.replacingOccurrences(of: "- ", with: "• ", options: [], range: workingLine.range(of: "- "))
         }
         
-        // Process inline formatting
+      
         let processedString = processInlineFormatting(workingLine, baseAttributes: attributes)
         result.append(processedString)
         
@@ -238,15 +238,15 @@ extension String {
         var currentAttributes = baseAttributes
         
         while currentIndex < text.endIndex {
-            // Handle HTML color spans
+           
             if let colorRange = findColorSpan(in: text, from: currentIndex) {
-                // Add text before color span
+              
                 if currentIndex < colorRange.range.lowerBound {
                     let beforeText = String(text[currentIndex..<colorRange.range.lowerBound])
                     result.append(NSAttributedString(string: beforeText, attributes: currentAttributes))
                 }
                 
-                // Add colored text
+             
                 var colorAttributes = currentAttributes
                 colorAttributes[.foregroundColor] = colorRange.color
                 result.append(NSAttributedString(string: colorRange.text, attributes: colorAttributes))
@@ -255,7 +255,7 @@ extension String {
                 continue
             }
             
-            // Handle underline tags
+           
             if text[currentIndex...].hasPrefix("<u>") {
                 if let endIndex = text.range(of: "</u>", range: currentIndex..<text.endIndex) {
                     let startTagEnd = text.index(currentIndex, offsetBy: 3)
@@ -270,7 +270,7 @@ extension String {
                 }
             }
             
-            // Handle bold and italic
+    
             let (formattedString, newIndex) = processBoldItalic(text, from: currentIndex, attributes: currentAttributes)
             result.append(formattedString)
             currentIndex = newIndex
@@ -313,20 +313,20 @@ extension String {
         let boldPattern = #"\*\*([^*]+)\*\*"#
         let italicPattern = #"\*([^*]+)\*"#
         
-        // Check for bold first (longer pattern)
+      
         if let boldRegex = try? NSRegularExpression(pattern: boldPattern),
            let boldMatch = boldRegex.firstMatch(in: remainingText, range: NSRange(remainingText.startIndex..<remainingText.endIndex, in: remainingText)) {
             
             let matchRange = Range(boldMatch.range, in: remainingText)!
             let textRange = Range(boldMatch.range(at: 1), in: remainingText)!
             
-            // Add text before match
+            
             if matchRange.lowerBound > remainingText.startIndex {
                 let beforeText = String(remainingText[remainingText.startIndex..<matchRange.lowerBound])
                 result.append(NSAttributedString(string: beforeText, attributes: currentAttributes))
             }
             
-            // Add bold text
+          
             let boldText = String(remainingText[textRange])
             var boldAttributes = currentAttributes
             if let font = boldAttributes[.font] as? UIFont {

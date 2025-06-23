@@ -1,7 +1,7 @@
 import SwiftUI
 import SwiftData
 
-struct CourseRefs: View {
+struct OCourseRefs: View {
     var courseName: String
     var courseInstitution: String
     var slot: String
@@ -9,17 +9,17 @@ struct CourseRefs: View {
 
     @State private var showBottomSheet = false
     @State private var showReminderSheet = false
+    @State private var showNotes = false
     @State private var navigateToNotesEditor = false
-    
-    @State private var showSheet = false
-    
-    @State private var myExistingNote: CreateNoteModel =  CreateNoteModel(noteName: "", userName: "", courseId: "", courseName: "", noteContent: "")
+    @State  var  showCourseNotes : Bool = false
+    @State private var selectedNote: CreateNoteModel?
+    @State private var preloadedAttributedString: NSAttributedString?
 
     @Environment(\.dismiss) private var dismiss
   
     private let maxVisible = 4
 
-    // Fetch remainders with dynamic predicate
+    
     @Query private var filteredRemainders: [Remainder]
     @Query private var courseNotes: [CreateNoteModel]
 
@@ -37,7 +37,7 @@ struct CourseRefs: View {
         )
 
         let notesPredicate = #Predicate<CreateNoteModel> {
-            $0.courseId ==  courseCode
+            $0.courseId == courseCode
         }
         _courseNotes = Query(
             FetchDescriptor(predicate: notesPredicate, sortBy: [SortDescriptor(\.createdAt, order: .reverse)])
@@ -67,11 +67,7 @@ struct CourseRefs: View {
 
                         Spacer()
 
-                        Button(action: {}) {
-                            Image(systemName: "magnifyingglass")
-                                .foregroundColor(.white)
-                                .font(.title2)
-                        }
+                  
                     }
                     .padding()
 
@@ -117,30 +113,21 @@ struct CourseRefs: View {
                                     .padding()
                             } else {
                                 ForEach(courseNotes, id: \.createdAt) { note in
-                                    
-                                    NavigationLink(
-                                        destination : NoteEditorView(existingNote: note, courseCode: courseCode, courseName: courseName)
-                                    ){
-                                        CourseCardNotes(
-                                            title: note.noteName,
-                                            description: extractPlainTextFromNote(note.noteContent)
-                                        )
+                                    CourseCardNotes(
+                                        title: note.noteName,
+                                        description: note.cachedPlainText
+                                    )
+                                    .onTapGesture {
+                                        selectedNote = note
+                                     
+                                        Task {
+                                            preloadedAttributedString = note.cachedAttributedString
+                                        }
                                     }
-                                 
-//                                    CourseCardNotes(
-//                                        title: note.noteName,
-//                                        description: extractPlainTextFromNote(note.noteContent)
-//                                    ).onTapGesture {
-//                                        myExistingNote = note
-//                                        showSheet.toggle()
-//                                    }
-//                                    
-                                  
                                 }
                             }
                         }
                         .padding()
-
                     }
                 }
 
@@ -162,13 +149,11 @@ struct CourseRefs: View {
                         .padding(.bottom, 30)
                     }
                 }
-            }.onAppear{
+            }
+            .onAppear {
                 print("this is course code")
                 print(courseCode)
             }
-            .sheet(isPresented: $showSheet, content: {
-                ExistingHotelView(existingNote: myExistingNote)
-            })
             .navigationBarHidden(true)
             .edgesIgnoringSafeArea(.bottom)
             .sheet(isPresented: $showBottomSheet) {
@@ -197,21 +182,19 @@ struct CourseRefs: View {
                 ReminderView(courseName: courseName, slot: slot, courseCode: courseCode)
                     .presentationDetents([.fraction(0.8)])
             }
+           
             .navigationDestination(isPresented: $navigateToNotesEditor) {
-                NoteEditorView(courseCode: courseCode, courseName:  courseName)
+                NoteEditorView(courseCode: courseCode, courseName: courseName)
+            }
+            .navigationDestination(item: $selectedNote) { note in
+               NoteEditorView(
+                    existingNote: note,
+                    preloadedAttributedString: preloadedAttributedString,
+                    courseCode: courseCode,
+                    courseName: courseName
+                )
             }
         }
-    }
-
-    private func extractPlainTextFromNote(_ noteContent: String) -> String {
-        
-        guard let data = Data(base64Encoded: noteContent),
-              let attributedString = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSAttributedString.self, from: data) else {
-           
-            return noteContent
-        }
-        
-        return attributedString.string
     }
 }
 

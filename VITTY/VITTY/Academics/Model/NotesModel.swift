@@ -45,3 +45,56 @@ class  CreateNoteModel {
 
 
 
+extension CreateNoteModel {
+   
+    private static var plainTextCache: [String: String] = [:]
+    private static var attributedStringCache: [String: NSAttributedString] = [:]
+    
+    var cachedPlainText: String {
+        let cacheKey = "\(self.courseId)_\(self.createdAt.timeIntervalSince1970)"
+        
+        if let cached = Self.plainTextCache[cacheKey] {
+            return cached
+        }
+        
+        let plainText = extractPlainText()
+        Self.plainTextCache[cacheKey] = plainText
+        return plainText
+    }
+    
+    var cachedAttributedString: NSAttributedString? {
+        let cacheKey = "\(self.courseId)_\(self.createdAt.timeIntervalSince1970)"
+        
+        if let cached = Self.attributedStringCache[cacheKey] {
+            return cached
+        }
+        
+        let attributedString = extractAttributedString()
+        if let attributedString = attributedString {
+            Self.attributedStringCache[cacheKey] = attributedString
+        }
+        return attributedString
+    }
+    
+    private func extractPlainText() -> String {
+        guard let data = Data(base64Encoded: noteContent),
+              let attributedString = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSAttributedString.self, from: data) else {
+            return noteContent
+        }
+        return attributedString.string
+    }
+    
+    private func extractAttributedString() -> NSAttributedString? {
+        guard let data = Data(base64Encoded: noteContent),
+              let attributedString = try? NSKeyedUnarchiver.unarchivedObject(ofClass: NSAttributedString.self, from: data) else {
+            return NSAttributedString(string: noteContent)
+        }
+        return attributedString
+    }
+    
+   
+    static func clearCache() {
+        plainTextCache.removeAll()
+        attributedStringCache.removeAll()
+    }
+}

@@ -46,7 +46,7 @@ struct SettingsView: View {
 
                         SettingsSectionView(title: "Class Settings") {
                             VStack(alignment: .leading, spacing: 0) {
-                                Button {
+                              Button {
                                     withAnimation(.easeInOut(duration: 0.5)) {
                                         showDaySelection.toggle()
                                     }
