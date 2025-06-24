@@ -4,9 +4,22 @@
 //
 //  Created by Rujin Devkota on 2/27/25.
 
-
 import SwiftUI
 
+// Enum to manage different sheet types
+enum SheetType: Identifiable {
+    case addCircleOptions
+    case createGroup
+    case joinGroup
+    
+    var id: Int {
+        switch self {
+        case .addCircleOptions: return 0
+        case .createGroup: return 1
+        case .joinGroup: return 2
+        }
+    }
+}
 
 struct ConnectPage: View {
     @Environment(AuthViewModel.self) private var authViewModel
@@ -14,9 +27,8 @@ struct ConnectPage: View {
     @Environment(FriendRequestViewModel.self) private var friendRequestViewModel
     @State private var isShowingRequestView = false
     @State var isCircleView = false
-    @State var isAddCircleFunc = false
-    @State var showCreateGroupSheet = false
-    @State var showJoinGroupSheet = false
+    @State private var activeSheet: SheetType?
+    @Environment(\.dismiss) private var dismiss
     
     @Binding var isCreatingGroup : Bool
     
@@ -27,8 +39,6 @@ struct ConnectPage: View {
         ZStack {
             BackgroundView()
             
-            
-            
             VStack(spacing: 0) {
                 
                 HStack {
@@ -37,10 +47,8 @@ struct ConnectPage: View {
                         isCircleView = false
                     }
                     AcademicsTabButton(title: "Circles", isActive: selectedTab == 1) {
-                       
                         selectedTab = 1
                         isCircleView = true
-                 
                     }
                 }
                 .padding(.top,20)
@@ -53,10 +61,10 @@ struct ConnectPage: View {
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
+            
             if isCircleView == false {
                 Button(action: {
                     isShowingRequestView.toggle()
-
                 }) {
                     Image(systemName: "person.fill.badge.plus")
                         .foregroundColor(.white)
@@ -66,60 +74,30 @@ struct ConnectPage: View {
                     destination: {
                         AddFriendsView()
                     }
-                ).offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
-            } else{
+                )
+                .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+            } else {
                 Button(action: {
-                    isAddCircleFunc.toggle()
-
+                    activeSheet = .addCircleOptions
                 }) {
                     Image(systemName: "person.fill.badge.plus")
                         .foregroundColor(.white)
                 }
-               .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+                .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             }
-            
-        }.sheet(isPresented: $isAddCircleFunc){
-            ZStack{
-                Color("Background")
-                HStack(spacing: 40) {
-                      
-                    Button(action:{
-                        showJoinGroupSheet.toggle()
-                    }) {
-                        VStack {
-                            Image("joingroup")
-                                .resizable()
-                                .frame(width: 55, height: 55)
-                            Text("Join Group")
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color.white)
-                        }
-                    }
-                    
-                    Button(action:{
-                        showJoinGroupSheet.toggle()
-                    }) {
-                        VStack {
-                            Image("creategroup")
-                                .resizable()
-                                .frame(width: 55, height: 55)
-                            Text("Create Group")
-                                .font(.system(size: 15))
-                                .foregroundStyle(Color.white)
-                        }
-                    }
-                }.presentationDetents([.height(200)])
-                .padding(.top, 10)
-            }.background(Color("Background"))
         }
-        .sheet(isPresented: $showCreateGroupSheet) {
-            CreateGroup(groupCode:.constant(""))
-        }
-        .sheet(isPresented: $showJoinGroupSheet) {
-            JoinGroup(groupCode: .constant(""))
+        // Single sheet modifier handling all sheet presentations
+        .sheet(item: $activeSheet) { sheetType in
+            switch sheetType {
+            case .addCircleOptions:
+                AddCircleOptionsView(activeSheet: $activeSheet)
+            case .createGroup:
+                CreateGroup(groupCode: .constant(""))
+            case .joinGroup:
+                JoinGroup(groupCode: .constant(""))
+            }
         }
         .onAppear {
-           
             communityPageViewModel.fetchFriendsData(
                 from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
                 token: authViewModel.loggedInBackendUser?.token ?? "",
@@ -135,12 +113,57 @@ struct ConnectPage: View {
                 authToken: authViewModel.loggedInBackendUser?.token ?? "",
                 loading: true
             )
-           
-            
         }
     }
 }
 
+// Separate view for the add circle options sheet
+struct AddCircleOptionsView: View {
+    @Binding var activeSheet: SheetType?
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        ZStack {
+            Color("Background")
+            HStack(spacing: 40) {
+                Button(action: {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        activeSheet = .joinGroup
+                    }
+                }) {
+                    VStack {
+                        Image("joingroup")
+                            .resizable()
+                            .frame(width: 55, height: 55)
+                        Text("Join Group")
+                            .font(.system(size: 15))
+                            .foregroundStyle(Color.white)
+                    }
+                }
+                
+                Button(action: {
+                    dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        activeSheet = .createGroup
+                    }
+                }) {
+                    VStack {
+                        Image("creategroup")
+                            .resizable()
+                            .frame(width: 55, height: 55)
+                        Text("Create Group")
+                            .font(.system(size: 15))
+                            .foregroundStyle(Color.white)
+                    }
+                }
+            }
+            .padding(.top, 10)
+        }
+        .background(Color("Background"))
+        .presentationDetents([.height(150)])
+    }
+}
 
 struct FilterPill: View {
     let title: String
@@ -161,5 +184,4 @@ struct FilterPill: View {
                     )
             )
     }
-    
 }

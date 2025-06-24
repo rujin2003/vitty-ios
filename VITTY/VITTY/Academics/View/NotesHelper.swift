@@ -3,7 +3,8 @@ import UIKit
 
 extension NSAttributedString {
 //    func toMarkdown() -> String {
-//        let mutableString = NSMutableString()
+//        let mutableString = NSMutableString()login
+    
 //        let fullRange = NSRange(location: 0, length: self.length)
 //        
 //        self.enumerateAttributes(in: fullRange, options: []) { (attributes, range, _) in

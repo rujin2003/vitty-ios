@@ -19,7 +19,7 @@ struct JoinGroup: View {
             Text("Join Group")
                 .font(.system(size: 21, weight: .bold))
                 .foregroundColor(.white)
-            
+            Spacer().frame(width: 20)
             VStack(alignment: .leading, spacing: 10) {
                 Text("Enter group code")
                     .font(.system(size: 16, weight: .bold))
@@ -61,8 +61,8 @@ struct JoinGroup: View {
                 Image(systemName: "qrcode.viewfinder")
                     .resizable()
                     .scaledToFit()
-                    .frame(width: 120, height: 120)
-                    .foregroundColor(Color.gray)
+                    .frame(width: 100, height: 100)
+                    .foregroundColor(Color.white)
             }
             .frame(width: screenWidth*0.8, height: screenHeight*0.25)
             .background(Color.black.opacity(0.3))

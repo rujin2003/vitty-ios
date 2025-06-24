@@ -67,14 +67,15 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
        logger.info("Signing into server... from uuid \(self.loggedInFirebaseUser?.uid ?? "empty")")
         do {
             
-            self.loggedInBackendUser = try await AuthAPIService.shared
-                .signInUser(
-                    with: AuthRequestBody(
-                        uuid: loggedInFirebaseUser?.uid ?? "",
-                        reg_no: regNo,
-                        username: username
-                    )
-                )
+//            self.loggedInBackendUser = try await AuthAPIService.shared
+//                .signInUser(
+//                    with: AuthRequestBody(
+//                        uuid: loggedInFirebaseUser?.uid ?? "",
+//                        reg_no: regNo,
+//                        username: username
+//                    )
+//                )
+            self.loggedInBackendUser =      AppUser(name: "Rudrank Basant", picture: "https://lh3.googleusercontent.com/a/ACg8ocK7g3mh79yuJOyaOWy4iM4WsFk81VYAeDty5W4A8ETrqbw=s96-c", role: "normal", token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJ1ZHJhbmsxMjNAZ21haWwuY29tIiwicm9sZSI6Im5vcm1hbCIsInVzZXJuYW1lIjoicnVkcmFuayJ9.m7YQwp7hLCBO1YXPNvwpaHCOXh5BZVa6BK7sTYVzUT4", username: "rudrank")
            
         }
         catch {

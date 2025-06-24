@@ -27,6 +27,8 @@ struct SearchView: View {
 			ZStack {
 				BackgroundView()
 				VStack(alignment: .leading) {
+                    
+                    headerView
 					RoundedRectangle(cornerRadius: 20)
 						.foregroundColor(Color("Secondary"))
 						.frame(maxWidth: .infinity)
@@ -75,11 +77,25 @@ struct SearchView: View {
 
 					Spacer()
 				}
-			}
-			.navigationTitle("Search")
+            }.navigationBarBackButtonHidden(true)
+			
 		}
 	}
-
+    private var headerView: some View {
+        HStack {
+            Button(action: { dismiss() }) {
+                Image(systemName: "chevron.left")
+                    .foregroundColor(Color("Accent"))
+            }
+            Spacer()
+            Text("Search")
+                .foregroundColor(.white)
+                .font(.system(size: 22, weight: .bold))
+            Spacer()
+      
+        }
+        .padding()
+    }
 	func search() {
 		loading = true
 		let url = URL(string: "\(APIConstants.base_url)/api/v2/users/search?query=\(searchText)")!
