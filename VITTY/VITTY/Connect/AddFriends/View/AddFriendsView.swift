@@ -24,7 +24,7 @@ struct AddFriendsView: View {
 				VStack(alignment: .leading) {
                     Button(action: {dismiss() }) {
                         Image(systemName: "chevron.left")
-                            .foregroundColor(Color("Accent"))
+                            .foregroundColor(Color("Accent")).font(.title2)
                     }
 					if !suggestedFriendsViewModel.suggestedFriends.isEmpty
 						|| !friendRequestViewModel.requests.isEmpty
@@ -73,7 +73,7 @@ struct AddFriendsView: View {
         HStack {
             Button(action: { dismiss() }) {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(Color("Accent"))
+                    .foregroundColor(Color("Accent")).font(.title2)
             }
             Spacer()
             Text("Note")

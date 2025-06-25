@@ -1,3 +1,9 @@
+//
+//  Academics.swift
+//  VITTY
+//
+//  Created by Rujin Devkota on 2/27/25.
+
 import SwiftUI
 import UIKit
 
@@ -134,16 +140,21 @@ struct NoteEditorView: View {
     @State private var isEmpty = true
     @State private var hasUnsavedChanges = false
     @State private var isInitialized = false
+    @State private var goback = false
     
     @Environment(\.modelContext) private var modelContext
     let courseCode: String
     let courseName: String
+    let courseIns : String
+    let courseSlot : String
     
-    init(existingNote: CreateNoteModel? = nil, preloadedAttributedString: NSAttributedString? = nil, courseCode: String, courseName: String) {
+    init(existingNote: CreateNoteModel? = nil, preloadedAttributedString: NSAttributedString? = nil, courseCode: String, courseName: String,courseIns: String , courseSlot: String) {
         self.existingNote = existingNote
         self.preloadedAttributedString = preloadedAttributedString
         self.courseCode = existingNote?.courseId ?? courseCode
         self.courseName = existingNote?.courseName ?? courseName
+        self.courseIns = courseIns
+        self.courseSlot = courseSlot
     }
     private func handleBackNavigation() {
         
@@ -319,7 +330,7 @@ struct NoteEditorView: View {
         HStack {
             Button(action: { handleBackNavigation() }) {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(Color("Accent"))
+                    .foregroundColor(Color("Accent")).font(.title2)
             }
             Spacer()
             Text("Note")
@@ -495,7 +506,7 @@ struct NoteEditorView: View {
         }
     }
 
-    // MARK: - Text Formatting Functions (Rest of the formatting functions remain the same)
+
     
     func addBulletPoints() {
         guard selectedRange.length > 0 else { return }

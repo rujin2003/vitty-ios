@@ -157,7 +157,7 @@ struct InsideCircle: View {
                     presentationMode.wrappedValue.dismiss()
                 }) {
                     Image(systemName: "chevron.left")
-                        .foregroundColor(.white)
+                        .foregroundColor(.white).font(.title2)
                 }
                 Spacer()
                 Text("Circle")

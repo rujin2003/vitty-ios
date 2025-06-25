@@ -85,7 +85,7 @@ struct SearchView: View {
         HStack {
             Button(action: { dismiss() }) {
                 Image(systemName: "chevron.left")
-                    .foregroundColor(Color("Accent"))
+                    .foregroundColor(Color("Accent")).font(.title2)
             }
             Spacer()
             Text("Search")

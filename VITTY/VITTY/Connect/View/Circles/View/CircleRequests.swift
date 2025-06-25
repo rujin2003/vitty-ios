@@ -98,7 +98,7 @@ struct CircleRequestsView: View {
                 }) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.white)
-                        .font(.system(size: 18))
+                        .font(.title2)
                 }
                 
                 Spacer()
