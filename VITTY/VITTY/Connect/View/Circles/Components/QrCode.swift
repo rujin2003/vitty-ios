@@ -99,7 +99,7 @@ struct QRCodeModalView: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .sheet(isPresented: $showingShareSheet) {
-            ShareSheet(items: [createInvitationLink(), "Join my circle '\(circleName)' on VITTY!"])
+            ShareSheetQr(items: [createInvitationLink(), "Join my circle '\(circleName)' on VITTY!"])
         }
     }
     
@@ -129,13 +129,13 @@ struct QRCodeModalView: View {
     }
 }
 
-struct ShareSheet: UIViewControllerRepresentable {
+struct ShareSheetQr: UIViewControllerRepresentable {
     let items: [Any]
-    
+
     func makeUIViewController(context: Context) -> UIActivityViewController {
         let controller = UIActivityViewController(activityItems: items, applicationActivities: nil)
         return controller
     }
-    
+
     func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {}
 }

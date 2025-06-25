@@ -189,7 +189,3 @@ struct UsernameView: View {
     }
 }
 
-#Preview {
-    UsernameView()
-        .preferredColorScheme(.dark)
-}

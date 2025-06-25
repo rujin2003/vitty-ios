@@ -60,7 +60,7 @@ struct VITTYApp: App {
         }.modelContainer(sharedModelContainer)
 	}
     var sharedModelContainer: ModelContainer {
-        let schema = Schema([TimeTable.self,Remainder.self,CreateNoteModel.self])
+        let schema = Schema([TimeTable.self,Remainder.self,CreateNoteModel.self,UploadedFile.self])
             let config = ModelConfiguration(
                 "group.com.gdscvit.vittyioswidget"
         
