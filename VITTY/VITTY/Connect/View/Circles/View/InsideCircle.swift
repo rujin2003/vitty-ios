@@ -4,7 +4,6 @@
 //
 //  Created by Rujin Devkota on 3/26/25.
 
-
 import SwiftUI
 
 struct LeaveCircleAlert: View {
@@ -59,14 +58,97 @@ struct LeaveCircleAlert: View {
     }
 }
 
+struct CircleMenuView: View {
+    let circleName: String
+    let onLeaveGroup: () -> Void
+    let onGroupRequests: () -> Void
+    let onCancel: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 0) {
+                Button(action: {
+                    onCancel()
+                    onLeaveGroup()
+                }) {
+                    HStack {
+                        Image(systemName: "rectangle.portrait.and.arrow.right")
+                            .foregroundColor(.red)
+                        Text("Leave Group")
+                            .font(.custom("Poppins-Regular", size: 16))
+                            .foregroundColor(.red)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(Color("Background"))
+                }
+                
+                Divider()
+                    .background(Color.gray.opacity(0.3))
+                
+                Button(action: {
+                    onCancel()
+                    onGroupRequests()
+                }) {
+                    HStack {
+                        Image(systemName: "person.badge.plus")
+                            .foregroundColor(.white)
+                        Text("Group Requests")
+                            .font(.custom("Poppins-Regular", size: 16))
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(Color("Background"))
+                }
+                
+                Divider()
+                    .background(Color.gray.opacity(0.3))
+                
+                Button(action: onCancel) {
+                    Text("Cancel")
+                        .font(.custom("Poppins-Regular", size: 16))
+                        .foregroundColor(.gray)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color("Background"))
+                }
+            }
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
+    }
+}
+
 struct InsideCircle: View {
     var circleName : String
     var groupCode: String
     @State var searchText: String = ""
     @State var showLeaveAlert: Bool = false
+    @State var showCircleMenu: Bool = false
+    @State var  showGroupRequests : Bool = false
     @Environment(CommunityPageViewModel.self) private var communityPageViewModel
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(\.presentationMode) var presentationMode
+    @State var showQRCode: Bool = false
+    
+  
+    private var busyCount: Int {
+        communityPageViewModel.circleMembers.filter {
+            $0.status != nil && $0.status != "available" && $0.status != "free"
+        }.count
+    }
+    
+    private var availableCount: Int {
+        communityPageViewModel.circleMembers.filter {
+            $0.status == nil || $0.status == "available" || $0.status == "free"
+        }.count
+    }
     
     var body: some View {
         VStack(spacing: 0) {
@@ -83,10 +165,11 @@ struct InsideCircle: View {
                     .foregroundColor(.white)
                 Spacer()
                 Button(action: {
-                    showLeaveAlert = true
+                    showCircleMenu = true
                 }) {
-                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                    Image(systemName: "ellipsis")
                         .foregroundColor(.white)
+                        .font(.system(size: 18))
                 }
             }
             .padding()
@@ -101,31 +184,52 @@ struct InsideCircle: View {
                         .font(.custom("Poppins-SemiBold", size: 20))
                         .foregroundColor(.white)
                     Spacer()
-                    Text(groupCode)
-                        .font(.custom("Poppins-Regular", size: 14))
-                        .foregroundColor(Color("Accent"))
+                    
                 }
                 Spacer().frame(height: 5)
                 HStack {
-                    HStack {
-                        Image("inclass").resizable().frame(width: 18, height: 18)
-                        Text("3 busy")
-                            .foregroundStyle(Color("Accent"))
+                    // Dynamic busy count
+                    if busyCount > 0 {
+                        HStack {
+                            Image("inclass").resizable().frame(width: 18, height: 18)
+                            Text("\(busyCount) busy")
+                                .foregroundStyle(Color("Accent"))
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color("Secondary"))
+                        .cornerRadius(12)
+                        
+                        Spacer().frame(width: 10)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color("Secondary"))
-                    .cornerRadius(12)
-                    Spacer().frame(width: 10)
-                    HStack {
-                        Image("available").resizable().frame(width: 18, height: 18)
-                        Text("2 available")
-                            .foregroundStyle(Color("Accent"))
+                    
+                    // Dynamic available count
+                    if availableCount > 0 {
+                        HStack {
+                            Image("available").resizable().frame(width: 18, height: 18)
+                            Text("\(availableCount) available")
+                                .foregroundStyle(Color("Accent"))
+                        }
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 6)
+                        .background(Color("Secondary"))
+                        .cornerRadius(12)
                     }
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 6)
-                    .background(Color("Secondary"))
-                    .cornerRadius(12)
+                    
+                    Spacer()
+                    
+                 
+                    Button(action: {
+                        showQRCode = true
+                        print("QR Code tapped")
+                    }) {
+                        Image(systemName: "qrcode")
+                            .foregroundColor(Color("Accent"))
+                            .font(.system(size: 20))
+                            .padding(8)
+                            .background(Color("Secondary"))
+                            .cornerRadius(8)
+                    }
                 }
             }
             .padding()
@@ -139,12 +243,12 @@ struct InsideCircle: View {
             } else {
                 ScrollView {
                     VStack(spacing: 10) {
-                        ForEach(communityPageViewModel.circleMembers, id: \ .username) { member in
+                        ForEach(communityPageViewModel.circleMembers, id: \.username) { member in
                             InsideCircleRow(
                                 picture: member.picture,
                                 name: member.name,
-                                status: "free",
-                                venue: "318"
+                                status: member.status ?? "free",
+                                venue: member.venue ?? "available"
                             )
                             .padding(.horizontal)
                         }
@@ -154,7 +258,9 @@ struct InsideCircle: View {
             }
             Spacer()
         }
-        .background(Color("Background").edgesIgnoringSafeArea(.all))
+        .background(Color("Background").edgesIgnoringSafeArea(.all)).sheet(isPresented: $showGroupRequests, content: {
+            CircleRequestsView()
+        })
         .onAppear {
             communityPageViewModel.fetchCircleMemberData(
                 from: "\(APIConstants.base_url)circles/\(groupCode)",
@@ -173,16 +279,39 @@ struct InsideCircle: View {
 
                         communityPageViewModel.leaveCircle(from: url, token: token)
                         
-                        
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                             showLeaveAlert = false
                             presentationMode.wrappedValue.dismiss()
                         }
                     })
                 }
+                
+                if showCircleMenu {
+                    CircleMenuView(
+                        circleName: circleName,
+                        onLeaveGroup: {
+                            showLeaveAlert = true
+                        },
+                        onGroupRequests: {
+                            showGroupRequests = true
+                            print("Navigate to Circle Requests")
+                        },
+                        onCancel: {
+                            showCircleMenu = false
+                        }
+                    )
+                }
+                if showQRCode {
+                                   QRCodeModalView(
+                                       groupCode: groupCode,
+                                       circleName: circleName,
+                                       onDismiss: {
+                                           showQRCode = false
+                                       }
+                                   )
+                               }
             }
         )
-
         .navigationBarHidden(true)
         .navigationBarBackButtonHidden(true)
     }

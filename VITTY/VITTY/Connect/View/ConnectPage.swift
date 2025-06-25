@@ -6,7 +6,7 @@
 
 import SwiftUI
 
-// Enum to manage different sheet types
+
 enum SheetType: Identifiable {
     case addCircleOptions
     case createGroup
@@ -92,7 +92,7 @@ struct ConnectPage: View {
             case .addCircleOptions:
                 AddCircleOptionsView(activeSheet: $activeSheet)
             case .createGroup:
-                CreateGroup(groupCode: .constant(""))
+                CreateGroup(groupCode: .constant(""), token:authViewModel.loggedInBackendUser?.token ?? "" )
             case .joinGroup:
                 JoinGroup(groupCode: .constant(""))
             }
@@ -117,7 +117,7 @@ struct ConnectPage: View {
     }
 }
 
-// Separate view for the add circle options sheet
+
 struct AddCircleOptionsView: View {
     @Binding var activeSheet: SheetType?
     @Environment(\.dismiss) private var dismiss
