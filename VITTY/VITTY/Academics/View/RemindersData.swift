@@ -15,7 +15,7 @@ struct RemindersView: View {
     @State private var searchText = ""
     @State private var selectedTab = 0
     
-    // Filtered reminders based on search text
+   
     private var filteredReminders: [Remainder] {
         if searchText.isEmpty {
             return allReminders
@@ -28,7 +28,7 @@ struct RemindersView: View {
         }
     }
     
-    // Group reminders by date
+   
     private var groupedReminders: [ReminderGroup] {
         let grouped = Dictionary(grouping: filteredReminders) { reminder in
             Calendar.current.startOfDay(for: reminder.date)
@@ -88,6 +88,12 @@ struct RemindersView: View {
                     StatusTabView(isSelected: selectedTab == 1, title: "Completed")
                         .onTapGesture { selectedTab = 1 }
                     Spacer()
+                    Button {
+                        //TODO: to implement
+                    } label: {
+                        Image(systemName: "plus")
+                    }
+
                 }
                 .padding(.horizontal)
                 .padding(.top, 16)
