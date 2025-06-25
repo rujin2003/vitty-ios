@@ -4,11 +4,11 @@
 //
 //  Created by Chandram Dutta on 04/01/24.
 //
+//
 
 import Foundation
 import Alamofire
 import OSLog
-
 
 @Observable
 class CommunityPageViewModel {
@@ -37,54 +37,78 @@ class CommunityPageViewModel {
         category: String(describing: CommunityPageViewModel.self)
     )
 
-    func fetchFriendsData(from url: String, token: String, loading: Bool) {
-        self.loadingFreinds = loading
+    func fetchFriendsData(from url: String, token: String, loading: Bool = false) {
+       
+        if loading || friends.isEmpty {
+            self.loadingFreinds = true
+        }
+        
+       
+        self.errorFreinds = false
+        
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: FriendRaw.self) { response in
-               
-                switch response.result {
+                DispatchQueue.main.async {
+                    self.loadingFreinds = false
+                    
+                    switch response.result {
                     case .success(let data):
                         self.friends = data.data
-                    self.loadingFreinds = false
-                      
-                       
+                        self.errorFreinds = false
+                        
                     case .failure(let error):
-                        self.logger.error("Error fetching data: \(error)")
-                    self.loadingFreinds = false
-                    self.errorFreinds.toggle()
+                        self.logger.error("Error fetching friends: \(error)")
+                      
+                        if self.friends.isEmpty {
+                            self.errorFreinds = true
+                        }
+                    }
                 }
             }
     }
     
     //MARK: Circle DATA
     
-    func fetchCircleData(from url: String, token: String, loading: Bool) {
-        self.loadingCircle = loading
+    func fetchCircleData(from url: String, token: String, loading: Bool = false) {
+       
+        if loading || circles.isEmpty {
+            self.loadingCircle = true
+        }
+        
+      
+        self.errorCircle = false
+        
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: CircleResponse.self) { response in
-            print("***********")
-                print(response)
-                switch response.result {
+                DispatchQueue.main.async {
+                    self.loadingCircle = false
+                    
+                    switch response.result {
                     case .success(let data):
                         self.circles = data.data
-                    self.loadingCircle = false
-                    print(data.data)
-                        print("Successfully fetched circles:")
-                        print(data.data)
+                        self.errorCircle = false
+                        print("Successfully fetched circles: \(data.data)")
+                        
                     case .failure(let error):
                         self.logger.error("Error fetching circles: \(error)")
-                    self.loadingCircle = false
-                    self.errorCircle.toggle()
+                      
+                        if self.circles.isEmpty {
+                            self.errorCircle = true
+                        }
+                    }
                 }
             }
     }
     
     // MARK: - Circle Requests
     
-    func fetchCircleRequests(token: String) {
-        self.loadingCircleRequests = true
+    func fetchCircleRequests(token: String, loading: Bool = false) {
+        if loading || circleRequests.isEmpty {
+            self.loadingCircleRequests = true
+        }
+        
         self.errorCircleRequests = false
         
         let url = "\(APIConstants.base_url)circles/requests/received"
@@ -98,11 +122,14 @@ class CommunityPageViewModel {
                     switch response.result {
                     case .success(let data):
                         self.circleRequests = data.data
+                        self.errorCircleRequests = false
                         self.logger.info("Successfully fetched circle requests: \(data.data.count) requests")
                         
                     case .failure(let error):
                         self.logger.error("Error fetching circle requests: \(error)")
-                        self.errorCircleRequests = true
+                        if self.circleRequests.isEmpty {
+                            self.errorCircleRequests = true
+                        }
                     }
                 }
             }
@@ -122,7 +149,6 @@ class CommunityPageViewModel {
                     switch response.result {
                     case .success:
                         self.logger.info("Successfully accepted circle request for circle: \(circleId)")
-                     
                         self.circleRequests.removeAll { $0.circle_id == circleId }
                         completion(true)
                         
@@ -148,7 +174,6 @@ class CommunityPageViewModel {
                     switch response.result {
                     case .success:
                         self.logger.info("Successfully declined circle request for circle: \(circleId)")
-                       
                         self.circleRequests.removeAll { $0.circle_id == circleId }
                         completion(true)
                         
@@ -160,71 +185,71 @@ class CommunityPageViewModel {
             }
     }
   
-    func fetchCircleMemberData(from url: String, token: String, loading: Bool, circleID: String? = nil) {
+    func fetchCircleMemberData(from url: String, token: String, loading: Bool = false, circleID: String? = nil) {
         if let circleID = circleID {
-           
-            self.loadingCircleMembersDict[circleID] = loading
+            if loading || circleMembersDict[circleID]?.isEmpty != false {
+                self.loadingCircleMembersDict[circleID] = true
+            }
         } else {
-         
-            self.loadingCircleMembers = loading
+            if loading || circleMembers.isEmpty {
+                self.loadingCircleMembers = true
+            }
         }
         
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: CircleUserResponseTemp.self) { response in
-            print("***********")
-               
-                switch response.result {
-                    
+                DispatchQueue.main.async {
+                    switch response.result {
                     case .success(let data):
                         if let circleID = circleID {
-                           
                             self.circleMembersDict[circleID] = data.data
                             self.loadingCircleMembersDict[circleID] = false
                         } else {
-                            
                             self.circleMembers = data.data
                             self.loadingCircleMembers = false
                         }
-                        
-                        print(data.data)
-                        print("Successfully fetched circles members :")
-                        print(data.data)
+                        print("Successfully fetched circle members: \(data.data)")
                         
                     case .failure(let error):
-                        self.logger.error("Error fetching circles members: \(error)")
+                        self.logger.error("Error fetching circle members: \(error)")
                         
                         if let circleID = circleID {
                             self.loadingCircleMembersDict[circleID] = false
                         } else {
                             self.loadingCircleMembers = false
-                            self.errorCircleMembers.toggle()
+                            if self.circleMembers.isEmpty {
+                                self.errorCircleMembers = true
+                            }
                         }
+                    }
                 }
             }
     }
     
     //MARK : Circle Leave
-    func fetchCircleLeave(from url: String, token: String, loading: Bool) {
-        self.loadingCircleMembers = loading
+    func fetchCircleLeave(from url: String, token: String, loading: Bool = false) {
+        if loading {
+            self.loadingCircleMembers = true
+        }
         
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: CircleUserResponseTemp.self) { response in
-            print("***********")
-               
-                switch response.result {
+                DispatchQueue.main.async {
+                    self.loadingCircleMembers = false
                     
+                    switch response.result {
                     case .success(let data):
-                    self.circleMembers = data.data
-                    self.loadingCircleMembers = false
-                    print(data.data)
-                        print("Successfully fetched circles members :")
-                        print(data.data)
+                        self.circleMembers = data.data
+                        print("Successfully fetched circle members after leave: \(data.data)")
+                        
                     case .failure(let error):
-                        self.logger.error("Error fetching circles members: \(error)")
-                    self.loadingCircleMembers = false
-                        self.errorCircleMembers.toggle()
+                        self.logger.error("Error fetching circle members: \(error)")
+                        if self.circleMembers.isEmpty {
+                            self.errorCircleMembers = true
+                        }
+                    }
                 }
             }
     }
@@ -237,17 +262,19 @@ class CommunityPageViewModel {
         AF.request(url, method: .delete, headers: ["Authorization": "Token \(token)"])
             .validate()
             .response { response in
-                switch response.result {
-                case .success(let value):
-                    if let json = value as? [String: Any], let detail = json["detail"] as? String {
-                        self.logger.info("Success: \(detail)")
+                DispatchQueue.main.async {
+                    self.loadingCircleMembers = false
+                    
+                    switch response.result {
+                    case .success(let value):
+                        if let json = value as? [String: Any], let detail = json["detail"] as? String {
+                            self.logger.info("Success: \(detail)")
+                        }
+                        
+                    case .failure(let error):
+                        self.logger.error("Error leaving circle: \(error)")
+                        self.errorCircleMembers = true
                     }
-                    self.loadingCircleMembers = false
-                
-                case .failure(let error):
-                    self.logger.error("Error leaving circle: \(error)")
-                    self.loadingCircleMembers = false
-                    self.errorCircleMembers.toggle()
                 }
             }
     }
@@ -266,78 +293,100 @@ class CommunityPageViewModel {
         circleMembersDict.removeValue(forKey: circleID)
         loadingCircleMembersDict.removeValue(forKey: circleID)
     }
+    
     // MARK: - Group Creation
        
-       func createCircle(name: String, token: String, completion: @escaping (Result<String, Error>) -> Void) {
-           let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? name
-           let url = "\(APIConstants.base_url)circles/create/\(encodedName)"
-           
-           AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
-               .validate()
-               .responseJSON { response in
-                   DispatchQueue.main.async {
-                       switch response.result {
-                       case .success(let data):
-                           if let json = data as? [String: Any],
-                              let circleId = json["circle_id"] as? String {
-                               self.logger.info("Successfully created circle: \(circleId)")
-                               completion(.success(circleId))
-                           } else {
-                               // Try to extract circle_id from different response format
-                               if let json = data as? [String: Any],
-                                  let dataDict = json["data"] as? [String: Any],
-                                  let circleId = dataDict["id"] as? String {
-                                   self.logger.info("Successfully created circle: \(circleId)")
-                                   completion(.success(circleId))
-                               } else {
-                                   let error = NSError(domain: "CreateCircleError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
-                                   completion(.failure(error))
-                               }
-                           }
-                           
-                       case .failure(let error):
-                           self.logger.error("Error creating circle: \(error)")
-                           completion(.failure(error))
-                       }
-                   }
-               }
-       }
+    func createCircle(name: String, token: String, completion: @escaping (Result<String, Error>) -> Void) {
+        let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? name
+        let url = "\(APIConstants.base_url)circles/create/\(encodedName)"
+        
+        AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .responseJSON { response in
+                DispatchQueue.main.async {
+                    switch response.result {
+                    case .success(let data):
+                        if let json = data as? [String: Any],
+                           let circleId = json["circle_id"] as? String {
+                            self.logger.info("Successfully created circle: \(circleId)")
+                            completion(.success(circleId))
+                        } else {
+                          
+                            if let json = data as? [String: Any],
+                               let dataDict = json["data"] as? [String: Any],
+                               let circleId = dataDict["id"] as? String {
+                                self.logger.info("Successfully created circle: \(circleId)")
+                                completion(.success(circleId))
+                            } else {
+                                let error = NSError(domain: "CreateCircleError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+                                completion(.failure(error))
+                            }
+                        }
+                        
+                    case .failure(let error):
+                        self.logger.error("Error creating circle: \(error)")
+                        completion(.failure(error))
+                    }
+                }
+            }
+    }
+    
+    func sendCircleInvitation(circleId: String, username: String, token: String, completion: @escaping (Bool) -> Void) {
+        let url = "\(APIConstants.base_url)circles/sendRequest/\(circleId)/\(username)"
+        
+        AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
+            .validate()
+            .response { response in
+                DispatchQueue.main.async {
+                    switch response.result {
+                    case .success:
+                        self.logger.info("Successfully sent invitation to \(username) for circle \(circleId)")
+                        completion(true)
+                        
+                    case .failure(let error):
+                        self.logger.error("Error sending invitation to \(username): \(error)")
+                        completion(false)
+                    }
+                }
+            }
+    }
+    
+    func sendMultipleInvitations(circleId: String, usernames: [String], token: String, completion: @escaping ([String: Bool]) -> Void) {
+        let dispatchGroup = DispatchGroup()
+        var results: [String: Bool] = [:]
+        
+        for username in usernames {
+            dispatchGroup.enter()
+            
+            sendCircleInvitation(circleId: circleId, username: username, token: token) { success in
+                results[username] = success
+                dispatchGroup.leave()
+            }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            completion(results)
+        }
+    }
+    
+    // MARK: - Refresh Methods
+    
+    func refreshAllData(token: String, username: String) {
        
-       func sendCircleInvitation(circleId: String, username: String, token: String, completion: @escaping (Bool) -> Void) {
-           let url = "\(APIConstants.base_url)circles/sendRequest/\(circleId)/\(username)"
-           
-           AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
-               .validate()
-               .response { response in
-                   DispatchQueue.main.async {
-                       switch response.result {
-                       case .success:
-                           self.logger.info("Successfully sent invitation to \(username) for circle \(circleId)")
-                           completion(true)
-                           
-                       case .failure(let error):
-                           self.logger.error("Error sending invitation to \(username): \(error)")
-                           completion(false)
-                       }
-                   }
-               }
-       }
+        fetchFriendsData(
+            from: "\(APIConstants.base_url)friends/\(username)/",
+            token: token,
+            loading: false
+        )
+        
+      
+        fetchCircleData(
+            from: "\(APIConstants.base_url)circles",
+            token: token,
+            loading: false
+        )
+        
        
-       func sendMultipleInvitations(circleId: String, usernames: [String], token: String, completion: @escaping ([String: Bool]) -> Void) {
-           let dispatchGroup = DispatchGroup()
-           var results: [String: Bool] = [:]
-           
-           for username in usernames {
-               dispatchGroup.enter()
-               
-               sendCircleInvitation(circleId: circleId, username: username, token: token) { success in
-                   results[username] = success
-                   dispatchGroup.leave()
-               }
-           }
-           
-           dispatchGroup.notify(queue: .main) {
-               completion(results)
-           }
-       }
+        fetchCircleRequests(token: token, loading: false)
+    }
 }

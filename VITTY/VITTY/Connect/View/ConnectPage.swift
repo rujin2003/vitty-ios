@@ -4,8 +4,9 @@
 //
 //  Created by Rujin Devkota on 2/27/25.
 
-import SwiftUI
 
+
+import SwiftUI
 
 enum SheetType: Identifiable {
     case addCircleOptions
@@ -34,6 +35,7 @@ struct ConnectPage: View {
     
     @State private var isAddFriendsViewPresented = false
     @State private var selectedTab = 0
+    @State private var hasLoadedInitialData = false
     
     var body: some View {
         ZStack {
@@ -86,7 +88,7 @@ struct ConnectPage: View {
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             }
         }
-        // Single sheet modifier handling all sheet presentations
+       
         .sheet(item: $activeSheet) { sheetType in
             switch sheetType {
             case .addCircleOptions:
@@ -98,25 +100,38 @@ struct ConnectPage: View {
             }
         }
         .onAppear {
-            communityPageViewModel.fetchFriendsData(
-                from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
-                token: authViewModel.loggedInBackendUser?.token ?? "",
-                loading: true
-            )
-            communityPageViewModel.fetchCircleData(
-                from: "\(APIConstants.base_url)circles",
-                token: authViewModel.loggedInBackendUser?.token ?? "",
-                loading: true
-            )
-            friendRequestViewModel.fetchFriendRequests(
-                from: URL(string: "\(APIConstants.base_url)requests/")!,
-                authToken: authViewModel.loggedInBackendUser?.token ?? "",
-                loading: true
-            )
+            
+            let shouldShowLoading = !hasLoadedInitialData
+            
+            
+            if communityPageViewModel.friends.isEmpty || !hasLoadedInitialData {
+                communityPageViewModel.fetchFriendsData(
+                    from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
+                    token: authViewModel.loggedInBackendUser?.token ?? "",
+                    loading: shouldShowLoading
+                )
+            }
+            
+            if communityPageViewModel.circles.isEmpty || !hasLoadedInitialData {
+                communityPageViewModel.fetchCircleData(
+                    from: "\(APIConstants.base_url)circles",
+                    token: authViewModel.loggedInBackendUser?.token ?? "",
+                    loading: shouldShowLoading
+                )
+            }
+            
+            if communityPageViewModel.circleRequests.isEmpty || !hasLoadedInitialData {
+                friendRequestViewModel.fetchFriendRequests(
+                    from: URL(string: "\(APIConstants.base_url)requests/")!,
+                    authToken: authViewModel.loggedInBackendUser?.token ?? "",
+                    loading: shouldShowLoading
+                )
+            }
+            
+            hasLoadedInitialData = true
         }
     }
 }
-
 
 struct AddCircleOptionsView: View {
     @Binding var activeSheet: SheetType?
