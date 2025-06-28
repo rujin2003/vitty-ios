@@ -5,6 +5,7 @@
 //  Created by Rujin Devkota on 2/27/25.
 //
 import SwiftUI
+
 struct FriendsView: View {
     @State private var searchText = ""
     @State private var selectedFilterOption = 0
@@ -17,7 +18,8 @@ struct FriendsView: View {
             
             SearchBar(searchText: $searchText)
             Spacer().frame(height: 8)
-            // Filter pills - always visible
+            
+           
             HStack {
                 FilterPill(title: "Available", isSelected: selectedFilterOption == 0)
                     .onTapGesture {
@@ -32,7 +34,7 @@ struct FriendsView: View {
             .padding(.horizontal)
             Spacer().frame(height: 7)
             
-            // Conditional content based on state
+           
             if communityPageViewModel.errorFreinds {
                 Spacer()
                 VStack(spacing: 5) {
@@ -51,27 +53,53 @@ struct FriendsView: View {
                 ProgressView()
                 Spacer()
             } else {
-                // Filter friends based on search text
+                
                 let filteredFriends = communityPageViewModel.friends.filter { friend in
+                   
+                    let matchesSearch: Bool
                     if searchText.isEmpty {
-                        return true
+                        matchesSearch = true
                     } else {
-                        return friend.username.localizedCaseInsensitiveContains(searchText) ||
+                        matchesSearch = friend.username.localizedCaseInsensitiveContains(searchText) ||
                         (friend.name.localizedCaseInsensitiveContains(searchText) ?? false)
                     }
+                    
+                    
+                    let matchesFilter: Bool
+                    switch selectedFilterOption {
+                    case 0:
+                        matchesFilter = friend.currentStatus.status == "free"
+                    case 1:
+                        matchesFilter = true
+                    default:
+                        matchesFilter = true
+                    }
+                    
+                    return matchesSearch && matchesFilter
                 }
                 
                 if filteredFriends.isEmpty {
                     Spacer()
-                    Text("No friends match your search")
-                        .font(Font.custom("Poppins-Regular", size: 16))
-                        .foregroundColor(.white)
+                    VStack(spacing: 5) {
+                        if selectedFilterOption == 0 && !searchText.isEmpty {
+                            Text("No available friends match your search")
+                        } else if selectedFilterOption == 0 {
+                            Text("No friends are currently available")
+                        } else if !searchText.isEmpty {
+                            Text("No friends match your search")
+                        } else {
+                            Text("You don't have any friends yet")
+                        }
+                    }
+                    .font(Font.custom("Poppins-Regular", size: 16))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
                     Spacer()
                 } else {
                     ScrollView {
                         VStack(spacing: 10) {
                             ForEach(filteredFriends, id: \.username) { friend in
-                                NavigationLink(destination: TimeTableView(friend: friend)) {
+                                NavigationLink(destination: TimeTableView(friend: friend,isFriendsTimeTable: true)) {
                                     FriendRow(friend: friend)
                                 }
                             }
@@ -79,10 +107,10 @@ struct FriendsView: View {
                         .padding(.horizontal)
                     }
                     .safeAreaPadding(.bottom, 100)
-                    
                 }
             }
-        }.refreshable {
+        }
+        .refreshable {
             communityPageViewModel.fetchFriendsData(
                 from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
                 token: authViewModel.loggedInBackendUser?.token ?? "",

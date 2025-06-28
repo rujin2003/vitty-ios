@@ -15,21 +15,11 @@ struct CoursesView: View {
             VStack(spacing: 0) {
                 SearchBar(searchText: $searchText)
 
-                HStack(spacing: 16) {
-                    SemesterFilterButton(isSelected: isCurrentSemester, title: "Current Semester")
-                        .onTapGesture { isCurrentSemester = true }
-
-                    SemesterFilterButton(isSelected: !isCurrentSemester, title: "All Semesters")
-                        .onTapGesture { isCurrentSemester = false }
-
-                    Spacer()
-                }
-                .padding(.horizontal)
-                .padding(.top, 16)
+               
 
                 VStack(spacing: 16) {
                     ForEach(filtered) { course in
-                        NavigationLink(destination: CourseRefs(courseName: course.title, courseInstitution: course.code,slot:course.slot,courseCode: course.code)) {
+                        NavigationLink(destination: OCourseRefs(courseName: course.title, courseInstitution: course.code,slot:course.slot,courseCode: course.code)) {
                             CourseCardView(course: course)
                         }
                     }

@@ -18,12 +18,15 @@ struct UsernameView: View {
     @State private var isLoading = false
 
     @Environment(AuthViewModel.self) private var authViewModel
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
         NavigationStack {
             ZStack {
                 BackgroundView()
                 VStack(alignment: .leading) {
+                    headerView
+                    
                     Text("Enter username and your registration number below.")
                         .font(.footnote)
                         .frame(maxWidth: .infinity, alignment: .leading)
@@ -63,7 +66,7 @@ struct UsernameView: View {
                         TextField("Username", text: $username)
                             .padding()
                     }
-                    .background(Color("tfBlue"))
+                   
                     .cornerRadius(18)
                     .padding(.top)
                     Text(userNameErrorString)
@@ -73,7 +76,7 @@ struct UsernameView: View {
                         TextField("Registration No.", text: $regNo)
                             .padding()
                     }
-                    .background(Color("tfBlue"))
+                   
                     .cornerRadius(18)
                     .padding(.top)
                     Text(regNoErrorString)
@@ -108,17 +111,43 @@ struct UsernameView: View {
                         }
                     }
                  
-                    .background(Color("brightBlue"))
+                    
                     .cornerRadius(18)
                 }
                 .padding(.horizontal)
 
             }
-            .navigationTitle("Let's Sign You In")
+            .navigationBarBackButtonHidden(true)
         }
         .accentColor(.white)
     }
-
+    private var headerView: some View {
+        VStack{
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "chevron.left")
+                        .foregroundColor(.white)
+                        .font(.title2)
+                }
+                Spacer()
+               
+               
+            }
+           
+            .padding(.top)
+          
+            HStack{
+                Text("Let's Sign you in ")
+                    .font(.title)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                Spacer()
+            }.padding([.top,.bottom])
+        }
+    }
+    
     func checkUserExists(completion: @escaping (Result<Bool, Error>) -> Void) {
         guard let url = URL(string: "\(Constants.url)auth/check-username") else {
             completion(.failure(AuthAPIServiceError.invalidUrl))
@@ -160,7 +189,3 @@ struct UsernameView: View {
     }
 }
 
-#Preview {
-    UsernameView()
-        .preferredColorScheme(.dark)
-}

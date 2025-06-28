@@ -38,6 +38,12 @@ import SwiftData
  - use // MARK: <title> when u create a function, it helps to navigate.
  */
 
+
+
+
+/// Empty classrooms testing
+/// empty sheet in reaminder view
+///
 @main
 struct VITTYApp: App {
 
@@ -60,7 +66,7 @@ struct VITTYApp: App {
         }.modelContainer(sharedModelContainer)
 	}
     var sharedModelContainer: ModelContainer {
-        let schema = Schema([TimeTable.self,Remainder.self,CreateNoteModel.self])
+        let schema = Schema([TimeTable.self,Remainder.self,CreateNoteModel.self,UploadedFile.self])
             let config = ModelConfiguration(
                 "group.com.gdscvit.vittyioswidget"
         

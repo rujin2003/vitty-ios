@@ -22,6 +22,9 @@ enum LoginOptions {
 class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     var loggedInFirebaseUser: User?
     var loggedInBackendUser: AppUser?
+    
+
+    
     var isLoading: Bool = false
     var isLoadingApple: Bool = false
     let firebaseAuth = Auth.auth()
@@ -61,8 +64,9 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     
     
    func signInServer(username: String, regNo: String) async {
-        logger.info("Signing into server...")
+       logger.info("Signing into server... from uuid \(self.loggedInFirebaseUser?.uid ?? "empty")")
         do {
+            
             self.loggedInBackendUser = try await AuthAPIService.shared
                 .signInUser(
                     with: AuthRequestBody(
@@ -71,11 +75,14 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
                         username: username
                     )
                 )
+            
+           
         }
         catch {
             logger.error("Signing into server error: \(error)")
         }
-        logger.info("Signed into server")
+       print("this is kinda empty :  \(self.loggedInBackendUser?.name ?? "")")
+        logger.info("Signed into server  \(self.loggedInBackendUser?.name ?? "empty")")
     }
     
     private func firebaseUserAuthUpdate(with auth: Auth, user: User?) {

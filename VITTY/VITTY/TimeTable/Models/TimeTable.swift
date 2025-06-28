@@ -208,21 +208,26 @@ class Lecture: Codable, Identifiable, Comparable {
         try container.encode(endTime, forKey: .endTime)
     }
 }
+
 extension TimeTable {
     var isEmpty: Bool {
         monday.isEmpty && tuesday.isEmpty && wednesday.isEmpty &&
         thursday.isEmpty && friday.isEmpty && saturday.isEmpty && sunday.isEmpty
     }
-    private func extractStartDate(from timeString: String) -> Date? {
-        let components = timeString.components(separatedBy: " - ")
-        guard let startTimeString = components.first else { return nil }
+    
+    private func extractStartTime(from lecture: Lecture) -> Date? {
+            let formattedTime = formatTime(time: lecture.startTime)
+            
+            
+            guard formattedTime != "Failed to parse the time string." else { return nil }
 
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        formatter.locale = Locale(identifier: "en_US_POSIX")
+            let formatter = DateFormatter()
+            formatter.dateFormat = "h:mm a"
+            formatter.locale = Locale(identifier: "en_US_POSIX")
 
-        return formatter.date(from: startTimeString)
-    }
+            return formatter.date(from: formattedTime)
+        }
+
 
     func classesFor(date: Date) -> [Classes] {
         let calendar = Calendar.current
@@ -248,29 +253,45 @@ extension TimeTable {
             )
         }
 
-        return mapped.sorted {
-            guard let d1 = extractStartDate(from: $0.time),
-                  let d2 = extractStartDate(from: $1.time) else {
+        // Sort using the original lecture objects instead of formatted strings
+        return lectures.sorted { lecture1, lecture2 in
+            guard let time1 = extractStartTime(from: lecture1),
+                  let time2 = extractStartTime(from: lecture2) else {
                 return false
             }
-            return d1 < d2
+            return time1 < time2
+        }.map {
+            Classes(
+                title: $0.name,
+                time: "\(formatTime(time: $0.startTime)) - \(formatTime(time: $0.endTime))",
+                slot: $0.slot
+            )
         }
     }
 
-    
-
     private func formatTime(time: String) -> String {
-        var timeComponents = time.components(separatedBy: "T").last ?? ""
-        timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
+            var timeComponents = time.components(separatedBy: "T").last ?? ""
+            timeComponents = timeComponents.components(separatedBy: "+").first ?? ""
 
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "HH:mm:ss"
-        if let date = dateFormatter.date(from: timeComponents) {
-            dateFormatter.dateFormat = "h:mm a"
-            let formattedTime = dateFormatter.string(from: date)
-            return formattedTime
-        } else {
-            return "Failed to parse the time string."
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "HH:mm:ss"
+            if let date = dateFormatter.date(from: timeComponents) {
+                dateFormatter.dateFormat = "h:mm a"
+                let formattedTime = dateFormatter.string(from: date)
+                return (formattedTime)
+            }
+            else {
+                return ("Failed to parse the time string.")
+            }
         }
+    
+    func isDifferentFrom(_ other: TimeTable) -> Bool {
+        return monday != other.monday ||
+               tuesday != other.tuesday ||
+               wednesday != other.wednesday ||
+               thursday != other.thursday ||
+               friday != other.friday ||
+               saturday != other.saturday ||
+               sunday != other.sunday
     }
 }

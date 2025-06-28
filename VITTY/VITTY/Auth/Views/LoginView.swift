@@ -154,7 +154,7 @@ struct CarouselItemView: View {
                 .foregroundColor(Color.white)
             Text(item.subtitle)
                 .font(.footnote)
-                .foregroundColor(Color("tfBlueLight"))
+                .foregroundColor(Color("Accent"))
                 .multilineTextAlignment(.center)
                 .frame(width: 400)
                 .padding(.top, 1)
