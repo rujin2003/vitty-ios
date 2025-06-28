@@ -8,14 +8,19 @@
 import SwiftUI
 import SwiftData
 
+
 struct RemindersView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var allReminders: [Remainder]
+    @Query private var timeTables: [TimeTable]
     
     @State private var searchText = ""
     @State private var selectedTab = 0
+    @State private var showingSubjectSelection = false
+    @State private var showingReminderCreation = false
+    @State private var selectedCourse: Course?
     
-   
+    // Your existing computed properties remain the same
     private var filteredReminders: [Remainder] {
         if searchText.isEmpty {
             return allReminders
@@ -28,7 +33,6 @@ struct RemindersView: View {
         }
     }
     
-   
     private var groupedReminders: [ReminderGroup] {
         let grouped = Dictionary(grouping: filteredReminders) { reminder in
             Calendar.current.startOfDay(for: reminder.date)
@@ -57,10 +61,16 @@ struct RemindersView: View {
         }.sorted { $0.daysToGo < $1.daysToGo }
     }
     
+    // Extract courses from timetable
+    private var availableCourses: [Course] {
+        let courses = timeTables.first.map { extractCourses(from: $0) } ?? []
+        return courses
+    }
+    
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                // Search Bar
+                
                 HStack {
                     Image(systemName: "magnifyingglass")
                         .foregroundColor(.gray)
@@ -81,24 +91,30 @@ struct RemindersView: View {
                 .padding(.horizontal)
                 .padding(.top, 16)
                 
-                // Status Tabs
+             
                 HStack(spacing: 16) {
                     StatusTabView(isSelected: selectedTab == 0, title: "Pending")
                         .onTapGesture { selectedTab = 0 }
                     StatusTabView(isSelected: selectedTab == 1, title: "Completed")
                         .onTapGesture { selectedTab = 1 }
                     Spacer()
+                    
+                  
                     Button {
-                        //TODO: to implement
+                        showingSubjectSelection = true
                     } label: {
                         Image(systemName: "plus")
+                            .foregroundColor(.blue)
+                            .font(.system(size: 16, weight: .medium))
+                            .frame(width: 32, height: 32)
+                           
+                           
                     }
-
                 }
                 .padding(.horizontal)
                 .padding(.top, 16)
                 
-                // Reminder Groups
+             
                 VStack(spacing: 24) {
                     ForEach(groupedReminders, id: \.id) { group in
                         if selectedTab == 0 && !group.items.filter({ !$0.isCompleted }).isEmpty {
@@ -152,6 +168,25 @@ struct RemindersView: View {
         }
         .scrollIndicators(.hidden)
         .background(Color("Background").edgesIgnoringSafeArea(.all))
+        .sheet(isPresented: $showingSubjectSelection) {
+            SubjectSelectionView(
+                courses: availableCourses,
+                onCourseSelected: { course in
+                    selectedCourse = course
+                    showingSubjectSelection = false
+                    showingReminderCreation = true
+                }
+            )
+        }
+        .sheet(isPresented: $showingReminderCreation) {
+            if let course = selectedCourse {
+                ReminderView(
+                    courseName: course.title,
+                    slot: course.slot,
+                    courseCode: course.code
+                )
+            }
+        }
     }
     
     private func completeReminderItem(itemId: PersistentIdentifier) {
@@ -162,8 +197,203 @@ struct RemindersView: View {
             }
         }
     }
+    
+
+    private func extractCourses(from timetable: TimeTable) -> [Course] {
+        let allLectures = timetable.monday + timetable.tuesday + timetable.wednesday +
+                          timetable.thursday + timetable.friday + timetable.saturday +
+                          timetable.sunday
+
+        let currentSemester = determineSemester(for: Date())
+        let groupedLectures = Dictionary(grouping: allLectures, by: { $0.name })
+        var result: [Course] = []
+
+        for title in groupedLectures.keys.sorted() {
+            if let lectures = groupedLectures[title] {
+                let uniqueSlot = Set(lectures.map { $0.slot }).sorted().joined(separator: " + ")
+                let uniqueCode = Set(lectures.map { $0.code }).sorted().joined(separator: " / ")
+
+                result.append(
+                    Course(
+                        title: title,
+                        slot: uniqueSlot,
+                        code: uniqueCode,
+                        semester: currentSemester,
+                        isFavorite: false
+                    )
+                )
+            }
+        }
+
+        return result.sorted { $0.title < $1.title }
+    }
+
+    private func determineSemester(for date: Date) -> String {
+        let month = Calendar.current.component(.month, from: date)
+        
+        switch month {
+        case 12, 1, 2:
+            return "Winter \(academicYear(for: date))"
+        case 3...6:
+            return "Summer \(academicYear(for: date))"
+        case 7...11:
+            return "Fall \(academicYear(for: date))"
+        default:
+            return "Unknown"
+        }
+    }
+
+    private func academicYear(for date: Date) -> String {
+        let year = Calendar.current.component(.year, from: date)
+        let month = Calendar.current.component(.month, from: date)
+        if month < 3 {
+            return "\(year - 1)-\(String(format: "%02d", year % 100))"
+        } else {
+            return "\(year)-\(String(format: "%02d", (year + 1) % 100))"
+        }
+    }
 }
 
+// MARK: - Subject Selection View
+struct SubjectSelectionView: View {
+    let courses: [Course]
+    let onCourseSelected: (Course) -> Void
+    
+    @Environment(\.presentationMode) var presentationMode
+    @State private var searchText = ""
+    
+    private var filteredCourses: [Course] {
+        if searchText.isEmpty {
+            return courses
+        } else {
+            return courses.filter { course in
+                course.title.localizedCaseInsensitiveContains(searchText) ||
+                course.code.localizedCaseInsensitiveContains(searchText)
+            }
+        }
+    }
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color("Background").edgesIgnoringSafeArea(.all)
+                
+                VStack(spacing: 0) {
+                   
+                    HStack {
+                        Image(systemName: "magnifyingglass")
+                            .foregroundColor(.gray)
+                        
+                        TextField("Search subjects", text: $searchText)
+                            .foregroundColor(.white)
+                        
+                        if !searchText.isEmpty {
+                            Button(action: { searchText = "" }) {
+                                Image(systemName: "xmark")
+                                    .foregroundColor(.gray)
+                            }
+                        }
+                    }
+                    .padding(10)
+                    .background(Color("Secondary"))
+                    .cornerRadius(8)
+                    .padding(.horizontal)
+                    .padding(.top, 16)
+                    
+                    ScrollView {
+                        LazyVStack(spacing: 12) {
+                            ForEach(filteredCourses) { course in
+                                SubjectSelectionCard(course: course) {
+                                    onCourseSelected(course)
+                                }
+                            }
+                        }
+                        .padding(.horizontal)
+                        .padding(.top, 16)
+                        .padding(.bottom, 24)
+                    }
+                    
+                 
+                    if filteredCourses.isEmpty {
+                        VStack(spacing: 16) {
+                            Image(systemName: "book.closed")
+                                .font(.system(size: 48))
+                                .foregroundColor(.gray)
+                            
+                            Text(searchText.isEmpty ? "No subjects available" : "No subjects found")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundColor(.gray)
+                            
+                            if !searchText.isEmpty {
+                                Text("Try adjusting your search terms")
+                                    .font(.system(size: 14))
+                                    .foregroundColor(.gray.opacity(0.7))
+                            }
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                }
+            }
+            .navigationTitle("Select Subject")
+            .navigationBarTitleDisplayMode(.large)
+            .navigationBarItems(
+                leading: Button("Cancel") {
+                    presentationMode.wrappedValue.dismiss()
+                }
+                .foregroundColor(.red)
+            )
+        }
+        .preferredColorScheme(.dark)
+    }
+}
+
+// MARK: - Subject Selection Card
+struct SubjectSelectionCard: View {
+    let course: Course
+    let onTap: () -> Void
+    
+    var body: some View {
+        Button(action: onTap) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text(course.title)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.leading)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "chevron.right")
+                        .foregroundColor(.gray)
+                        .font(.system(size: 14))
+                }
+                .padding(.top, 16)
+                .padding(.horizontal, 16)
+                
+                HStack {
+                    Text(course.code)
+                        .font(.system(size: 14))
+                        .foregroundColor(Color("Accent"))
+                    
+                    Spacer()
+                    
+                    Text("Slot: \(course.slot)")
+                        .font(.system(size: 12))
+                        .foregroundColor(.white.opacity(0.7))
+                        .padding(.horizontal, 8)
+                        .padding(.vertical, 4)
+                        .background(Color("Secondary").opacity(0.5))
+                        .cornerRadius(8)
+                }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 16)
+            }
+            .frame(maxWidth: .infinity)
+            .background(RoundedRectangle(cornerRadius: 16).fill(Color("Secondary")))
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
+}
 struct StatusTabView: View {
     let isSelected: Bool
     let title: String
@@ -348,7 +578,7 @@ struct ReminderItemView: View {
     }
 }
 
-// Updated models to work with SwiftData
+
 struct ReminderGroup: Identifiable {
     let id = UUID()
     let date: String

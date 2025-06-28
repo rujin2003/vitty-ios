@@ -1,6 +1,9 @@
 import SwiftUI
 import SwiftData
 
+
+
+
 struct SettingsView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(\.dismiss) private var dismiss
@@ -12,6 +15,7 @@ struct SettingsView: View {
    
     @State private var showDaySelection = false
     @State private var selectedDay: String? = nil
+    @State private var showResetAlert = false
     
  
     private let selectedDayKey = "SelectedSaturdayDay"
@@ -45,11 +49,9 @@ struct SettingsView: View {
                         }
 
                         SettingsSectionView(title: "Class Settings") {
-                            VStack(alignment: .leading, spacing: 0) {
-                              Button {
-                                    withAnimation(.easeInOut(duration: 0.5)) {
-                                        showDaySelection.toggle()
-                                    }
+                            VStack(alignment: .leading, spacing: 12) { 
+                                Button {
+                                    showDaySelection.toggle()
                                 } label: {
                                     SettingsRowView(
                                         icon: "calendar.badge.plus",
@@ -57,6 +59,7 @@ struct SettingsView: View {
                                         subtitle: selectedDay == nil ? "Select a day to copy classes to Saturday" : "Copy \(selectedDay!) classes to Saturday"
                                     )
                                 }
+                                .buttonStyle(PlainButtonStyle())
 
                                 if showDaySelection {
                                     VStack(alignment: .leading, spacing: 8) {
@@ -77,11 +80,7 @@ struct SettingsView: View {
                                                 selectedDay = day
                                                 UserDefaults.standard.set(day, forKey: selectedDayKey)
                                                 copyLecturesToSaturday(from: day)
-                                                
-                                              
-                                                withAnimation(.easeInOut(duration: 0.3)) {
-                                                    showDaySelection = false
-                                                }
+                                                showDaySelection = false
                                             }
                                         }
                                     }
@@ -92,17 +91,29 @@ struct SettingsView: View {
                                     ))
                                 }
                                 
-                                SettingsRowView(
-                                    icon: "pencil.and.ellipsis.rectangle",
-                                    title: "Update Timetable",
-                                    subtitle: "Keep your timetable up-to-date. Don't miss a class."
-                                ).onTapGesture {
+                                
+                                Button {
+                                    showResetAlert = true
+                                } label: {
+                                    SettingsRowView(
+                                        icon: "trash.circle.fill",
+                                        title: "Reset Saturday Classes",
+                                        subtitle: "Remove all classes from Saturday"
+                                    )
+                                }
+                                .buttonStyle(PlainButtonStyle())
+                                Button {
                                     if let url = URL(string: "https://vitty.dscvit.com") {
                                         UIApplication.shared.open(url)
                                     }
+                                } label: {
+                                    SettingsRowView(
+                                        icon: "pencil.and.ellipsis.rectangle",
+                                        title: "Update Timetable",
+                                        subtitle: "Keep your timetable up-to-date. Don't miss a class."
+                                    )
                                 }
-
-                               
+                                .buttonStyle(PlainButtonStyle())
                             }
                         }
 
@@ -126,6 +137,20 @@ struct SettingsView: View {
                     }
                     .scrollContentBackground(.hidden)
                 }
+                
+                
+                if showResetAlert {
+                    ResetSaturdayAlert(
+                        onCancel: {
+                            showResetAlert = false
+                        },
+                        onReset: {
+                            resetSaturdayClasses()
+                            showResetAlert = false
+                        }
+                    )
+                    .zIndex(1)
+                }
             }
             .navigationBarBackButtonHidden(true)
             .interactiveDismissDisabled(true)
@@ -148,6 +173,38 @@ struct SettingsView: View {
     
     private func loadSelectedDay() {
         selectedDay = UserDefaults.standard.string(forKey: selectedDayKey)
+    }
+    
+    private func resetSaturdayClasses() {
+        guard let timeTable = timeTables.first else { return }
+        
+      
+        let newTimeTable = TimeTable(
+            monday: timeTable.monday,
+            tuesday: timeTable.tuesday,
+            wednesday: timeTable.wednesday,
+            thursday: timeTable.thursday,
+            friday: timeTable.friday,
+            saturday: [], // Empty Saturday
+            sunday: timeTable.sunday
+        )
+        
+        
+        modelContext.delete(timeTable)
+        modelContext.insert(newTimeTable)
+        
+      
+        do {
+            try modelContext.save()
+            print("Successfully reset Saturday classes")
+            
+            
+            UserDefaults.standard.removeObject(forKey: selectedDayKey)
+            selectedDay = nil
+            
+        } catch {
+            print("Error saving context: \(error)")
+        }
     }
     
     private func copyLecturesToSaturday(from day: String) {
@@ -257,8 +314,11 @@ struct SettingsView: View {
                         .font(.system(size: 12))
                         .foregroundColor(.gray.opacity(0.8))
                 }
+                
+                Spacer()
             }
             .padding(.vertical, 6)
+            .contentShape(Rectangle())
         }
     }
 
@@ -284,6 +344,61 @@ struct SettingsView: View {
                     UIApplication.shared.open(url)
                 }
             }
+        }
+    }
+}
+
+// Custom Reset Alert Component
+struct ResetSaturdayAlert: View {
+    let onCancel: () -> Void
+    let onReset: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 12) {
+                Text("Reset Saturday Classes?")
+                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .foregroundColor(.white)
+                
+                Text("Are you sure you want to remove all classes from Saturday? This action cannot be undone.")
+                    .font(.custom("Poppins-Regular", size: 14))
+                    .foregroundColor(.white)
+                    .multilineTextAlignment(.center)
+                
+                HStack(spacing: 10) {
+                    Button(action: onCancel) {
+                        Text("Cancel")
+                            .font(.custom("Poppins-Regular", size: 14))
+                            .padding(.vertical, 8)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.gray.opacity(0.3))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    
+                    Button(action: onReset) {
+                        Text("Reset")
+                            .font(.custom("Poppins-Regular", size: 14))
+                            .padding(.vertical, 8)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                }
+            }
+            .frame(height: 150)
+            .padding(20)
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
+        .onTapGesture {
+           
         }
     }
 }

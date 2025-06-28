@@ -115,15 +115,28 @@ class CommunityPageViewModel {
         
         AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
             .validate()
-            .responseDecodable(of: CircleRequestResponse.self) { response in
+            .responseData { response in
                 DispatchQueue.main.async {
                     self.loadingCircleRequests = false
                     
                     switch response.result {
                     case .success(let data):
-                        self.circleRequests = data.data
-                        self.errorCircleRequests = false
-                        self.logger.info("Successfully fetched circle requests: \(data.data.count) requests")
+                        do {
+                            let decodedResponse = try JSONDecoder().decode(CircleRequestResponse.self, from: data)
+                            self.circleRequests = decodedResponse.data
+                            self.errorCircleRequests = false
+                            self.logger.info("Successfully fetched circle requests: \(decodedResponse.data.count) requests")
+                        } catch {
+                            self.logger.error("Error decoding circle requests: \(error)")
+                            
+                            if let jsonString = String(data: data, encoding: .utf8) {
+                                self.logger.info("Raw response: \(jsonString)")
+                            }
+                            
+                             response
+                            self.circleRequests = []
+                            self.errorCircleRequests = false
+                        }
                         
                     case .failure(let error):
                         self.logger.error("Error fetching circle requests: \(error)")

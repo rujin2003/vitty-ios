@@ -66,7 +66,7 @@ struct UsernameView: View {
                         TextField("Username", text: $username)
                             .padding()
                     }
-                    .background(Color("tfBlue"))
+                   
                     .cornerRadius(18)
                     .padding(.top)
                     Text(userNameErrorString)
@@ -76,7 +76,7 @@ struct UsernameView: View {
                         TextField("Registration No.", text: $regNo)
                             .padding()
                     }
-                    .background(Color("tfBlue"))
+                   
                     .cornerRadius(18)
                     .padding(.top)
                     Text(regNoErrorString)
@@ -111,7 +111,7 @@ struct UsernameView: View {
                         }
                     }
                  
-                    .background(Color("brightBlue"))
+                    
                     .cornerRadius(18)
                 }
                 .padding(.horizontal)

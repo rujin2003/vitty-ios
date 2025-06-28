@@ -39,9 +39,7 @@ struct QRCodeModalView: View {
                         .font(.custom("Poppins-SemiBold", size: 18))
                         .foregroundColor(.white)
                     
-                    Text("Circle ID: \(groupCode)")
-                        .font(.custom("Poppins-Regular", size: 12))
-                        .foregroundColor(.gray)
+                    
                 }
                 
                
@@ -82,7 +80,7 @@ struct QRCodeModalView: View {
                         Text("Share Invitation")
                     }
                     .font(.custom("Poppins-SemiBold", size: 16))
-                    .foregroundColor(.white)
+                    .foregroundColor(Color("Background"))
                     .padding(.horizontal, 20)
                     .padding(.vertical, 12)
                     .background(Color("Accent"))

@@ -4,20 +4,20 @@
 //
 //  Created by Rujin Devkota on 2/27/25.
 
-
-
 import SwiftUI
 
 enum SheetType: Identifiable {
     case addCircleOptions
     case createGroup
     case joinGroup
+    case groupRequests
     
     var id: Int {
         switch self {
         case .addCircleOptions: return 0
         case .createGroup: return 1
         case .joinGroup: return 2
+        case .groupRequests: return 3
         }
     }
 }
@@ -29,6 +29,7 @@ struct ConnectPage: View {
     @State private var isShowingRequestView = false
     @State var isCircleView = false
     @State private var activeSheet: SheetType?
+    @State private var showCircleMenu = false
     @Environment(\.dismiss) private var dismiss
     
     @Binding var isCreatingGroup : Bool
@@ -80,15 +81,35 @@ struct ConnectPage: View {
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             } else {
                 Button(action: {
-                    activeSheet = .addCircleOptions
+                    showCircleMenu = true
                 }) {
-                    Image(systemName: "person.fill.badge.plus")
+                    Image(systemName: "ellipsis")
                         .foregroundColor(.white)
+                        .font(.system(size: 18))
                 }
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             }
         }
-       
+        .overlay(
+            Group {
+                if showCircleMenu {
+                    ConnectCircleMenuView(
+                        onCreateGroup: {
+                            activeSheet = .createGroup
+                        },
+                        onJoinGroup: {
+                            activeSheet = .joinGroup
+                        },
+                        onGroupRequests: {
+                            activeSheet = .groupRequests
+                        },
+                        onCancel: {
+                            showCircleMenu = false
+                        }
+                    )
+                }
+            }
+        )
         .sheet(item: $activeSheet) { sheetType in
             switch sheetType {
             case .addCircleOptions:
@@ -97,6 +118,8 @@ struct ConnectPage: View {
                 CreateGroup(groupCode: .constant(""), token:authViewModel.loggedInBackendUser?.token ?? "" )
             case .joinGroup:
                 JoinGroup(groupCode: .constant(""))
+            case .groupRequests:
+                CircleRequestsView()
             }
         }
         .onAppear {
@@ -130,6 +153,94 @@ struct ConnectPage: View {
             
             hasLoadedInitialData = true
         }
+    }
+}
+
+struct ConnectCircleMenuView: View {
+    let onCreateGroup: () -> Void
+    let onJoinGroup: () -> Void
+    let onGroupRequests: () -> Void
+    let onCancel: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 0) {
+                Button(action: {
+                    onCancel()
+                    onCreateGroup()
+                }) {
+                    HStack {
+                        Image("creategroup")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        Text("Create Group")
+                            .font(.custom("Poppins-Regular", size: 16))
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(Color("Background"))
+                }
+                
+                Divider()
+                    .background(Color.gray.opacity(0.3))
+                
+                Button(action: {
+                    onCancel()
+                    onJoinGroup()
+                }) {
+                    HStack {
+                        Image("joingroup")
+                            .resizable()
+                            .frame(width: 24, height: 24)
+                        Text("Join Group")
+                            .font(.custom("Poppins-Regular", size: 16))
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(Color("Background"))
+                }
+                
+                Divider()
+                    .background(Color.gray.opacity(0.3))
+                
+                Button(action: {
+                    onCancel()
+                    onGroupRequests()
+                }) {
+                    HStack {
+                        Image(systemName: "person.badge.plus")
+                            .foregroundColor(.white)
+                        Text("Group Requests")
+                            .font(.custom("Poppins-Regular", size: 16))
+                            .foregroundColor(.white)
+                        Spacer()
+                    }
+                    .padding()
+                    .background(Color("Background"))
+                }
+                
+                Divider()
+                    .background(Color.gray.opacity(0.3))
+                
+                Button(action: onCancel) {
+                    Text("Cancel")
+                        .font(.custom("Poppins-Regular", size: 16))
+                        .foregroundColor(.gray)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color("Background"))
+                }
+            }
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
     }
 }
 
