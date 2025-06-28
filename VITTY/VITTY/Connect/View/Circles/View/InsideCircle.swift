@@ -87,24 +87,9 @@ struct CircleMenuView: View {
                 Divider()
                     .background(Color.gray.opacity(0.3))
                 
-                Button(action: {
-                    onCancel()
-                    onGroupRequests()
-                }) {
-                    HStack {
-                        Image(systemName: "person.badge.plus")
-                            .foregroundColor(.white)
-                        Text("Group Requests")
-                            .font(.custom("Poppins-Regular", size: 16))
-                            .foregroundColor(.white)
-                        Spacer()
-                    }
-                    .padding()
-                    .background(Color("Background"))
-                }
+               
                 
-                Divider()
-                    .background(Color.gray.opacity(0.3))
+                
                 
                 Button(action: onCancel) {
                     Text("Cancel")

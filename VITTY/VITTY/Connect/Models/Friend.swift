@@ -51,18 +51,4 @@ struct Friend: Decodable {
 	}
 }
 
-extension Friend {
-	static var sampleFriend: Friend {
-		return Friend(
-			currentStatus: CurrentStatus(status: "free"),
-			friendStatus: "friends",
-			friendsCount: 2,
-			mutualFriendsCount: 2,
-			name: "Rudrank Basant",
-			picture:
-				"https://lh3.googleusercontent.com/a/ACg8ocK7g3mh79yuJOyaOWy4iM4WsFk81VYAeDty5W4A8ETrqbw=s96-c",
-			username: "rudrank"
-		)
-	}
-}
 

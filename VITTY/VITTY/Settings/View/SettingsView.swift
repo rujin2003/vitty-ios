@@ -49,7 +49,7 @@ struct SettingsView: View {
                         }
 
                         SettingsSectionView(title: "Class Settings") {
-                            VStack(alignment: .leading, spacing: 12) { 
+                            VStack(alignment: .leading, spacing: 12) {
                                 Button {
                                     showDaySelection.toggle()
                                 } label: {
