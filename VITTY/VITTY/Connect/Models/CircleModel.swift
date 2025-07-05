@@ -83,6 +83,7 @@ struct CircleUserResponseTemp: Codable {
     let data: [CircleUserTemp]
     
     enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case data
     }
 }

@@ -57,6 +57,9 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     
 
     
+    
+
+    
     var isLoading: Bool = false
     var isLoadingApple: Bool = false
     let firebaseAuth = Auth.auth()
@@ -164,7 +167,9 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     
    func signInServer(username: String, regNo: String) async {
        logger.info("Signing into server... from uuid \(self.loggedInFirebaseUser?.uid ?? "empty")")
+       logger.info("Signing into server... from uuid \(self.loggedInFirebaseUser?.uid ?? "empty")")
         do {
+            
             
             self.loggedInBackendUser = try await AuthAPIService.shared
                 .signInUser(
@@ -182,6 +187,8 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         catch {
             logger.error("Signing into server error: \(error)")
         }
+       print("this is kinda empty :  \(self.loggedInBackendUser?.name ?? "")")
+        logger.info("Signed into server  \(self.loggedInBackendUser?.name ?? "empty")")
        print("this is kinda empty :  \(self.loggedInBackendUser?.name ?? "")")
         logger.info("Signed into server  \(self.loggedInBackendUser?.name ?? "empty")")
     }

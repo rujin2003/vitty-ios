@@ -382,6 +382,7 @@ struct InsideCircle: View {
                 }) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.white).font(.title2)
+                        .foregroundColor(.white).font(.title2)
                 }
                 Spacer()
                 Text("Circle")
@@ -390,9 +391,12 @@ struct InsideCircle: View {
                 Spacer()
                 Button(action: {
                     showCircleMenu = true
+                    showCircleMenu = true
                 }) {
                     Image(systemName: "ellipsis")
+                    Image(systemName: "ellipsis")
                         .foregroundColor(.white)
+                        .font(.system(size: 18))
                         .font(.system(size: 18))
                 }
             }
@@ -408,6 +412,7 @@ struct InsideCircle: View {
                         .font(.custom("Poppins-SemiBold", size: 20))
                         .foregroundColor(.white)
                     Spacer()
+                    
                     
                 }
                 Spacer().frame(height: 5)
