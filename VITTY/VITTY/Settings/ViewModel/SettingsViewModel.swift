@@ -4,6 +4,7 @@ import UserNotifications
 
 class SettingsViewModel : ObservableObject{
     @Published var notificationsEnabled: Bool = false {
+    @Published var notificationsEnabled: Bool = false {
         didSet {
             UserDefaults.standard.set(notificationsEnabled, forKey: "notificationsEnabled")
             if notificationsEnabled {
@@ -19,9 +20,12 @@ class SettingsViewModel : ObservableObject{
 
     @Published var timetable: TimeTable?
     @Published var showNotificationDisabledAlert = false
+    @Published var timetable: TimeTable?
+    @Published var showNotificationDisabledAlert = false
 
     init(timetable: TimeTable? = nil) {
         self.timetable = timetable
+       
        
         self.notificationsEnabled = UserDefaults.standard.bool(forKey: "notificationsEnabled")
         checkNotificationAuthorization()
@@ -55,7 +59,17 @@ class SettingsViewModel : ObservableObject{
         // Clear existing notifications first
         UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         
+        // Clear existing notifications first
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
+        
         let weekdays: [(Int, [Lecture])] = [
+            (2, timetable.monday),    // Monday = 2
+            (3, timetable.tuesday),   // Tuesday = 3
+            (4, timetable.wednesday), // Wednesday = 4
+            (5, timetable.thursday),  // Thursday = 5
+            (6, timetable.friday),    // Friday = 6
+            (7, timetable.saturday),  // Saturday = 7
+            (1, timetable.sunday)     // Sunday = 1
             (2, timetable.monday),    // Monday = 2
             (3, timetable.tuesday),   // Tuesday = 3
             (4, timetable.wednesday), // Wednesday = 4
@@ -73,12 +87,22 @@ class SettingsViewModel : ObservableObject{
                 }
 
               
+                guard let startDate = parseLectureTime(lecture.startTime, weekday: weekday) else {
+                    print("Failed to parse time for lecture: \(lecture.name) with time: \(lecture.startTime)")
+                    continue
+                }
+
+              
                 scheduleNotification(for: lecture.name, at: startDate, title: "Class Starting", minutesBefore: 0)
+                
+               
                 
                
                 scheduleNotification(for: lecture.name, at: startDate, title: "Upcoming Class", minutesBefore: 10)
             }
         }
+        
+        print("Scheduled notifications for all lectures")
         
         print("Scheduled notifications for all lectures")
     }
@@ -95,7 +119,9 @@ class SettingsViewModel : ObservableObject{
         let trigger = UNCalendarNotificationTrigger(dateMatching: triggerComponents, repeats: true)
 
         let identifier = "\(lectureName)-\(title)-\(minutesBefore)min-weekday\(triggerComponents.weekday ?? 0)"
+        let identifier = "\(lectureName)-\(title)-\(minutesBefore)min-weekday\(triggerComponents.weekday ?? 0)"
         let request = UNNotificationRequest(
+            identifier: identifier,
             identifier: identifier,
             content: content,
             trigger: trigger
@@ -108,7 +134,16 @@ class SettingsViewModel : ObservableObject{
                 print("Successfully scheduled notification: \(identifier)")
             }
         }
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Error scheduling notification: \(error)")
+            } else {
+                print("Successfully scheduled notification: \(identifier)")
+            }
+        }
     }
+
+    
 
     
     private func parseLectureTime(_ timeString: String, weekday: Int) -> Date? {
@@ -169,6 +204,7 @@ class SettingsViewModel : ObservableObject{
     private func formatTime(time: String) -> String {
         var timeComponents = time.components(separatedBy: "T").last ?? ""
         timeComponents = timeComponents.components(separatedBy: "+").first ?? ""
+        timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "HH:mm:ss"
         if let date = dateFormatter.date(from: timeComponents) {

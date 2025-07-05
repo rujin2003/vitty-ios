@@ -5,8 +5,7 @@
 //  Created by Rujin Devkota on 3/25/25.
 //
 
-//TODO: the Circle doesnt have image in the endpoint , the circle members dont have thier venu status currently in the endpoint
-
+//TODO: the Circle doesnt have image in the endpoint
 
 
 
@@ -36,17 +35,47 @@ struct CircleMember: Identifiable {
     let venue: String?
 }
 
+// MARK: - Current Status Model
+struct CurrentStatus: Codable {
+    let className: String?
+    let slot: String?
+    let status: String
+    let venue: String?
+    
+    enum CodingKeys: String, CodingKey {
+        case className = "class"
+        case slot, status, venue
+    }
+}
 
+// MARK: - Updated CircleUserTemp Model
 struct CircleUserTemp: Codable {
     let email: String
     let name: String
     let picture: String
     let username: String
-    let status: String?
-    let venue: String?
-        
+    let currentStatus: CurrentStatus?
+    
     enum CodingKeys: String, CodingKey {
-        case email, name, picture, username, status, venue
+        case email, name, picture, username
+        case currentStatus = "current_status"
+    }
+    
+   
+    var status: String {
+        return currentStatus?.status ?? "free"
+    }
+    
+    var venue: String? {
+        return currentStatus?.venue
+    }
+    
+    var className: String? {
+        return currentStatus?.className
+    }
+    
+    var slot: String? {
+        return currentStatus?.slot
     }
 }
 
@@ -54,9 +83,11 @@ struct CircleUserResponseTemp: Codable {
     let data: [CircleUserTemp]
     
     enum CodingKeys: String, CodingKey {
+    enum CodingKeys: String, CodingKey {
         case data
     }
 }
+
 // MARK: - Request Models
 struct CircleRequest: Codable, Identifiable {
     let id = UUID()
@@ -69,7 +100,6 @@ struct CircleRequest: Codable, Identifiable {
         case circle_id, circle_name, from_username, to_username
     }
 }
-
 struct CircleRequestResponse: Codable {
     let data: [CircleRequest]
 }

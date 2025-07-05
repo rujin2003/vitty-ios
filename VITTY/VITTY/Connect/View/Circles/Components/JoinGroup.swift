@@ -3,17 +3,36 @@
 //
 //  Created by Rujin Devkota on 2/28/25.
 //
+//  JoinGroup.swift
+//  VITTY
+//
+//  Created by Rujin Devkota on 2/28/25.
+//
 import SwiftUI
 import AVFoundation
+import UIKit
 import UIKit
 
 struct JoinGroup: View {
     let screenHeight = UIScreen.main.bounds.height
     let screenWidth = UIScreen.main.bounds.width
 
+
     @Binding var groupCode: String
     @State private var isScanning = false
     @State private var scannedCode: String = ""
+    @State private var showingAlert = false
+    @State private var alertMessage = ""
+    @State private var isJoining = false
+    @State private var showToast = false
+    @State private var toastMessage = ""
+    @State private var circleName = ""
+    @State private var localGroupCode = ""
+
+    @Environment(AuthViewModel.self) private var authViewModel
+    @Environment(CommunityPageViewModel.self) private var communityPageViewModel
+    @Environment(\.dismiss) private var dismiss
+
     @State private var showingAlert = false
     @State private var alertMessage = ""
     @State private var isJoining = false
@@ -33,7 +52,8 @@ struct JoinGroup: View {
                     .fill(Color.gray.opacity(0.5))
                     .frame(width: 50, height: 5)
                     .padding(.top, 10)
-
+                
+                Spacer().frame(height: 7)
                 Text("Join Circle")
                     .font(.system(size: 21, weight: .bold))
                     .foregroundColor(.white)
@@ -114,7 +134,7 @@ struct JoinGroup: View {
                 .disabled(isJoining)
 
                 Spacer()
-
+                
                 HStack {
                     Spacer()
                     Button(action: {
@@ -124,23 +144,19 @@ struct JoinGroup: View {
                             if isJoining {
                                 ProgressView()
                                     .scaleEffect(0.8)
-                                    .foregroundColor(.white)
+                                    .progressViewStyle(CircularProgressViewStyle(tint: .black))
                             }
                             Text(isJoining ? "JOINING..." : "JOIN")
-                                .font(.system(size: 16, weight: .bold))
-                                .foregroundColor(isJoining ? .white : Color("Accent"))
+                                .font(.system(size: 16, weight: .semibold))
+                                .foregroundColor(.black)
                         }
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 12)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(isJoining ? Color.gray.opacity(0.5) : Color.clear)
-                        )
+                        .frame(width: 100, height: 35)
+                        .background(localGroupCode.isEmpty ? Color.gray : Color("Accent"))
+                        .cornerRadius(10)
                     }
                     .disabled(isJoining || localGroupCode.isEmpty)
                     .padding(.trailing, 20)
                 }
-                .padding(.leading, 20)
                 .padding(.bottom, 20)
             }
             .presentationDetents([.height(screenHeight * 0.65)])
@@ -158,6 +174,19 @@ struct JoinGroup: View {
                         .padding(.bottom, 50)
                 }
                 .transition(.move(edge: .bottom).combined(with: .opacity))
+            }
+        }.onReceive(NotificationCenter.default.publisher(for: Notification.Name("JoinCircleFromDeepLink"))) { notification in
+            if let userInfo = notification.userInfo,
+               let circleId = userInfo["circleId"] as? String,
+               let circleName = userInfo["circleName"] as? String {
+                
+             
+                localGroupCode = circleId
+                groupCode = circleId
+                self.circleName = circleName
+                
+               
+                joinCircle()
             }
         }
         .alert("Join Circle", isPresented: $showingAlert) {
@@ -234,6 +263,7 @@ struct JoinGroup: View {
     }
 
     // MARK: - Join Circle
+    
     private func joinCircle() {
         guard !localGroupCode.isEmpty,
               let username = authViewModel.loggedInBackendUser?.username,
@@ -250,7 +280,8 @@ struct JoinGroup: View {
         isJoining = true
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 
-        let urlString = "\(APIConstants.base_url)circles/sendRequest/\(localGroupCode)/\(username)"
+       
+        let urlString = "\(APIConstants.base_url)circles/join?code=\(localGroupCode)"
         guard let url = URL(string: urlString) else {
             showToast(message: "Error: Invalid URL", isError: true)
             isJoining = false
@@ -277,11 +308,12 @@ struct JoinGroup: View {
                 }
 
                 if httpResponse.statusCode == 200 || httpResponse.statusCode == 201 {
-                    showToast(message: "Circle join request sent successfully! 🎉", isError: false)
+                    showToast(message: "Successfully joined the circle! 🎉", isError: false)
 
                     let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                     impactFeedback.impactOccurred()
 
+                  
                     communityPageViewModel.fetchCircleData(
                         from: "\(APIConstants.base_url)circles",
                         token: token,
@@ -306,7 +338,9 @@ struct JoinGroup: View {
                         case 404:
                             showToast(message: "Error: Circle not found", isError: true)
                         case 409:
-                            showToast(message: "Error: Already a member or request pending", isError: true)
+                            showToast(message: "Error: Already a member of this circle", isError: true)
+                        case 403:
+                            showToast(message: "Error: Not authorized to join this circle", isError: true)
                         default:
                             showToast(message: "Error: Failed to join circle (Code: \(httpResponse.statusCode))", isError: true)
                         }

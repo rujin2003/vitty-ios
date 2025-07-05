@@ -9,6 +9,7 @@ import Firebase
 import OSLog
 import SwiftUI
 import SwiftData
+import TipKit
 
 /**
  `NOTE FOR FUTURE/NEW DEVS:`
@@ -38,47 +39,131 @@ import SwiftData
  - use // MARK: <title> when u create a function, it helps to navigate.
  */
 
-
-
-
 /// Empty classrooms testing
 /// empty sheet in reaminder view
 ///
 @main
 struct VITTYApp: App {
 
-	private let logger = Logger(
-		subsystem: Bundle.main.bundleIdentifier!,
-		category: String(
-			describing: VITTYApp.self
-		)
-	)
+    private let logger = Logger(
+        subsystem: Bundle.main.bundleIdentifier!,
+        category: String(
+            describing: VITTYApp.self
+        )
+    )
 
-	init() {
-		setupFirebase()
+    @State private var deepLinkURL: URL?
+    @State private var showJoinCircleAlert = false
+    @State private var pendingCircleInvite: CircleInvite?
+
+    init() {
+        setupFirebase()
         NotificationManager.shared.requestAuthorization()
-	}
+    }
 
-	var body: some Scene {
-		WindowGroup {
-			ContentView()
-				.preferredColorScheme(.dark)
-        }.modelContainer(sharedModelContainer)
-	}
-    var sharedModelContainer: ModelContainer {
-        let schema = Schema([TimeTable.self,Remainder.self,CreateNoteModel.self,UploadedFile.self])
-            let config = ModelConfiguration(
-                "group.com.gdscvit.vittyioswidget"
-        
-            )
-            return try! ModelContainer(for: schema, configurations: config)
+    var body: some Scene {
+        WindowGroup {
+            ContentView()
+                .preferredColorScheme(.dark)
+                .task {
+                    try? Tips.configure([.displayFrequency(.immediate), .datastoreLocation(.applicationDefault)])
+                }
+                .onOpenURL { url in
+                    handleDeepLink(url)
+                }
+                .alert("Join Circle", isPresented: $showJoinCircleAlert) {
+                    Button("Cancel", role: .cancel) {
+                        pendingCircleInvite = nil
+                    }
+                    Button("Join") {
+                        if let invite = pendingCircleInvite {
+                            handleCircleInvite(invite)
+                        }
+                    }
+                } message: {
+                    if let invite = pendingCircleInvite {
+                        Text("Do you want to join '\(invite.circleName)'?")
+                    }
+                }
         }
+        .modelContainer(sharedModelContainer)
+    }
+
+    var sharedModelContainer: ModelContainer {
+        let schema = Schema([TimeTable.self, Remainder.self, CreateNoteModel.self, UploadedFile.self])
+        let config = ModelConfiguration(
+            "group.com.gdscvit.vittyioswidget"
+        )
+        return try! ModelContainer(for: schema, configurations: config)
+    }
 }
 
+
 extension VITTYApp {
-	private func setupFirebase() {
-		self.logger.info("Configuring Firebase Started")
-		FirebaseApp.configure()
-		self.logger.info("Configuring Firebase Ended")
-	}
+    
+    struct CircleInvite {
+        let circleId: String
+        let circleName: String
+    }
+    
+    private func handleDeepLink(_ url: URL) {
+        logger.info("Deep link received: \(url.absoluteString)")
+        
+       
+        if url.absoluteString.contains("vitty.app/invite") ||
+           url.absoluteString.contains("circleId=") {
+            handleCircleInviteURL(url)
+        } else {
+           
+            logger.info("Unhandled deep link type: \(url.absoluteString)")
+        }
+    }
+    
+    private func handleCircleInviteURL(_ url: URL) {
+        guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+            logger.error("Failed to parse URL components")
+            return
+        }
+        
+     
+        guard let circleId = components.queryItems?.first(where: { $0.name == "circleId" })?.value else {
+            logger.error("No circleId found in URL")
+            return
+        }
+        
+       
+        let circleName = components.queryItems?.first(where: { $0.name == "circleName" })?.value ?? "Unknown Circle"
+        
+      
+        pendingCircleInvite = CircleInvite(circleId: circleId, circleName: circleName)
+        showJoinCircleAlert = true
+        
+        logger.info("Circle invite prepared: \(circleId) - \(circleName)")
+    }
+    
+    private func handleCircleInvite(_ invite: CircleInvite) {
+      
+        NotificationCenter.default.post(
+            name: Notification.Name("JoinCircleFromDeepLink"),
+            object: nil,
+            userInfo: [
+                "circleId": invite.circleId,
+                "circleName": invite.circleName
+            ]
+        )
+        
+      
+        pendingCircleInvite = nil
+        
+        logger.info("Circle invite notification posted for: \(invite.circleId)")
+    }
+}
+
+
+extension VITTYApp {
+    private func setupFirebase() {
+        self.logger.info("Configuring Firebase Started")
+        FirebaseApp.configure()
+        self.logger.info("Configuring Firebase Ended")
+    }
 }

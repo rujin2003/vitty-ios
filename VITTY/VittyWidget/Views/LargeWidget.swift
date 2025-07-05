@@ -67,3 +67,185 @@ struct LargeDueWidgetView: View {
         .clipShape(RoundedRectangle(cornerRadius: 12))
     }
 }
+
+struct ScheduleLargeWidgetView: View {
+    var entry: ScheduleEntry
+
+    var body: some View {
+        HStack(alignment: .top) {
+            Spacer().frame(width: 2)
+            VStack(alignment: .leading, spacing: 15) {
+                Spacer().frame(height: 5)
+                WidgetTitle(title: "Today's Schedule", fontSize: 18)
+                Spacer().frame(height: 5)
+                
+                HStack(alignment: .top, spacing: 15) {
+                    if entry.classes.isEmpty {
+                        VStack {
+                            Text("No classes today! Time to\n relax and recharge!")
+                                .font(.system(size: 20, weight: .bold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                                .frame(maxWidth: .infinity)
+                            Spacer().frame(height: 30)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    }
+                    else if entry.completed == entry.total {
+                        // Center the CircleProgressView
+                        VStack {
+                            Spacer()
+                            CircleProgressView(
+                                progress: entry.completed,
+                                total: entry.total,
+                                circleSize: 60,
+                                lineWidth: 12,
+                                fontSize: 16
+                            )
+                            .frame(width: 70, height: 70)
+                            Spacer()
+                        }
+                        .frame(width: 70)
+                        
+                        Image("allclassesline")
+                        
+                        VStack(alignment: .leading, spacing: 10) {
+                            Spacer().frame(height: 15)
+                            Text("You're all set for the day.")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+
+                            Text("Time to relax.")
+                                .font(.system(size: 18, weight: .bold))
+                                .foregroundColor(.white)
+                                .multilineTextAlignment(.center)
+                        }
+                        .frame(maxWidth: .infinity)
+                    } else {
+                        // Center the CircleProgressView
+                        VStack {
+                            Spacer()
+                            CircleProgressView(
+                                progress: entry.completed,
+                                total: entry.total,
+                                circleSize: 60,
+                                lineWidth: 12,
+                                fontSize: 16
+                            )
+                            .frame(width: 70, height: 70)
+                            Spacer()
+                        }
+                        .frame(width: 70)
+                        
+                        Image("fourclassesline")
+                        
+                        VStack(alignment: .leading, spacing: 20) {
+                            let displayClasses = getDisplayClasses()
+                            
+                            ForEach(displayClasses, id: \.title) { classItem in
+                                ScheduleItemView(
+                                    title: classItem.title,
+                                    time: "\(classItem.time) | \(classItem.slot ?? "")"
+                                )
+                            }
+                            
+                            let remainingCount = entry.classes.count - displayClasses.count
+                            if remainingCount > 0 {
+                                Text("+\(remainingCount) More")
+                                    .foregroundColor(.white.opacity(0.6))
+                                    .font(.system(size: 14))
+                            }
+                        }
+                    }
+                }
+                Spacer()
+            }
+            Spacer()
+        }
+        .padding(.horizontal, 4)
+        .padding(.vertical, 6)
+    }
+    
+    private func getDisplayClasses() -> [Classes] {
+        let currentTime = Date()
+        let calendar = Calendar.current
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "h:mm a"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+        
+        // Sort all classes by their start time
+        let sortedClasses = entry.classes.sorted { class1, class2 in
+            let time1Components = class1.time.components(separatedBy: " - ")
+            let time2Components = class2.time.components(separatedBy: " - ")
+            
+            guard time1Components.count == 2, time2Components.count == 2 else {
+                return false
+            }
+            
+            let startTime1Str = time1Components[0].trimmingCharacters(in: .whitespaces)
+            let startTime2Str = time2Components[0].trimmingCharacters(in: .whitespaces)
+            
+            guard let startTime1 = dateFormatter.date(from: startTime1Str),
+                  let startTime2 = dateFormatter.date(from: startTime2Str) else {
+                return false
+            }
+            
+            return startTime1 < startTime2
+        }
+        
+        // Find the next upcoming class or current class
+        var currentIndex = 0
+        let now = Date()
+        
+        for (index, classItem) in sortedClasses.enumerated() {
+            let timeComponents = classItem.time.components(separatedBy: " - ")
+            guard timeComponents.count == 2 else { continue }
+            
+            let startTimeStr = timeComponents[0].trimmingCharacters(in: .whitespaces)
+            let endTimeStr = timeComponents[1].trimmingCharacters(in: .whitespaces)
+            
+            guard let startTime = dateFormatter.date(from: startTimeStr),
+                  let endTime = dateFormatter.date(from: endTimeStr) else { continue }
+            
+            // Convert to today's date
+            let todayStart = calendar.date(
+                bySettingHour: calendar.component(.hour, from: startTime),
+                minute: calendar.component(.minute, from: startTime),
+                second: 0,
+                of: now
+            )
+            
+            let todayEnd = calendar.date(
+                bySettingHour: calendar.component(.hour, from: endTime),
+                minute: calendar.component(.minute, from: endTime),
+                second: 0,
+                of: now
+            )
+            
+            if let todayStart = todayStart, let todayEnd = todayEnd {
+                // If current time is before this class starts, or if we're currently in this class
+                if now <= todayEnd {
+                    currentIndex = index
+                    break
+                }
+            }
+            
+            // If we've passed all classes, start from the beginning for next day
+            if index == sortedClasses.count - 1 {
+                currentIndex = 0
+            }
+        }
+        
+        // Get up to 4 classes starting from the current position
+        let maxDisplay = min(4, sortedClasses.count)
+        var displayClasses: [Classes] = []
+        
+        for i in 0..<maxDisplay {
+            let classIndex = (currentIndex + i) % sortedClasses.count
+            displayClasses.append(sortedClasses[classIndex])
+        }
+        
+        return displayClasses
+    }
+}

@@ -11,6 +11,7 @@ import SwiftUI
 struct LoginView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @State private var animationProgress = 0.0
+    @State private var scrollPosition: Int? = 0  // Changed to optional Int
     
     private let carouselItems = [
         LoginViewCarouselItem(image: "LoginViewIllustration 2", heading: "Never miss a class", subtitle: "Notifications to remind you about your upcoming classes"),
@@ -33,6 +34,10 @@ struct LoginView: View {
                     }
                     .scrollIndicators(.hidden)
                     .scrollTargetBehavior(.viewAligned)
+                    .scrollPosition(id: $scrollPosition)  // Use scrollPosition instead of currentPage
+                    .onChange(of: scrollPosition) { _, newValue in
+                        print("Current page changed to: \(newValue ?? 0)")
+                    }
                     .offset(x: -animationProgress * 75)
                     .animation(.spring(), value: animationProgress)
                     .onAppear {
@@ -47,10 +52,35 @@ struct LoginView: View {
                             }
                         }
                     }
+                    
+                    
+                    PageIndicatorView(currentPage: scrollPosition ?? 0, totalPages: carouselItems.count)  // Use scrollPosition
+                        .padding(.top, 20)
                 }
                 .safeAreaPadding()
             }
         }
+    }
+}
+
+struct PageIndicatorView: View {
+    let currentPage: Int
+    let totalPages: Int
+    
+    var body: some View {
+        HStack(spacing: 8) {
+            ForEach(0..<totalPages, id: \.self) { index in
+                Circle()
+                    .fill(index == currentPage ? Color("Accent") : Color.white)
+                    .frame(width: 8, height: 8)
+                    .scaleEffect(index == currentPage ? 1.2 : 1.0)
+                    .animation(.easeInOut(duration: 0.3), value: currentPage)
+            }
+        }
+        .padding(.horizontal, 12)
+        .padding(.vertical, 8)
+        .background(Color.black.opacity(0.2))
+        .cornerRadius(16)
     }
 }
 
@@ -120,18 +150,18 @@ struct SignInButtonsView: View {
     }
 }
 
-
 struct LoginViewCarouselItem {
-	let image: String
-	let heading: String
-	let subtitle: String
+    let image: String
+    let heading: String
+    let subtitle: String
 }
 
 extension Comparable {
-	func clamped(to range: Range<Self>) -> Self {
-		return min(max(self, range.lowerBound), range.upperBound)
-	}
+    func clamped(to range: Range<Self>) -> Self {
+        return min(max(self, range.lowerBound), range.upperBound)
+    }
 }
+
 struct CarouselItemView: View {
     let item: LoginViewCarouselItem
     let index: Int

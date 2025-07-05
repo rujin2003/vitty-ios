@@ -1,9 +1,11 @@
 //
-//  Freinds.swift
+//  CreateGroup.swift
 //  VITTY
 //
 //  Created by Rujin Devkota on 2/27/25.
+
 import SwiftUI
+import Alamofire
 import Alamofire
 
 struct CreateGroup: View {
@@ -19,9 +21,11 @@ struct CreateGroup: View {
     @State private var isCreatingGroup = false
     @State private var showAlert = false
     @State private var alertMessage = ""
+    @State private var circle_ID = ""
     
     @Environment(CommunityPageViewModel.self) private var viewModel
     let token: String
+    let username: String
     
     @Environment(\.dismiss) private var dismiss
     
@@ -34,10 +38,11 @@ struct CreateGroup: View {
                 .padding(.top, 10)
             
             Text("Create Group")
-                .font(.system(size: 23, weight: .bold))
+                .font(.system(size: 23, weight: .semibold))
                 .foregroundColor(.white)
             
             Spacer().frame(height: 20)
+            
             
             
             Button(action: {
@@ -64,10 +69,10 @@ struct CreateGroup: View {
                 }
             }
             .sheet(isPresented: $showImagePicker) {
-                
+                // ImagePicker implementation would go here
             }
             
-           
+            
             VStack(alignment: .leading, spacing: 10) {
                 Text("Enter group name")
                     .font(.system(size: 18, weight: .bold))
@@ -82,10 +87,31 @@ struct CreateGroup: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray.opacity(0.5), lineWidth: 1)
                     )
+                    .onChange(of: groupName) { oldValue, newValue in
+                      
+                        let filtered = newValue.replacingOccurrences(of: " ", with: "")
+                        if filtered != newValue {
+                            groupName = filtered
+                        }
+                        
+                   
+                        if groupName.count > 20 {
+                            groupName = String(groupName.prefix(20))
+                        }
+                    }
+                    .autocorrectionDisabled(true)
+                    .textInputAutocapitalization(.never)
+                
+              
+                Text("No spaces allowed • Max 20 characters")
+                    .font(.system(size: 12))
+                    .foregroundColor(.gray)
+                    .padding(.leading, 5)
             }
             .padding(.horizontal, 20)
+
             
-         
+            
             HStack {
                 Text("Add Friends")
                     .font(.system(size: 18, weight: .bold))
@@ -96,6 +122,7 @@ struct CreateGroup: View {
                 
                 Button(action: {
                     showFriendSelector = true
+                    showFriendSelector = true
                 }) {
                     Image(systemName: "person.badge.plus")
                         .foregroundColor(.white)
@@ -104,7 +131,7 @@ struct CreateGroup: View {
                 .padding(.trailing, 20)
             }
             
-           
+            
             if selectedFriends.isEmpty {
                 
                 VStack {
@@ -194,10 +221,11 @@ struct CreateGroup: View {
             
             Spacer()
             
-         
+            
             HStack {
                 Spacer()
                 Button(action: {
+                    createGroup()
                     createGroup()
                 }) {
                     HStack {
@@ -207,13 +235,14 @@ struct CreateGroup: View {
                                 .progressViewStyle(CircularProgressViewStyle(tint: .black))
                         }
                         Text(isCreatingGroup ? "Creating..." : "Create")
-                            .font(.system(size: 18, weight: .bold))
-                            .foregroundStyle(Color.black)
+                            .font(.system(size: 16, weight: .semibold))
+                            .foregroundColor(.black)
                     }
-                    .frame(width: 120, height: 40)
+                    .frame(width: 100, height: 35)
                     .background(groupName.isEmpty ? Color.gray : Color("Accent"))
                     .cornerRadius(10)
                 }
+                .disabled(groupName.isEmpty || isCreatingGroup)
                 .disabled(groupName.isEmpty || isCreatingGroup)
                 .padding(.trailing, 20)
             }
@@ -240,63 +269,72 @@ struct CreateGroup: View {
         }
     }
     
+    // MARK: - Group Creation using ViewModel (Fixed Version)
+
     private func createGroup() {
         guard !groupName.isEmpty else { return }
         
         isCreatingGroup = true
         
-     
-        let createURL = "\(APIConstants.base_url)circles/create/\(groupName.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? groupName)"
-        
-        AF.request(createURL, method: .post, headers: ["Authorization": "Token \(token)"])
-            .validate()
-            .responseDecodable(of: CreateCircleResponse.self) { response in
-                DispatchQueue.main.async {
-                    switch response.result {
-                    case .success(let data):
-                       
-                        self.sendInvitations(circleId: data.circleId)
+        viewModel.createCircle(name: groupName, token: token) { result in
+            switch result {
+            case .success(let circleId):
+                print("Successfully created circle with ID: \(circleId)")
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    if let circle = self.viewModel.circles.first(where: { $0.circleName == self.groupName }) {
                         
-                    case .failure(let error):
+                        print("Found circle ID: \(circle.circleID) for name: \(self.groupName)")
+                        
+                        self.circle_ID = circle.circleID
+                        
+                      
+                        if self.selectedFriends.isEmpty {
+                            self.isCreatingGroup = false
+                            self.alertMessage = "Group created successfully!"
+                            self.showAlert = true
+                        } else {
+                           
+                            self.sendInvitationsUsingViewModel(circleId: circle.circleID)
+                        }
+                        
+                    } else {
+                        let error = NSError(domain: "CreateCircleError", code: 2, userInfo: [NSLocalizedDescriptionKey: "Could not find created circle in local data"])
+                        
+                       
                         self.isCreatingGroup = false
-                        self.alertMessage = "Failed to create group: \(error.localizedDescription)"
+                        self.alertMessage = "Failed to find created group in local data"
                         self.showAlert = true
                     }
                 }
+                
+            case .failure(let error):
+                self.isCreatingGroup = false
+                self.alertMessage = "Failed to create group: \(error.localizedDescription)"
+                self.showAlert = true
             }
+        }
     }
-    
-    private func sendInvitations(circleId: String) {
+
+    private func sendInvitationsUsingViewModel(circleId: String) {
         guard !selectedFriends.isEmpty else {
-           
             self.isCreatingGroup = false
             self.alertMessage = "Group created successfully!"
             self.showAlert = true
             return
         }
         
-        let dispatchGroup = DispatchGroup()
-        var invitationResults: [String: Bool] = [:]
+        // Extract usernames from selected friends
+        let usernames = selectedFriends.map { $0.username }
         
-        for friend in selectedFriends {
-            dispatchGroup.enter()
-            
-            let inviteURL = "\(APIConstants.base_url)circles/sendRequest/\(circleId)/\(friend.username)"
-            
-            AF.request(inviteURL, method: .post, headers: ["Authorization": "Token \(token)"])
-                .validate()
-                .response { response in
-                    DispatchQueue.main.async {
-                        invitationResults[friend.username] = response.error == nil
-                        dispatchGroup.leave()
-                    }
-                }
-        }
+        print("Sending invitations for circle ID: \(circleId)")
+        print("Usernames: \(usernames)")
         
-        dispatchGroup.notify(queue: .main) {
+        // Use the view model's sendMultipleInvitations function with correct circle ID
+        viewModel.sendMultipleInvitations(circleId: circleId, usernames: usernames, token: token) { results in
             self.isCreatingGroup = false
             
-            let successCount = invitationResults.values.filter { $0 }.count
+            let successCount = results.values.filter { $0 }.count
             let totalCount = self.selectedFriends.count
             
             if successCount == totalCount {
@@ -310,166 +348,155 @@ struct CreateGroup: View {
             self.showAlert = true
         }
     }
-}
-
-
-struct FriendSelectorView: View {
-    let friends: [Friend]
-    @Binding var selectedFriends: [Friend]
-    let loadingFriends: Bool
     
-    @Environment(\.dismiss) private var dismiss
-    
-    var body: some View {
-        NavigationView {
-            VStack {
-                if loadingFriends {
-                    ProgressView("Loading friends...")
+    struct FriendSelectorView: View {
+        let friends: [Friend]
+        @Binding var selectedFriends: [Friend]
+        let loadingFriends: Bool
+        
+        @Environment(\.dismiss) private var dismiss
+        
+        var body: some View {
+            NavigationView {
+                VStack {
+                    if loadingFriends {
+                        ProgressView("Loading friends...")
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            .foregroundColor(.white)
+                    } else if friends.isEmpty {
+                        VStack {
+                            Image(systemName: "person.2.slash")
+                                .font(.system(size: 50))
+                                .foregroundColor(.gray)
+                            Text("No friends found")
+                                .font(.title2)
+                                .foregroundColor(.gray)
+                        }
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .foregroundColor(.white)
-                } else if friends.isEmpty {
-                    VStack {
-                        Image(systemName: "person.2.slash")
-                            .font(.system(size: 50))
-                            .foregroundColor(.gray)
-                        Text("No friends found")
-                            .font(.title2)
-                            .foregroundColor(.gray)
-                    }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                } else {
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(friends, id: \.username) { friend in
-                                FriendRowView(
-                                    friend: friend,
-                                    isSelected: selectedFriends.contains { $0.username == friend.username }
-                                ) { isSelected in
-                                    if isSelected {
-                                        selectedFriends.append(friend)
-                                    } else {
-                                        selectedFriends.removeAll { $0.username == friend.username }
+                    } else {
+                        ScrollView {
+                            LazyVStack(spacing: 12) {
+                                ForEach(friends, id: \.username) { friend in
+                                    FriendRowView(
+                                        friend: friend,
+                                        isSelected: selectedFriends.contains { $0.username == friend.username }
+                                    ) { isSelected in
+                                        if isSelected {
+                                            selectedFriends.append(friend)
+                                        } else {
+                                            selectedFriends.removeAll { $0.username == friend.username }
+                                        }
                                     }
                                 }
                             }
+                            .padding(.horizontal, 16)
+                            .padding(.top, 8)
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.top, 8)
                     }
                 }
+                .background(Color("Background"))
+                .navigationTitle("Select Friends")
+                .navigationBarTitleDisplayMode(.inline)
+                .navigationBarItems(
+                    leading: Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "xmark")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                    },
+                    trailing: Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "checkmark")
+                            .font(.system(size: 16, weight: .medium))
+                            .foregroundColor(.white)
+                    }
+                )
             }
             .background(Color("Background"))
-            .navigationTitle("Select Friends")
-            .navigationBarTitleDisplayMode(.inline)
-            .navigationBarItems(
-                leading: Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "xmark")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.white)
-                },
-                trailing: Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "checkmark")
-                        .font(.system(size: 16, weight: .medium))
-                        .foregroundColor(.white)
-                }
-            )
         }
-        .background(Color("Background"))
     }
-}
-
-
-struct FriendRowView: View {
-    let friend: Friend
-    let isSelected: Bool
-    let onToggle: (Bool) -> Void
     
-    var body: some View {
-        HStack {
-           
-            AsyncImage(url: URL(string: friend.picture)) { image in
-                image
-                    .resizable()
-                    .scaledToFill()
-            } placeholder: {
-                Circle()
-                    .fill(Color.blue.opacity(0.3))
-                    .overlay(
-                        Text(String(friend.name.prefix(1)).uppercased())
-                            .foregroundColor(.white)
-                            .font(Font.custom("Poppins-SemiBold", size: 16))
-                    )
-            }
-            .frame(width: 48, height: 48)
-            .clipShape(Circle())
-            
-            Spacer().frame(width: 20)
-            
-          
-            VStack(alignment: .leading, spacing: 4) {
-                Text(cleanName(friend.name))
-                    .font(Font.custom("Poppins-SemiBold", size: 18))
-                    .foregroundColor(Color.white)
+    struct FriendRowView: View {
+        let friend: Friend
+        let isSelected: Bool
+        let onToggle: (Bool) -> Void
+        
+        var body: some View {
+            HStack {
                 
-                if friend.currentStatus.status == "free" {
-                    HStack {
-                        Image("available")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text("Available")
-                            .font(Font.custom("Poppins-Regular", size: 14))
-                            .foregroundStyle(Color("Accent"))
-                    }
-                } else {
-                    HStack {
-                        Image("inclass")
-                            .resizable()
-                            .frame(width: 20, height: 20)
-                        Text(friend.currentStatus.venue ?? "In Class")
-                            .font(Font.custom("Poppins-Regular", size: 14))
-                            .foregroundColor(Color("Accent"))
+                AsyncImage(url: URL(string: friend.picture)) { image in
+                    image
+                        .resizable()
+                        .scaledToFill()
+                } placeholder: {
+                    Circle()
+                        .fill(Color.blue.opacity(0.3))
+                        .overlay(
+                            Text(String(friend.name.prefix(1)).uppercased())
+                                .foregroundColor(.white)
+                                .font(Font.custom("Poppins-SemiBold", size: 16))
+                        )
+                }
+                .frame(width: 48, height: 48)
+                .clipShape(Circle())
+                
+                Spacer().frame(width: 20)
+                
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(friend.name)
+                        .font(Font.custom("Poppins-SemiBold", size: 18))
+                        .foregroundColor(Color.white)
+                    
+                    if friend.currentStatus.status == "free" {
+                        HStack {
+                            Image("available")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                            Text("Available")
+                                .font(Font.custom("Poppins-Regular", size: 14))
+                                .foregroundStyle(Color("Accent"))
+                        }
+                    } else {
+                        HStack {
+                            Image("inclass")
+                                .resizable()
+                                .frame(width: 20, height: 20)
+                            Text(friend.currentStatus.venue ?? "In Class")
+                                .font(Font.custom("Poppins-Regular", size: 14))
+                                .foregroundColor(Color("Accent"))
+                        }
                     }
                 }
+                
+                Spacer()
+                
+                
+                Button(action: {
+                    onToggle(!isSelected)
+                }) {
+                    Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
+                        .foregroundColor(isSelected ? Color("Accent") : .gray)
+                        .font(.system(size: 24))
+                }
             }
-            
-            Spacer()
-            
-            
-            Button(action: {
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 15)
+                    .fill(Color("Secondary"))
+            )
+            .contentShape(Rectangle())
+            .onTapGesture {
                 onToggle(!isSelected)
-            }) {
-                Image(systemName: isSelected ? "checkmark.circle.fill" : "circle")
-                    .foregroundColor(isSelected ? Color("Accent") : .gray)
-                    .font(.system(size: 24))
             }
         }
-        .padding()
-        .frame(maxWidth: .infinity)
-        .background(
-            RoundedRectangle(cornerRadius: 15)
-                .fill(Color("Secondary"))
-        )
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onToggle(!isSelected)
-        }
-    }
-    
-    func cleanName(_ fullName: String) -> String {
-        let pattern = "\\b\\d{2}[A-Z]+\\d+\\b"
-        let regex = try? NSRegularExpression(pattern: pattern, options: [])
-        
-        let range = NSRange(location: 0, length: fullName.utf16.count)
-        let cleanedName = regex?.stringByReplacingMatches(in: fullName, options: [], range: range, withTemplate: "").trimmingCharacters(in: .whitespaces) ?? fullName
-        
-        return cleanedName
     }
 }
 
+// MARK: - Response Models (if not already defined elsewhere)
 
 struct CreateCircleResponse: Decodable {
     let circleId: String
@@ -480,5 +507,3 @@ struct CreateCircleResponse: Decodable {
         case message
     }
 }
-
-

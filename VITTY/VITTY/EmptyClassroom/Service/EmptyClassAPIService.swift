@@ -13,7 +13,7 @@ class EmptyClassRoomAPIService {
         slot: String,
         authToken: String
     ) async throws -> [String] {
-        let url = URL(string: "\(APIConstants.base_url)timetable/emptyClassRooms?slot=\(slot)")!
+        let url = URL(string: "\(APIConstants.base_url)users/emptyClassRooms?slot=\(slot)")!
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         print(authToken)
@@ -28,10 +28,28 @@ class EmptyClassRoomAPIService {
 
         
         if httpResponse.statusCode != 200 {
-            let errorMessage = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
-            let detailMessage = errorMessage?["detail"] as? String ?? "Unknown error"
-            print("API Error: \(detailMessage)")
-            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: detailMessage])
+            // Try to parse error response
+            do {
+                let errorResponse = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any]
+                
+                // Check for the specific "error" field first
+                if let errorMessage = errorResponse?["error"] as? String {
+                    print("API Error: \(errorMessage)")
+                    throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: errorMessage])
+                }
+                
+                // Fallback to "detail" field
+                if let detailMessage = errorResponse?["detail"] as? String {
+                    print("API Error: \(detailMessage)")
+                    throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: detailMessage])
+                }
+            } catch {
+                // If JSON parsing fails, create a generic error message
+                print("Failed to parse error response")
+            }
+            
+            // Generic error if no specific message found
+            throw NSError(domain: "", code: httpResponse.statusCode, userInfo: [NSLocalizedDescriptionKey: "Server error (Status: \(httpResponse.statusCode))"])
         }
 
         let decoder = JSONDecoder()

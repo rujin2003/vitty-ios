@@ -22,12 +22,18 @@ enum SheetType: Identifiable {
     }
 }
 
+
+
 struct ConnectPage: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(CommunityPageViewModel.self) private var communityPageViewModel
     @Environment(FriendRequestViewModel.self) private var friendRequestViewModel
+    @Environment(RequestsViewModel.self) private var requestsViewModel
     @State private var isShowingRequestView = false
     @State var isCircleView = false
+    @State private var activeSheet: SheetType?
+    @State private var showCircleMenu = false
+    @Environment(\.dismiss) private var dismiss
     @State private var activeSheet: SheetType?
     @State private var showCircleMenu = false
     @Environment(\.dismiss) private var dismiss
@@ -36,6 +42,7 @@ struct ConnectPage: View {
     
     @State private var isAddFriendsViewPresented = false
     @State private var selectedTab = 0
+    @State private var hasLoadedInitialData = false
     @State private var hasLoadedInitialData = false
     
     var body: some View {
@@ -65,12 +72,32 @@ struct ConnectPage: View {
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
             }
             
+            
             if isCircleView == false {
                 Button(action: {
                     isShowingRequestView.toggle()
                 }) {
-                    Image(systemName: "person.fill.badge.plus")
-                        .foregroundColor(.white)
+                    ZStack {
+                        
+                        Image(systemName: requestsViewModel.friendRequests.isEmpty ? "person.fill.badge.plus" : "person.fill")
+                            .foregroundColor(.white)
+                            .font(.system(size: 18))
+                        
+           
+                        if !requestsViewModel.friendRequests.isEmpty {
+                            ZStack {
+                                Circle()
+                                    .fill(Color.red)
+                                    .frame(width: 20, height: 20)
+                                
+                                Text("\(min(requestsViewModel.friendRequests.count, 99))")
+                                    .font(.system(size: 12, weight: .bold))
+                                    .foregroundColor(.white)
+                                    .lineLimit(1)
+                            }
+                            .offset(x: 12, y: -12)
+                        }
+                    }
                 }
                 .navigationDestination(
                     isPresented: $isShowingRequestView,
@@ -80,13 +107,20 @@ struct ConnectPage: View {
                 )
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             } else {
+                )
+                .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
+            } else {
                 Button(action: {
+                    showCircleMenu = true
                     showCircleMenu = true
                 }) {
                     Image(systemName: "ellipsis")
+                    Image(systemName: "ellipsis")
                         .foregroundColor(.white)
                         .font(.system(size: 18))
+                        .font(.system(size: 18))
                 }
+                .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             }
         }
@@ -115,7 +149,7 @@ struct ConnectPage: View {
             case .addCircleOptions:
                 AddCircleOptionsView(activeSheet: $activeSheet)
             case .createGroup:
-                CreateGroup(groupCode: .constant(""), token:authViewModel.loggedInBackendUser?.token ?? "" )
+                CreateGroup(groupCode: .constant(""), token:authViewModel.loggedInBackendUser?.token ?? "",username: authViewModel.loggedInBackendUser?.username ?? "" )
             case .joinGroup:
                 JoinGroup(groupCode: .constant(""))
             case .groupRequests:
@@ -123,9 +157,13 @@ struct ConnectPage: View {
             }
         }
         .onAppear {
-            
             let shouldShowLoading = !hasLoadedInitialData
             
+        
+          requestsViewModel.fetchFriendRequests(
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: shouldShowLoading
+            )
             
             if communityPageViewModel.friends.isEmpty || !hasLoadedInitialData {
                 communityPageViewModel.fetchFriendsData(
@@ -155,7 +193,6 @@ struct ConnectPage: View {
         }
     }
 }
-
 struct ConnectCircleMenuView: View {
     let onCreateGroup: () -> Void
     let onJoinGroup: () -> Void

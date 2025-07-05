@@ -41,6 +41,3 @@ struct AddFriendsHeader: View {
 	}
 }
 
-#Preview {
-	AddFriendsHeader()
-}

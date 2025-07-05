@@ -23,7 +23,7 @@ struct InsideCircleRow: View {
                     .font(Font.custom("Poppins-SemiBold", size: 18))
                     .foregroundColor(Color.white)
                 
-                if status == "free" {
+                if status == "free" || status == "Available" || status == "Free" {
                     HStack {
                         Image("available").resizable().frame(width: 20, height: 20)
                         Text("Available").foregroundStyle(Color("Accent"))
@@ -38,6 +38,8 @@ struct InsideCircleRow: View {
                 }
             }
             Spacer()
+        }.onAppear{
+            print("Status is \(status)")
         }
         .padding().frame(maxWidth: .infinity)
         .background(

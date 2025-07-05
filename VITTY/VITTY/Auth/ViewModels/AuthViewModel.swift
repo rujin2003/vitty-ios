@@ -11,17 +11,52 @@ import OSLog
 import GoogleSignIn
 import CryptoKit
 import FirebaseAuth
+import Alamofire
+
 
 
 enum LoginOptions {
     case googleSignIn
     case appleSignIn
 }
+struct FirebaseAuthRequest: Codable {
+    let uuid: String
+}
+struct FirebaseAuthResponse: Codable {
+    let name: String
+    let picture: String
+    let role: String
+    let token: String
+    let username: String
+}
+struct AuthError: Codable {
+    let detail: String
+}
+
+enum AuthenticationError: Error, LocalizedError {
+       case userNotFound(String)
+       case firebaseAuthFailed
+       case backendAuthFailed
+       
+       var errorDescription: String? {
+           switch self {
+           case .userNotFound(let detail):
+               return detail
+           case .firebaseAuthFailed:
+               return "Firebase authentication failed"
+           case .backendAuthFailed:
+               return "Backend authentication failed"
+           }
+       }
+   }
 
 @Observable
 class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
     var loggedInFirebaseUser: User?
     var loggedInBackendUser: AppUser?
+    
+
+    
     
 
     
@@ -62,10 +97,79 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         logger.info("Auth Initialisation Complete")
     }
     
+    private func authenticateWithFirebase(uuid: String,url:String) async throws -> FirebaseAuthResponse {
+            guard let url = URL(string: "\(url)auth/firebase") else {
+                throw URLError(.badURL)
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let requestBody = FirebaseAuthRequest(uuid: uuid)
+            request.httpBody = try JSONEncoder().encode(requestBody)
+            
+            let (data, response) = try await URLSession.shared.data(for: request)
+            
+            guard let httpResponse = response as? HTTPURLResponse else {
+                throw URLError(.badServerResponse)
+            }
+            
+            if httpResponse.statusCode == 200 {
+                
+                return try JSONDecoder().decode(FirebaseAuthResponse.self, from: data)
+            } else if httpResponse.statusCode == 404 {
+                
+                let authError = try JSONDecoder().decode(AuthError.self, from: data)
+                throw AuthenticationError.userNotFound(authError.detail)
+            } else {
+                throw URLError(.badServerResponse)
+            }
+        }
+    private func checkBackendUserExists(uuid: String,url:String) async {
+          do {
+              let backendUser = try await authenticateWithFirebase(uuid: uuid,url: url)
+              
+           
+              DispatchQueue.main.async {
+                  self.loggedInBackendUser = AppUser(
+                      name: backendUser.name,
+                      picture: backendUser.picture,
+                      role: backendUser.role,
+                      token: backendUser.token,
+                      username: backendUser.username
+                  )
+                  
+                
+                  UserDefaults.standard.set(backendUser.token, forKey: UserDefaultKeys.tokenKey)
+                  UserDefaults.standard.set(backendUser.username, forKey: UserDefaultKeys.usernameKey)
+                  UserDefaults.standard.set(backendUser.name, forKey: UserDefaultKeys.nameKey)
+                  UserDefaults.standard.set(backendUser.picture, forKey: UserDefaultKeys.pictureKey)
+                  UserDefaults.standard.set(backendUser.role, forKey: UserDefaultKeys.roleKey)
+              }
+              
+              logger.info("User exists in backend: \(backendUser.username)")
+              
+          } catch AuthenticationError.userNotFound(let detail) {
+              logger.info("User not found in backend: \(detail)")
+             
+              DispatchQueue.main.async {
+                  self.loggedInBackendUser = nil
+              }
+          } catch {
+              logger.error("Error checking backend user: \(error)")
+              DispatchQueue.main.async {
+                  self.loggedInBackendUser = nil
+              }
+          }
+      }
+    
     
    func signInServer(username: String, regNo: String) async {
        logger.info("Signing into server... from uuid \(self.loggedInFirebaseUser?.uid ?? "empty")")
+       logger.info("Signing into server... from uuid \(self.loggedInFirebaseUser?.uid ?? "empty")")
         do {
+            
             
             self.loggedInBackendUser = try await AuthAPIService.shared
                 .signInUser(
@@ -76,6 +180,8 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
                     )
                 )
             
+
+            
            
         }
         catch {
@@ -83,7 +189,10 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         }
        print("this is kinda empty :  \(self.loggedInBackendUser?.name ?? "")")
         logger.info("Signed into server  \(self.loggedInBackendUser?.name ?? "empty")")
+       print("this is kinda empty :  \(self.loggedInBackendUser?.name ?? "")")
+        logger.info("Signed into server  \(self.loggedInBackendUser?.name ?? "empty")")
     }
+    
     
     private func firebaseUserAuthUpdate(with auth: Auth, user: User?) {
         logger.info("Firebase User Auth State Updated")
@@ -146,7 +255,7 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
                 
                 logger.debug("\(UserDefaults.standard.string(forKey: UserDefaultKeys.usernameKey)!)")
             } else {
-                self.loggedInBackendUser = nil // tbh no need for this, but just to make sure
+                self.loggedInBackendUser = nil
             }
         } catch {
             logger.error("Error in logging in: \(error)")
@@ -171,6 +280,12 @@ class AuthViewModel: NSObject, ASAuthorizationControllerDelegate {
         self.loggedInFirebaseUser = authDataResult.user
         
         logger.info("Signed in with Google")
+        
+        if let firebaseUser = self.loggedInFirebaseUser {
+            await checkBackendUserExists(uuid: firebaseUser.uid,url: APIConstants.base_url)
+              }
+        
+        
     }
     
     private func signInWithApple() {
