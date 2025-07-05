@@ -46,9 +46,3 @@ struct FriendCard: View {
 	}
 }
 
-#Preview {
-	FriendCard(
-		friend: Friend.sampleFriend
-	)
-	//	.background(Color.theme.secondaryBlue)
-}

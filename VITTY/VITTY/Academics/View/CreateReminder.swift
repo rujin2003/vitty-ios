@@ -1,3 +1,9 @@
+//
+//  CreateGroup.swift
+//  VITTY
+//
+//  Created by Rujin Devkota on 2/27/25.
+
 import SwiftUI
 import SwiftData
 
@@ -27,7 +33,7 @@ struct ReminderView: View {
             Color("Background").edgesIgnoringSafeArea(.all)
 
             VStack(spacing: 0) {
-                // Top bar
+               
                 HStack {
                     Button("Cancel") {
                         presentationMode.wrappedValue.dismiss()
@@ -54,7 +60,7 @@ struct ReminderView: View {
                             try modelContext.save()
                             print("Saved successfully")
 
-                            // Schedule local notifications
+                          
                             NotificationManager.shared.scheduleReminderNotifications(
                                 title: title,
                                 date: startTime,
@@ -67,7 +73,6 @@ struct ReminderView: View {
 
                         presentationMode.wrappedValue.dismiss()
                     }
-
                     .disabled(!isFormValid)
                     .foregroundColor(isFormValid ? .red : .gray)
                 }
@@ -102,116 +107,144 @@ struct ReminderView: View {
                                 .cornerRadius(20)
                         }
 
-                        // Alert Date Picker
-                        HStack {
-                            Text("Alert Date")
-                                .foregroundColor(.white)
-                            Spacer()
-                            Text(selectedDate, style: .date)
-                                .foregroundColor(.gray)
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.gray)
-                        }
-                        .padding()
-                        .background(Color("Secondary"))
-                        .cornerRadius(10)
-                        .onTapGesture {
-                            withAnimation {
-                                showDatePicker.toggle()
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("Alert Date")
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Text(selectedDate, style: .date)
+                                    .foregroundColor(.gray)
+                                Image(systemName: showDatePicker ? "chevron.down" : "chevron.right")
+                                    .foregroundColor(.gray)
+                                    .rotationEffect(.degrees(showDatePicker ? 0 : 0))
                             }
-                        }
-
-                        if showDatePicker {
-                            DatePicker(
-                                "Select Date",
-                                selection: $selectedDate,
-                                displayedComponents: [.date]
-                            )
-                            .datePickerStyle(.graphical)
-                            .colorScheme(.dark)
-                            .labelsHidden()
-
-                            Button("Done") {
-                                withAnimation {
-                                    showDatePicker = false
-                                }
-                            }
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                            .padding(.top, 5)
-                        }
-
-                        // Start Time
-                        HStack {
-                            Text("Start Time")
-                                .foregroundColor(.white)
-                            Spacer()
-                            Text(startTime, style: .time)
-                                .foregroundColor(.gray)
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.gray)
-                        }
-                        .padding()
-                        .background(Color("Secondary"))
-                        .cornerRadius(10)
-                        .onTapGesture {
-                            withAnimation {
-                                showStartTimePicker.toggle()
-                            }
-                        }
-
-                        if showStartTimePicker {
-                            DatePicker(
-                                "Start Time",
-                                selection: $startTime,
-                                displayedComponents: [.hourAndMinute]
-                            )
-                            .datePickerStyle(.wheel)
-                            .labelsHidden()
-                            .colorScheme(.dark)
-
-                            Button("Done") {
-                                withAnimation {
+                            .padding()
+                            .background(Color("Secondary"))
+                            .cornerRadius(10)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                   
                                     showStartTimePicker = false
-                                }
-                            }
-                            .frame(maxWidth: .infinity, alignment: .trailing)
-                        }
-
-                        // End Time
-                        HStack {
-                            Text("End Time")
-                                .foregroundColor(.white)
-                            Spacer()
-                            Text(endTime, style: .time)
-                                .foregroundColor(.gray)
-                            Image(systemName: "chevron.right")
-                                .foregroundColor(.gray)
-                        }
-                        .padding()
-                        .background(Color("Secondary"))
-                        .cornerRadius(10)
-                        .onTapGesture {
-                            withAnimation {
-                                showEndTimePicker.toggle()
-                            }
-                        }
-
-                        if showEndTimePicker {
-                            DatePicker(
-                                "End Time",
-                                selection: $endTime,
-                                displayedComponents: [.hourAndMinute]
-                            )
-                            .datePickerStyle(.wheel)
-                            .labelsHidden()
-                            .colorScheme(.dark)
-
-                            Button("Done") {
-                                withAnimation {
                                     showEndTimePicker = false
+                                    showDatePicker.toggle()
                                 }
                             }
-                            .frame(maxWidth: .infinity, alignment: .trailing)
+
+                            if showDatePicker {
+                                DatePicker(
+                                    "Select Date",
+                                    selection: $selectedDate,
+                                    displayedComponents: [.date]
+                                )
+                                .datePickerStyle(.graphical)
+                                .colorScheme(.dark)
+                                .labelsHidden()
+                                .onChange(of: selectedDate) {
+                                    
+                                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                        withAnimation(.easeInOut(duration: 0.3)) {
+                                            showDatePicker = false
+                                        }
+                                    }
+                                }
+                                .transition(.opacity.combined(with: .scale))
+                            }
+                        }
+
+                       
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("Start Time")
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Text(startTime, style: .time)
+                                    .foregroundColor(.gray)
+                                Image(systemName: showStartTimePicker ? "chevron.down" : "chevron.right")
+                                    .foregroundColor(.gray)
+                            }
+                            .padding()
+                            .background(Color("Secondary"))
+                            .cornerRadius(10)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                 
+                                    showDatePicker = false
+                                    showEndTimePicker = false
+                                    showStartTimePicker.toggle()
+                                }
+                            }
+
+                            if showStartTimePicker {
+                                VStack(spacing: 12) {
+                                    DatePicker(
+                                        "Start Time",
+                                        selection: $startTime,
+                                        displayedComponents: [.hourAndMinute]
+                                    )
+                                    .datePickerStyle(.wheel)
+                                    .labelsHidden()
+                                    .colorScheme(.dark)
+                                    .frame(height: 120)
+                                    .clipped()
+
+                                    Button("Done") {
+                                        withAnimation(.easeInOut(duration: 0.3)) {
+                                            showStartTimePicker = false
+                                        }
+                                    }
+                                    .foregroundColor(.red)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                }
+                                .transition(.opacity.combined(with: .scale))
+                            }
+                        }
+
+                     
+                        VStack(alignment: .leading, spacing: 8) {
+                            HStack {
+                                Text("End Time")
+                                    .foregroundColor(.white)
+                                Spacer()
+                                Text(endTime, style: .time)
+                                    .foregroundColor(.gray)
+                                Image(systemName: showEndTimePicker ? "chevron.down" : "chevron.right")
+                                    .foregroundColor(.gray)
+                            }
+                            .padding()
+                            .background(Color("Secondary"))
+                            .cornerRadius(10)
+                            .onTapGesture {
+                                withAnimation(.easeInOut(duration: 0.3)) {
+                                   
+                                    showDatePicker = false
+                                    showStartTimePicker = false
+                                    showEndTimePicker.toggle()
+                                }
+                            }
+
+                            if showEndTimePicker {
+                                VStack(spacing: 12) {
+                                    DatePicker(
+                                        "End Time",
+                                        selection: $endTime,
+                                        displayedComponents: [.hourAndMinute]
+                                    )
+                                    .datePickerStyle(.wheel)
+                                    .labelsHidden()
+                                    .colorScheme(.dark)
+                                    .frame(height: 120)
+                                    .clipped()
+
+                                    Button("Done") {
+                                        withAnimation(.easeInOut(duration: 0.3)) {
+                                            showEndTimePicker = false
+                                        }
+                                    }
+                                    .foregroundColor(.red)
+                                    .frame(maxWidth: .infinity, alignment: .trailing)
+                                }
+                                .transition(.opacity.combined(with: .scale))
+                            }
                         }
                     }
                     .padding()
@@ -219,6 +252,13 @@ struct ReminderView: View {
             }
         }
         .preferredColorScheme(.dark)
+        .onTapGesture {
+       
+            withAnimation(.easeInOut(duration: 0.3)) {
+                showDatePicker = false
+                showStartTimePicker = false
+                showEndTimePicker = false
+            }
+        }
     }
 }
-

@@ -96,9 +96,15 @@ struct TimeTableView: View {
                                 ScrollView {
                                     VStack(spacing: 12) {
                                         ForEach(viewModel.lectures.sorted()) { lecture in
-                                            LectureItemView(lecture: lecture) {
+                                           
+                                            LectureItemView(
+                                                lecture: lecture,
+                                                selectedDayIndex: viewModel.dayNo,
+                                                allLectures: viewModel.lectures
+                                            ) {
                                                 selectedLecture = lecture
                                             }
+
                                         }
                                     }
                                     .padding(.horizontal)
@@ -136,5 +142,6 @@ struct TimeTableView: View {
                 context: context
             )
         }
+        print("this is users token is \(authViewModel.loggedInBackendUser?.token ?? "")")
     }
 }

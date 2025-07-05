@@ -36,7 +36,11 @@ struct CirclesRow: View {
 
     var body: some View {
         HStack {
-            UserImage(url: "https://picsum.photos/200/300", height: 48, width: 48)
+            
+            //TODO: left to add a circle image right now its a picsum image
+            
+            CircleImageView(imageURL: "https://picsum.photos/200/300", size: 48)
+            
             Spacer().frame(width: 20)
             VStack(alignment: .leading) {
                 
@@ -95,7 +99,10 @@ struct CirclesRow: View {
                 circleID: circle.circleID
             )
         }
+        
+        
     }
+    
     
     func cleanName(_ fullName: String) -> String {
         let pattern = "\\b\\d{2}[A-Z]+\\d+\\b"
@@ -105,5 +112,28 @@ struct CirclesRow: View {
         let cleanedName = regex?.stringByReplacingMatches(in: fullName, options: [], range: range, withTemplate: "").trimmingCharacters(in: .whitespaces) ?? fullName
         
         return cleanedName
+    }
+}
+struct CircleImageView: View {
+    let imageURL: String
+    let size: CGFloat
+    
+    var body: some View {
+        AsyncImage(url: URL(string: imageURL)) { image in
+            image
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: size, height: size)
+                .clipShape(Circle())
+        } placeholder: {
+            Circle()
+                .fill(Color.gray.opacity(0.3))
+                .frame(width: size, height: size)
+                .overlay(
+                    Image(systemName: "person.circle.fill")
+                        .font(.system(size: size * 0.5))
+                        .foregroundColor(.gray)
+                )
+        }
     }
 }

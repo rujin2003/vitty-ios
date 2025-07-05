@@ -27,7 +27,11 @@
 		4B183EE82D7C78B600C9D801 /* Courses.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE72D7C78B300C9D801 /* Courses.swift */; };
 		4B183EEA2D7C793800C9D801 /* RemindersData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE92D7C791400C9D801 /* RemindersData.swift */; };
 		4B183EEC2D7CB15800C9D801 /* CourseRefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */; };
+		4B1BDBCC2E1396B1008C2DE9 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1BDBCB2E1396A9008C2DE9 /* ToolTip.swift */; };
 		4B2DD6952E0A703300BC3B67 /* CircleRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2DD6942E0A702D00BC3B67 /* CircleRequests.swift */; };
+		4B341C0E2E1802910073906B /* FreindRequestModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B341C0D2E18028A0073906B /* FreindRequestModel.swift */; };
+		4B341C102E1803070073906B /* FreindRequestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B341C0F2E1802FC0073906B /* FreindRequestViewModel.swift */; };
+		4B341C122E1803260073906B /* FreindRequestCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B341C112E18031E0073906B /* FreindRequestCard.swift */; };
 		4B37F1E42E02AA7800DCEE5F /* ReminderNotifcationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E32E02AA6E00DCEE5F /* ReminderNotifcationManager.swift */; };
 		4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */; };
 		4B37F1E92E04173A00DCEE5F /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */; };
@@ -185,7 +189,11 @@
 		4B183EE72D7C78B300C9D801 /* Courses.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Courses.swift; sourceTree = "<group>"; };
 		4B183EE92D7C791400C9D801 /* RemindersData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersData.swift; sourceTree = "<group>"; };
 		4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRefs.swift; sourceTree = "<group>"; };
+		4B1BDBCB2E1396A9008C2DE9 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		4B2DD6942E0A702D00BC3B67 /* CircleRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleRequests.swift; sourceTree = "<group>"; };
+		4B341C0D2E18028A0073906B /* FreindRequestModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreindRequestModel.swift; sourceTree = "<group>"; };
+		4B341C0F2E1802FC0073906B /* FreindRequestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreindRequestViewModel.swift; sourceTree = "<group>"; };
+		4B341C112E18031E0073906B /* FreindRequestCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FreindRequestCard.swift; sourceTree = "<group>"; };
 		4B37F1E32E02AA6E00DCEE5F /* ReminderNotifcationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderNotifcationManager.swift; sourceTree = "<group>"; };
 		4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistingHotelView.swift; sourceTree = "<group>"; };
 		4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -497,16 +505,8 @@
 			isa = PBXGroup;
 			children = (
 				4B7DA5ED2D71E100007354A3 /* View */,
-				4B7DA5EA2D71E0E2007354A3 /* Components */,
 			);
 			path = Freinds;
-			sourceTree = "<group>";
-		};
-		4B7DA5EA2D71E0E2007354A3 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		4B7DA5EB2D71E0F4007354A3 /* Components */ = {
@@ -672,6 +672,7 @@
 		522B8BAB2B47296900EE686E /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				4B341C0F2E1802FC0073906B /* FreindRequestViewModel.swift */,
 				522B8BAC2B47297A00EE686E /* CommunityPageViewModel.swift */,
 			);
 			path = ViewModel;
@@ -680,6 +681,7 @@
 		522B8BAE2B4732C200EE686E /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				4B341C0D2E18028A0073906B /* FreindRequestModel.swift */,
 				4BF0C77C2D932B8A00016202 /* CircleModel.swift */,
 				522B8BAF2B4732CC00EE686E /* Friend.swift */,
 			);
@@ -740,6 +742,7 @@
 		524B842D2B46EBAE006D18BD /* View */ = {
 			isa = PBXGroup;
 			children = (
+				4B1BDBCB2E1396A9008C2DE9 /* ToolTip.swift */,
 				524B842E2B46EBBD006D18BD /* HomeView.swift */,
 			);
 			path = View;
@@ -798,6 +801,7 @@
 		524B843D2B46F705006D18BD /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				4B341C112E18031E0073906B /* FreindRequestCard.swift */,
 				524B843B2B46F6FD006D18BD /* AddFriendsHeader.swift */,
 			);
 			path = Components;
@@ -1117,6 +1121,7 @@
 				528D32232C18C679007C9106 /* BackgroundView.swift in Sources */,
 				520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */,
 				4B7DA5DF2D7094E8007354A3 /* Academics.swift in Sources */,
+				4B341C0E2E1802910073906B /* FreindRequestModel.swift in Sources */,
 				4B7DA5F22D7228F9007354A3 /* JoinGroup.swift in Sources */,
 				524B842F2B46EBBD006D18BD /* HomeView.swift in Sources */,
 				527E3E082B7662920086F23D /* TimeTableView.swift in Sources */,
@@ -1131,16 +1136,19 @@
 				4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */,
 				5DC0AF552AD2B586006B081D /* UserImage.swift in Sources */,
 				5238C7F42B4AB07400413946 /* FriendReqCard.swift in Sources */,
+				4B1BDBCC2E1396B1008C2DE9 /* ToolTip.swift in Sources */,
 				4B7DA5DC2D708BD3007354A3 /* LectureItemView.swift in Sources */,
 				4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */,
 				4BC853C32DF693780092B2E2 /* SaveTimeTableView.swift in Sources */,
 				52D5AB892B6FE3B200B2E66D /* AppUser.swift in Sources */,
 				31128D0C277300470084C9EA /* StringConstants.swift in Sources */,
+				4B341C102E1803070073906B /* FreindRequestViewModel.swift in Sources */,
 				522B8BB02B4732CC00EE686E /* Friend.swift in Sources */,
 				52D5AB8C2B6FE4D600B2E66D /* UserDefaultKeys.swift in Sources */,
 				5D7F04F72AAB9E9900ECED15 /* APIConstants.swift in Sources */,
 				4B74D8742E0BDF2100B390E9 /* CourseFile.swift in Sources */,
 				4BF03C9B2D7838C80098C803 /* NotesHelper.swift in Sources */,
+				4B341C122E1803260073906B /* FreindRequestCard.swift in Sources */,
 				3109639F27824F6F0009A29C /* AppStorageConstants.swift in Sources */,
 				4BD63D742D70547E00EEF5D7 /* EmptyClass.swift in Sources */,
 				4BF0C79D2D94681000016202 /* InsideCircle.swift in Sources */,

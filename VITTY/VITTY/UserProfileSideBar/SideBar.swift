@@ -1,4 +1,6 @@
 import SwiftUI
+import OSLog
+import SwiftData
 
 
 
@@ -8,6 +10,7 @@ struct UserProfileSidebar: View {
     @Binding var isPresented: Bool
     @State private var ghostMode: Bool = false
     @State private var isUpdatingGhostMode: Bool = false
+    @Environment(\.modelContext) private var modelContext
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -90,6 +93,15 @@ struct UserProfileSidebar: View {
                 
                 Button {
                     authViewModel.signOut()
+                    do{
+                        try modelContext.delete(model:TimeTable.self)
+                        try modelContext.delete(model:Remainder.self)
+                        try modelContext.delete(model:CreateNoteModel.self)
+                        try modelContext.delete(model:UploadedFile.self)
+                        try modelContext.save()
+                    }catch{
+                        print("Failed to load data")
+                    }
                 } label: {
                     HStack {
                         Image(systemName: "rectangle.portrait.and.arrow.right")

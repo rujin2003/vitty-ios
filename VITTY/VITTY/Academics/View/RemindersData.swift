@@ -4,10 +4,8 @@
 //
 //  Created by Rujin Devkota on 2/27/25.
 //
-
 import SwiftUI
 import SwiftData
-
 
 struct RemindersView: View {
     @Environment(\.modelContext) private var modelContext
@@ -19,8 +17,14 @@ struct RemindersView: View {
     @State private var showingSubjectSelection = false
     @State private var showingReminderCreation = false
     @State private var selectedCourse: Course?
+    @State private var availableCourses: [Course] = []
+    @State private var isLoadingCourses = false
     
-    // Your existing computed properties remain the same
+   
+    private var firstTimeTable: TimeTable? {
+        timeTables.first
+    }
+
     private var filteredReminders: [Remainder] {
         if searchText.isEmpty {
             return allReminders
@@ -61,12 +65,6 @@ struct RemindersView: View {
         }.sorted { $0.daysToGo < $1.daysToGo }
     }
     
-    // Extract courses from timetable
-    private var availableCourses: [Course] {
-        let courses = timeTables.first.map { extractCourses(from: $0) } ?? []
-        return courses
-    }
-    
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
@@ -91,7 +89,6 @@ struct RemindersView: View {
                 .padding(.horizontal)
                 .padding(.top, 16)
                 
-             
                 HStack(spacing: 16) {
                     StatusTabView(isSelected: selectedTab == 0, title: "Pending")
                         .onTapGesture { selectedTab = 0 }
@@ -99,22 +96,20 @@ struct RemindersView: View {
                         .onTapGesture { selectedTab = 1 }
                     Spacer()
                     
-                  
                     Button {
+                        // Load courses immediately when button is pressed
+                        loadCoursesIfNeeded()
                         showingSubjectSelection = true
-                    } label: {
+                    } label:  {
                         Image(systemName: "plus")
                             .foregroundColor(.blue)
                             .font(.system(size: 16, weight: .medium))
                             .frame(width: 32, height: 32)
-                           
-                           
                     }
                 }
                 .padding(.horizontal)
                 .padding(.top, 16)
                 
-             
                 VStack(spacing: 24) {
                     ForEach(groupedReminders, id: \.id) { group in
                         if selectedTab == 0 && !group.items.filter({ !$0.isCompleted }).isEmpty {
@@ -146,7 +141,7 @@ struct RemindersView: View {
                 .padding(.top, 16)
                 
                 // Empty state
-                if groupedReminders.isEmpty {
+                if groupedReminders.isEmpty && !isLoadingCourses {
                     VStack(spacing: 16) {
                         Image(systemName: "calendar.badge.exclamationmark")
                             .font(.system(size: 48))
@@ -168,13 +163,21 @@ struct RemindersView: View {
         }
         .scrollIndicators(.hidden)
         .background(Color("Background").edgesIgnoringSafeArea(.all))
+        .onAppear {
+            // Load courses immediately on appear
+            loadCoursesIfNeeded()
+        }
         .sheet(isPresented: $showingSubjectSelection) {
             SubjectSelectionView(
                 courses: availableCourses,
+                isLoading: isLoadingCourses,
                 onCourseSelected: { course in
                     selectedCourse = course
                     showingSubjectSelection = false
-                    showingReminderCreation = true
+                
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                        showingReminderCreation = true
+                    }
                 }
             )
         }
@@ -185,6 +188,25 @@ struct RemindersView: View {
                     slot: course.slot,
                     courseCode: course.code
                 )
+            } else {
+                // Fallback view in case selectedCourse is nil
+                VStack {
+                    Text("Error: No course selected")
+                        .foregroundColor(.red)
+                    Button("Close") {
+                        showingReminderCreation = false
+                    }
+                }
+                .padding()
+                .background(Color("Background"))
+            }
+        }
+        .onChange(of: showingReminderCreation) { isPresented in
+           
+            if !isPresented {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    selectedCourse = nil
+                }
             }
         }
     }
@@ -198,31 +220,61 @@ struct RemindersView: View {
         }
     }
     
+   
+    private func loadCoursesIfNeeded() {
 
+        guard availableCourses.isEmpty else { return }
+        
+        guard let firstTimeTable = firstTimeTable else {
+            
+            self.availableCourses = []
+            self.isLoadingCourses = false
+            return
+        }
+        
+        isLoadingCourses = true
+        
+        // Use async dispatch to avoid blocking UI
+        DispatchQueue.global(qos: .userInitiated).async {
+            let courses = extractCourses(from: firstTimeTable)
+            
+            DispatchQueue.main.async {
+                self.availableCourses = courses
+                self.isLoadingCourses = false
+            }
+        }
+    }
+
+   
     private func extractCourses(from timetable: TimeTable) -> [Course] {
         let allLectures = timetable.monday + timetable.tuesday + timetable.wednesday +
                           timetable.thursday + timetable.friday + timetable.saturday +
                           timetable.sunday
 
         let currentSemester = determineSemester(for: Date())
-        let groupedLectures = Dictionary(grouping: allLectures, by: { $0.name })
+        
+
+        var courseDict: [String: [Lecture]] = [:]
+        for lecture in allLectures {
+            courseDict[lecture.name, default: []].append(lecture)
+        }
+        
         var result: [Course] = []
+        result.reserveCapacity(courseDict.count) 
+        
+        for (title, lectures) in courseDict {
+            let uniqueSlot = Set(lectures.map { $0.slot }).sorted().joined(separator: " + ")
+            let uniqueCode = Set(lectures.map { $0.code }).sorted().joined(separator: " / ")
 
-        for title in groupedLectures.keys.sorted() {
-            if let lectures = groupedLectures[title] {
-                let uniqueSlot = Set(lectures.map { $0.slot }).sorted().joined(separator: " + ")
-                let uniqueCode = Set(lectures.map { $0.code }).sorted().joined(separator: " / ")
-
-                result.append(
-                    Course(
-                        title: title,
-                        slot: uniqueSlot,
-                        code: uniqueCode,
-                        semester: currentSemester,
-                        isFavorite: false
-                    )
+            result.append(
+                Course(
+                    title: title,
+                    slot: uniqueSlot,
+                    code: uniqueCode,
+                    semester: currentSemester,
+                    isFavorite: false
                 )
-            }
+            )
         }
 
         return result.sorted { $0.title < $1.title }
@@ -254,9 +306,11 @@ struct RemindersView: View {
     }
 }
 
-// MARK: - Subject Selection View
+// MARK: - Optimized Subject Selection View
+
 struct SubjectSelectionView: View {
     let courses: [Course]
+    let isLoading: Bool
     let onCourseSelected: (Course) -> Void
     
     @Environment(\.presentationMode) var presentationMode
@@ -278,76 +332,94 @@ struct SubjectSelectionView: View {
             ZStack {
                 Color("Background").edgesIgnoringSafeArea(.all)
                 
-                VStack(spacing: 0) {
-                   
-                    HStack {
-                        Image(systemName: "magnifyingglass")
+                if isLoading {
+                    VStack(spacing: 16) {
+                        ProgressView()
+                            .scaleEffect(1.5)
+                            .progressViewStyle(CircularProgressViewStyle(tint: Color("Accent")))
+                        
+                        Text("Loading subjects...")
+                            .font(.system(size: 16))
                             .foregroundColor(.gray)
-                        
-                        TextField("Search subjects", text: $searchText)
-                            .foregroundColor(.white)
-                        
-                        if !searchText.isEmpty {
-                            Button(action: { searchText = "" }) {
-                                Image(systemName: "xmark")
-                                    .foregroundColor(.gray)
-                            }
-                        }
                     }
-                    .padding(10)
-                    .background(Color("Secondary"))
-                    .cornerRadius(8)
-                    .padding(.horizontal)
-                    .padding(.top, 16)
-                    
-                    ScrollView {
-                        LazyVStack(spacing: 12) {
-                            ForEach(filteredCourses) { course in
-                                SubjectSelectionCard(course: course) {
-                                    onCourseSelected(course)
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                } else {
+                    VStack(spacing: 0) {
+                        // Search bar
+                        HStack {
+                            Image(systemName: "magnifyingglass")
+                                .foregroundColor(.gray)
+                            
+                            TextField("Search subjects", text: $searchText)
+                                .foregroundColor(.white)
+                            
+                            if !searchText.isEmpty {
+                                Button(action: { searchText = "" }) {
+                                    Image(systemName: "xmark")
+                                        .foregroundColor(.gray)
                                 }
                             }
                         }
+                        .padding(10)
+                        .background(Color("Secondary"))
+                        .cornerRadius(8)
                         .padding(.horizontal)
                         .padding(.top, 16)
-                        .padding(.bottom, 24)
-                    }
-                    
-                 
-                    if filteredCourses.isEmpty {
-                        VStack(spacing: 16) {
-                            Image(systemName: "book.closed")
-                                .font(.system(size: 48))
-                                .foregroundColor(.gray)
-                            
-                            Text(searchText.isEmpty ? "No subjects available" : "No subjects found")
-                                .font(.system(size: 18, weight: .medium))
-                                .foregroundColor(.gray)
-                            
-                            if !searchText.isEmpty {
-                                Text("Try adjusting your search terms")
-                                    .font(.system(size: 14))
-                                    .foregroundColor(.gray.opacity(0.7))
+                        
+                        if filteredCourses.isEmpty {
+                            VStack(spacing: 16) {
+                                Image(systemName: "book.closed")
+                                    .font(.system(size: 48))
+                                    .foregroundColor(.gray)
+                                
+                                Text(searchText.isEmpty ? "No subjects available" : "No subjects found")
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundColor(.gray)
+                                
+                                if !searchText.isEmpty {
+                                    Text("Try adjusting your search terms")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.gray.opacity(0.7))
+                                } else {
+                                    Text("Please check your timetable data")
+                                        .font(.system(size: 14))
+                                        .foregroundColor(.gray.opacity(0.7))
+                                }
+                            }
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        } else {
+                            ScrollView {
+                                LazyVStack(spacing: 12) {
+                                    ForEach(filteredCourses) { course in
+                                        SubjectSelectionCard(course: course) {
+                                            onCourseSelected(course)
+                                        }
+                                    }
+                                }
+                                .padding(.horizontal)
+                                .padding(.top, 16)
+                                .padding(.bottom, 24)
                             }
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     }
                 }
             }
             .navigationTitle("Select Subject")
             .navigationBarTitleDisplayMode(.large)
-            .navigationBarItems(
-                leading: Button("Cancel") {
-                    presentationMode.wrappedValue.dismiss()
+            .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    Button("Cancel") {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                    .foregroundColor(.red)
                 }
-                .foregroundColor(.red)
-            )
+            }
         }
         .preferredColorScheme(.dark)
     }
 }
 
-// MARK: - Subject Selection Card
+// MARK: - Subject Selection Card (Optimized)
 struct SubjectSelectionCard: View {
     let course: Course
     let onTap: () -> Void
@@ -394,6 +466,8 @@ struct SubjectSelectionCard: View {
         .buttonStyle(PlainButtonStyle())
     }
 }
+
+
 struct StatusTabView: View {
     let isSelected: Bool
     let title: String
@@ -403,11 +477,11 @@ struct StatusTabView: View {
             if isSelected {
                 Image(systemName: "checkmark")
                     .font(.system(size: 12))
-                    .foregroundColor(.white)
+                    .foregroundColor(isSelected ? .black : .white)
             }
             Text(title)
                 .font(.system(size: 14))
-                .foregroundColor(.white)
+                .foregroundColor(isSelected ? .black : .white)
         }
         .padding(.vertical, 6)
         .padding(.horizontal, 12)
@@ -577,7 +651,6 @@ struct ReminderItemView: View {
         .background(RoundedRectangle(cornerRadius: 16).fill(Color("Secondary")))
     }
 }
-
 
 struct ReminderGroup: Identifiable {
     let id = UUID()

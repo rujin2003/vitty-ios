@@ -26,7 +26,7 @@ struct CircleRequestRow: View {
                     .font(.custom("Poppins-SemiBold", size: 16))
                     .foregroundColor(.white)
                 
-                Text("wants to join \(request.circle_name)")
+                Text("wants you to  join \(request.circle_name)")
                     .font(.custom("Poppins-Regular", size: 14))
                     .foregroundColor(Color("Accent"))
                     .lineLimit(2)
@@ -235,7 +235,7 @@ struct CircleRequestsView: View {
         
         communityPageViewModel.acceptCircleRequest(circleId: request.circle_id, token: token) { success in
             if success {
-                alertMessage = "@\(request.from_username) has been added to \(request.circle_name)"
+                alertMessage = "you have been added to \(request.circle_name)"
                 showSuccessAlert = true
                 
               

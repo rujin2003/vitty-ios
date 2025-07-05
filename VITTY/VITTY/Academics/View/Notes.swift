@@ -159,7 +159,6 @@ struct NoteEditorView: View {
     private func handleBackNavigation() {
         
          
-         // Fallback for older navigation approaches
          DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
              if presentationMode.wrappedValue.isPresented {
                  presentationMode.wrappedValue.dismiss()

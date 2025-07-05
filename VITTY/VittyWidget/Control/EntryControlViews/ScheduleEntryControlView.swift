@@ -22,6 +22,8 @@ struct VittyWidgetEntryView: View {
                 ScheduleSmallWidgetView(entry: entry)
             case .systemMedium:
                 ScheduleMediumWidgetView(entry: entry)
+            case .systemLarge:
+                ScheduleLargeWidgetView(entry: entry)
 
             default:
                 Text("Unsupported size")
@@ -42,6 +44,6 @@ struct VittyWidget: Widget {
         }
         .configurationDisplayName("Vitty Widget")
         .description("Widget with different designs based on size.")
-        .supportedFamilies([.systemSmall, .systemMedium])
+        .supportedFamilies([.systemSmall, .systemMedium,.systemLarge])
     }
 }

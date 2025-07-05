@@ -272,6 +272,7 @@ extension TimeTable {
     private func formatTime(time: String) -> String {
             var timeComponents = time.components(separatedBy: "T").last ?? ""
             timeComponents = timeComponents.components(separatedBy: "+").first ?? ""
+        timeComponents = timeComponents.components(separatedBy: "Z").first ?? ""
 
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "HH:mm:ss"

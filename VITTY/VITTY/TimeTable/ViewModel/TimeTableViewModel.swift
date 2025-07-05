@@ -5,6 +5,7 @@
 //  Created by Chandram Dutta on 09/02/24.
 //
 
+
 import Foundation
 import OSLog
 import SwiftData
@@ -14,7 +15,6 @@ public enum Stage {
     case error
     case data
 }
-
 
 extension TimeTableView {
     @Observable
@@ -27,6 +27,7 @@ extension TimeTableView {
         
         private var hasSyncedThisSession = false
         private var isSyncing = false
+        private var currentContext: ModelContext?
         
         private let logger = Logger(
             subsystem: Bundle.main.bundleIdentifier!,
@@ -65,6 +66,9 @@ extension TimeTableView {
         ) async {
             logger.info("Starting timetable loading process")
             
+            // Store context for later use
+            currentContext = context
+            
             if let existing = existingTimeTable {
                 logger.debug("Using existing local timetable")
                 timeTable = existing
@@ -72,15 +76,16 @@ extension TimeTableView {
                 stage = .data
                 print("\(existing)")
                
+                // Start background sync if not already done
                 if !hasSyncedThisSession && !isSyncing {
                     Task {
                         await backgroundSync(
                             localTimeTable: existing,
                             username: username,
-                            authToken: authToken
+                            authToken: authToken,
+                            context: context
                         )
                     }
-                   
                 }
             } else {
                 logger.debug("No local timetable, fetching from API")
@@ -95,7 +100,8 @@ extension TimeTableView {
         private func backgroundSync(
             localTimeTable: TimeTable,
             username: String,
-            authToken: String
+            authToken: String,
+            context: ModelContext
         ) async {
             guard !isSyncing else { return }
             
@@ -114,7 +120,11 @@ extension TimeTableView {
                 
                 if shouldUpdateLocalTimeTable(local: localTimeTable, remote: remoteTimeTable) {
                     logger.info("Background sync: Timetables differ, updating local data")
-                    await updateLocalTimeTable(newTimeTable: remoteTimeTable)
+                    await updateLocalTimeTableWithPersistence(
+                        oldTimeTable: localTimeTable,
+                        newTimeTable: remoteTimeTable,
+                        context: context
+                    )
                 } else {
                     logger.info("Background sync: Timetables are identical, no update needed")
                 }
@@ -133,6 +143,7 @@ extension TimeTableView {
                 (local.wednesday, remote.wednesday),
                 (local.thursday, remote.thursday),
                 (local.friday, remote.friday),
+                (local.saturday, remote.saturday),
                 (local.sunday, remote.sunday)
             ]
             
@@ -170,13 +181,36 @@ extension TimeTableView {
                    local.endTime == remote.endTime
         }
         
-       
-        
         @MainActor
-        private func updateLocalTimeTable(newTimeTable: TimeTable) async {
-            timeTable = newTimeTable
-            changeDay()
-            logger.info("Timetable updated in memory, view will handle persistence")
+        private func updateLocalTimeTableWithPersistence(
+            oldTimeTable: TimeTable,
+            newTimeTable: TimeTable,
+            context: ModelContext
+        ) async {
+            logger.info("Updating local timetable with persistence")
+            
+            do {
+                // Delete the old timetable from persistent storage
+                context.delete(oldTimeTable)
+                
+                // Insert the new timetable
+                context.insert(newTimeTable)
+                
+                // Save the context to persist changes
+                try context.save()
+                
+                // Update the in-memory reference
+                timeTable = newTimeTable
+                changeDay()
+                
+                logger.info("Local timetable successfully updated and persisted")
+                
+            } catch {
+                logger.error("Failed to update local timetable: \(error)")
+                // Rollback: if save fails, re-insert the old timetable
+                context.insert(oldTimeTable)
+                try? context.save()
+            }
         }
         
         @MainActor
@@ -201,6 +235,7 @@ extension TimeTableView {
                 stage = .data
                 
                 context.insert(data)
+                try context.save()
                 hasSyncedThisSession = true
                 
             } catch {
@@ -219,5 +254,3 @@ extension TimeTableView {
         }
     }
 }
-
-

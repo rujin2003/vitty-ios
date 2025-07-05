@@ -111,6 +111,7 @@ struct FriendsView: View {
             }
         }
         .refreshable {
+            
             communityPageViewModel.fetchFriendsData(
                 from: "\(APIConstants.base_url)friends/\(authViewModel.loggedInBackendUser?.username ?? "")/",
                 token: authViewModel.loggedInBackendUser?.token ?? "",

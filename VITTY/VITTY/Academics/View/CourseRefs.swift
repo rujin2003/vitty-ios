@@ -32,6 +32,7 @@ struct OCourseRefs: View {
     @State private var showFileUpload = false
     @State private var showFileGallery = false
     @State private var selectedContentType: ContentType = .notes
+    @State private var showExpandedFAB = false
 
     @Environment(\.dismiss) private var dismiss
     @Environment(\.modelContext) private var modelContext
@@ -259,25 +260,91 @@ struct OCourseRefs: View {
                     }
                 }
 
+               
                 VStack {
                     Spacer()
                     HStack {
                         Spacer()
-                        Button(action: {
-                            showBottomSheet.toggle()
-                        }) {
-                            Image(systemName: "plus")
-                                .font(.title)
-                                .padding(18)
-                                .background(Color("Secondary"))
-                                .clipShape(Circle())
-                                .shadow(color: .black.opacity(0.3), radius: 10, x: 0, y: 5)
+                        
+                        // Expandable FAB
+                        VStack(spacing: 16) {
+                            // Action buttons (shown when expanded)
+                            if showExpandedFAB {
+                                VStack(spacing: 12) {
+                                    // Set Reminder Button
+                                    ExpandableFABButton(
+                                        icon: "bell.fill",
+                                        title: "Set Reminder",
+                                        color: Color.orange
+                                    ) {
+                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                                            showExpandedFAB = false
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            showReminderSheet = true
+                                        }
+                                    }
+                                    
+                                    // Upload File Button
+                                    ExpandableFABButton(
+                                        icon: "doc.fill",
+                                        title: "Upload File",
+                                        color: Color.blue
+                                    ) {
+                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                                            showExpandedFAB = false
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            showFileUpload = true
+                                        }
+                                    }
+                                    
+                                    // Write Note Button
+                                    ExpandableFABButton(
+                                        icon: "pencil",
+                                        title: "Write Note",
+                                        color: Color.green
+                                    ) {
+                                        withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                                            showExpandedFAB = false
+                                        }
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+                                            navigateToNotesEditor = true
+                                        }
+                                    }
+                                }
+                                .transition(.asymmetric(
+                                    insertion: .scale(scale: 0.8).combined(with: .opacity).combined(with: .move(edge: .bottom)),
+                                    removal: .scale(scale: 0.8).combined(with: .opacity).combined(with: .move(edge: .bottom))
+                                ))
+                            }
+                            
+                            // Main FAB Button
+                            Button(action: {
+                                let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+                                impactFeedback.impactOccurred()
+                                
+                                withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                                    showExpandedFAB.toggle()
+                                }
+                            }) {
+                                Image(systemName: showExpandedFAB ? "xmark" : "plus")
+                                    .font(.title2)
+                                    .fontWeight(.semibold)
+                                    .foregroundColor(.white)
+                                    .frame(width: 56, height: 56)
+                                    .background(Color("Secondary"))
+                                    .clipShape(Circle())
+                                    .rotationEffect(.degrees(showExpandedFAB ? 45 : 0))
+                                    .scaleEffect(showExpandedFAB ? 1.1 : 1.0)
+                                    .shadow(color: .black.opacity(0.25), radius: 10, x: 0, y: 5)
+                            }
                         }
                         .padding(.trailing, 20)
                         .padding(.bottom, 30)
                     }
                 }
-
+                
                 if showDeleteAlert {
                     DeleteNoteAlert(
                         noteName: noteToDelete?.noteName ?? "",
@@ -310,35 +377,15 @@ struct OCourseRefs: View {
             .onAppear {
                 print("this is course code")
                 print(courseCode)
+            }.onTapGesture {
+                if showExpandedFAB {
+                    withAnimation(.spring(response: 0.5, dampingFraction: 0.8)) {
+                        showExpandedFAB = false
+                    }
+                }
             }
             .navigationBarHidden(true)
             .edgesIgnoringSafeArea(.bottom)
-            .sheet(isPresented: $showBottomSheet) {
-                ZStack {
-                    Color("Secondary").edgesIgnoringSafeArea(.all)
-
-                    HStack {
-                        BottomSheetButton(icon: "upload", title: "Write Note") {
-                            showBottomSheet = false
-                            navigateToNotesEditor = true
-                        }
-
-                        BottomSheetButton(icon: "edit_document", title: "Upload File") {
-                            showBottomSheet = false
-                            showFileUpload = true
-                        }
-                        
-                        BottomSheetButton(icon: "alarm", title: "Set Reminder") {
-                            showBottomSheet = false
-                            showReminderSheet = true
-                        }
-                    }
-                    .frame(maxWidth: .infinity)
-                    .padding(.top, 20)
-                }
-                .presentationDetents([.height(200)])
-                .presentationDragIndicator(.visible)
-            }
             .sheet(isPresented: $showReminderSheet) {
                 ReminderView(courseName: courseName, slot: slot, courseCode: courseCode)
                     .presentationDetents([.fraction(0.8)])
@@ -396,6 +443,36 @@ struct OCourseRefs: View {
                 let errorFeedback = UINotificationFeedbackGenerator()
                 errorFeedback.notificationOccurred(.error)
             }
+        }
+    }
+    struct ExpandableFABButton: View {
+        let icon: String
+        let title: String
+        let color: Color
+        let action: () -> Void
+        
+        var body: some View {
+            Button(action: action) {
+                HStack(spacing: 12) {
+                    Image(systemName: icon)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.black)
+                        .frame(width: 44, height: 44)
+                        .background(.white)
+                        .clipShape(Circle())
+                        .shadow(color: color.opacity(0.3), radius: 8, x: 0, y: 4)
+                    
+                    Text(title)
+                        .font(.system(size: 16, weight: .medium))
+                        .foregroundColor(.white)
+                        .padding(.horizontal, 16)
+                        .padding(.vertical, 12)
+                        .background(Color.black.opacity(0.8))
+                        .clipShape(Capsule())
+                        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                }
+            }
+            .buttonStyle(PlainButtonStyle())
         }
     }
     

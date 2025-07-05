@@ -1,3 +1,4 @@
+
 import SwiftUI
 import SwiftData
 
@@ -6,32 +7,39 @@ struct CoursesView: View {
     @State private var searchText = ""
     @State private var isCurrentSemester = true
     @Environment(\.modelContext) private var modelContext
+    @State private var navigateToNotesEditor = false
+    @State private var selectedSubject : Course = Course(title: "", slot: "", code: "", semester: "", isFavorite: false)
     
     var body: some View {
         let courses = timeTables.first.map { extractCourses(from: $0) } ?? []
         let filtered = filteredCourses(from: courses)
 
-        ScrollView {
+        VStack {
             VStack(spacing: 0) {
                 SearchBar(searchText: $searchText)
 
-               
-
-                VStack(spacing: 16) {
-                    ForEach(filtered) { course in
-                        NavigationLink(destination: OCourseRefs(courseName: course.title, courseInstitution: course.code,slot:course.slot,courseCode: course.code)) {
-                            CourseCardView(course: course)
+                ScrollView{
+                    VStack(spacing: 16) {
+                        ForEach(filtered) { course in
+                            NavigationLink(destination: OCourseRefs(courseName: course.title, courseInstitution: course.code,slot:course.slot,courseCode: course.code)) {
+                                CourseCardView(course: course,isNotesClicked: $navigateToNotesEditor,selectedCourse: $selectedSubject)
+                            }
                         }
                     }
-                }
-                .padding(.horizontal)
-                .padding(.top, 16)
-                .padding(.bottom, 24)
+                    .padding(.horizontal)
+                    .padding(.top, 16)
+                    .padding(.bottom, 24)
+                } .scrollIndicators(.hidden)
             }
         }
-        .scrollIndicators(.hidden)
+       
         .background(Color("Background").edgesIgnoringSafeArea(.all))
+       
+        .navigationDestination(isPresented: $navigateToNotesEditor) {
+            NoteEditorView(courseCode: selectedSubject.code , courseName:selectedSubject.title, courseIns:selectedSubject.code, courseSlot: selectedSubject.slot)
+        }
     }
+    
     private func filteredCourses(from allCourses: [Course]) -> [Course] {
         allCourses.filter { course in
             let matchesSearch = searchText.isEmpty || course.title.lowercased().contains(searchText.lowercased())
@@ -50,12 +58,10 @@ struct CoursesView: View {
 
         let currentSemester = determineSemester(for: Date())
 
-      
         let groupedLectures = Dictionary(grouping: allLectures, by: { $0.name })
 
         var result: [Course] = []
 
-        
         for title in groupedLectures.keys.sorted() {
             if let lectures = groupedLectures[title] {
                 let uniqueSlot = Set(lectures.map { $0.slot }).sorted().joined(separator: " + ")
@@ -73,11 +79,8 @@ struct CoursesView: View {
             }
         }
 
-      
         return result.sorted { $0.title < $1.title }
     }
-
-
 
     private func determineSemester(for date: Date) -> String {
         let month = Calendar.current.component(.month, from: date)
@@ -103,7 +106,6 @@ struct CoursesView: View {
             return "\(year)-\(String(format: "%02d", (year + 1) % 100))"
         }
     }
-
 }
 
 struct SemesterFilterButton: View {
@@ -134,31 +136,46 @@ struct SemesterFilterButton: View {
 
 struct CourseCardView: View {
     let course: Course
+    @Binding var isNotesClicked : Bool
+    @Binding var selectedCourse : Course
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            HStack {
-                Text(course.title)
-                    .font(.system(size: 16, weight: .semibold))
-                    .foregroundColor(.white)
-                
-                Spacer()
-                
-                if course.isFavorite {
-                    Image(systemName: "star.fill")
-                        .foregroundColor(Color.yellow)
+        HStack(alignment: .center) {
+            VStack(alignment: .leading, spacing: 8) {
+                HStack {
+                    Text(course.title)
+                        .font(.system(size: 16, weight: .semibold))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.leading)
+                    
+                    Spacer()
                 }
-            }
-            .padding(.top, 16)
-            .padding(.horizontal, 16)
-            
-            Text(course.code + " | " + course.semester)
-                .font(.system(size: 14))
-                .foregroundColor(Color("Accent"))
+                .padding(.top, 16)
+                .padding(.horizontal, 16)
+                
+                HStack {
+                    Text(course.code + " | " + course.semester)
+                        .font(.system(size: 14))
+                        .foregroundColor(Color("Accent"))
+                        .multilineTextAlignment(.leading)
+                    
+                    Spacer()
+                }
                 .padding(.horizontal, 16)
                 .padding(.bottom, 16)
+            }
+            Button {
+                isNotesClicked = true
+                selectedCourse = course
+            } label: {
+                Image(systemName: "pencil.and.list.clipboard")
+                    .resizable()
+                    .frame(width: 20, height: 20)
+                    .foregroundColor(Color("Accent"))
+                    .padding(.trailing, 20)
+            }
         }
-        .frame(maxWidth: .infinity)
+        .frame(maxWidth: .infinity, alignment: .leading)
         .background(RoundedRectangle(cornerRadius: 16).fill(Color("Secondary")))
     }
 }

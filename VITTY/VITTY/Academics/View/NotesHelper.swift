@@ -1,6 +1,10 @@
 import Foundation
 import UIKit
 
+
+//TODO : Will make a mark down parser in future updates
+
+
 extension NSAttributedString {
 //    func toMarkdown() -> String {
 //        let mutableString = NSMutableString()login
@@ -177,8 +181,7 @@ extension NSAttributedString {
 // MARK: - Markdown to NSAttributedString Parser
 extension String {
     
-    /// Converts Markdown string to NSAttributedString
-    /// Handles bold, italic, underline, headings, colors, and bullet points
+  
     func fromMarkdown() -> NSMutableAttributedString {
         let result = NSMutableAttributedString()
         let lines = self.components(separatedBy: .newlines)
@@ -309,7 +312,7 @@ extension String {
         var currentAttributes = attributes
         let result = NSMutableAttributedString()
         
-        // Find next formatting marker
+      
         let remainingText = String(text[currentIndex...])
         let boldPattern = #"\*\*([^*]+)\*\*"#
         let italicPattern = #"\*([^*]+)\*"#
@@ -337,20 +340,19 @@ extension String {
             
             currentIndex = text.index(startIndex, offsetBy: matchRange.upperBound.utf16Offset(in: remainingText))
         }
-        // Check for italic
+      
         else if let italicRegex = try? NSRegularExpression(pattern: italicPattern),
                 let italicMatch = italicRegex.firstMatch(in: remainingText, range: NSRange(remainingText.startIndex..<remainingText.endIndex, in: remainingText)) {
             
             let matchRange = Range(italicMatch.range, in: remainingText)!
             let textRange = Range(italicMatch.range(at: 1), in: remainingText)!
             
-            // Add text before match
+         
             if matchRange.lowerBound > remainingText.startIndex {
                 let beforeText = String(remainingText[remainingText.startIndex..<matchRange.lowerBound])
                 result.append(NSAttributedString(string: beforeText, attributes: currentAttributes))
             }
             
-            // Add italic text
             let italicText = String(remainingText[textRange])
             var italicAttributes = currentAttributes
             if let font = italicAttributes[.font] as? UIFont {
@@ -360,7 +362,7 @@ extension String {
             
             currentIndex = text.index(startIndex, offsetBy: matchRange.upperBound.utf16Offset(in: remainingText))
         }
-        // No formatting found, add single character
+       
         else {
             let char = String(text[currentIndex])
             result.append(NSAttributedString(string: char, attributes: currentAttributes))

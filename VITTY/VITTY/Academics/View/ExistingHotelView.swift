@@ -38,7 +38,3 @@ struct ExistingHotelView: View {
             }
     }
 }
-
-#Preview {
-    ExistingHotelView(existingNote: CreateNoteModel(noteName: "", userName: "", courseId: "", courseName: "", noteContent: ""))
-}
