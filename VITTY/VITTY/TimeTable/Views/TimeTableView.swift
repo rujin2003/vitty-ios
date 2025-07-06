@@ -89,31 +89,50 @@ struct TimeTableView: View {
                         }
                     case .data:
                         VStack(spacing: 0) {
-                            // Day selector
-                            ScrollView(.horizontal) {
-                                HStack {
-                                    ForEach(daysOfWeek, id: \.self) { day in
-                                        Text(day)
-                                            .foregroundStyle(daysOfWeek[viewModel.dayNo] == day
-                                                ? Color("Background") : Color("Accent"))
-                                            .frame(width: 60, height: 54)
-                                            .background(
-                                                daysOfWeek[viewModel.dayNo] == day
-                                                ? Color("Accent") : Color.clear
-                                            )
-                                            .onTapGesture {
-                                                withAnimation(.easeInOut(duration: 0.2)) {
-                                                    viewModel.dayNo = daysOfWeek.firstIndex(
-                                                        of: day
-                                                    )!
-                                                    viewModel.changeDay()
+                           
+                            ScrollViewReader { proxy in
+                                ScrollView(.horizontal) {
+                                    HStack {
+                                        ForEach(daysOfWeek, id: \.self) { day in
+                                            Text(day)
+                                                .foregroundStyle(daysOfWeek[viewModel.dayNo] == day
+                                                    ? Color("Background") : Color("Accent"))
+                                                .frame(width: 60, height: 54)
+                                                .background(
+                                                    daysOfWeek[viewModel.dayNo] == day
+                                                    ? Color("Accent") : Color.clear
+                                                )
+                                                .onTapGesture {
+                                                    withAnimation(.easeInOut(duration: 0.2)) {
+                                                        viewModel.dayNo = daysOfWeek.firstIndex(
+                                                            of: day
+                                                        )!
+                                                        viewModel.changeDay()
+                                                        
+                                                        
+                                                        proxy.scrollTo(day, anchor: .center)
+                                                    }
                                                 }
-                                            }
-                                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                .clipShape(RoundedRectangle(cornerRadius: 10))
+                                                .id(day)
+                                        }
+                                    }
+                                    .padding(.horizontal, 8)
+                                }
+                                .scrollIndicators(.hidden)
+                                .onAppear {
+                                    
+                                    let currentDay = daysOfWeek[viewModel.dayNo]
+                                    proxy.scrollTo(currentDay, anchor: .center)
+                                }
+                                .onChange(of: viewModel.dayNo) { oldValue, newValue in
+                                    
+                                    let selectedDay = daysOfWeek[newValue]
+                                    withAnimation(.easeInOut(duration: 0.3)) {
+                                        proxy.scrollTo(selectedDay, anchor: .center)
                                     }
                                 }
                             }
-                            .scrollIndicators(.hidden)
                             .background(Color("Secondary"))
                             .clipShape(RoundedRectangle(cornerRadius: 10))
                             .padding(.horizontal)
@@ -123,7 +142,7 @@ struct TimeTableView: View {
                                 VStack(spacing: 16) {
                                     Image(systemName: "calendar.badge.exclamationmark")
                                         .font(.system(size: 50))
-                                        .foregroundColor(.secondary)
+                                    .foregroundColor(.secondary)
                                     
                                     Text("No classes today!")
                                         .font(Font.custom("Poppins-Bold", size: 24))
@@ -135,6 +154,7 @@ struct TimeTableView: View {
                                         .padding(.horizontal)
                                 }
                                 Spacer()
+                                
                             } else {
                                 ScrollView {
                                     VStack(spacing: 12) {
