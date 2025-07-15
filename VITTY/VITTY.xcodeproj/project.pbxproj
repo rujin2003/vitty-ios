@@ -28,6 +28,7 @@
 		4B183EEA2D7C793800C9D801 /* RemindersData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EE92D7C791400C9D801 /* RemindersData.swift */; };
 		4B183EEC2D7CB15800C9D801 /* CourseRefs.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */; };
 		4B1BDBCC2E1396B1008C2DE9 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1BDBCB2E1396A9008C2DE9 /* ToolTip.swift */; };
+		4B2D1F0F2E26060C002AFD25 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B2D1F0E2E26060C002AFD25 /* GoogleService-Info.plist */; };
 		4B2D648F2E20BA6300412CB7 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2D648E2E20BA5A00412CB7 /* NetworkMonitor.swift */; };
 		4B2D64902E20BA6300412CB7 /* NetworkMonitor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B2D648E2E20BA5A00412CB7 /* NetworkMonitor.swift */; };
 		4B2D64922E20C1AC00412CB7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B2D64912E20C1AC00412CB7 /* GoogleService-Info.plist */; };
@@ -192,6 +193,7 @@
 		4B183EE92D7C791400C9D801 /* RemindersData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemindersData.swift; sourceTree = "<group>"; };
 		4B183EEB2D7CB11500C9D801 /* CourseRefs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseRefs.swift; sourceTree = "<group>"; };
 		4B1BDBCB2E1396A9008C2DE9 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
+		4B2D1F0E2E26060C002AFD25 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B2D648E2E20BA5A00412CB7 /* NetworkMonitor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkMonitor.swift; sourceTree = "<group>"; };
 		4B2D64912E20C1AC00412CB7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		4B2DD6942E0A702D00BC3B67 /* CircleRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleRequests.swift; sourceTree = "<group>"; };
@@ -406,6 +408,7 @@
 				4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */,
 				4B2D64912E20C1AC00412CB7 /* GoogleService-Info.plist */,
 				52EE849D2CB9CD1F00CD864C /* GoogleService-Info.plist */,
+				4B2D1F0E2E26060C002AFD25 /* GoogleService-Info.plist */,
 				5251A7FF2B46E3C000D44CFE /* .swift-format */,
 				314A408E27383BEC0058082F /* VITTYApp.swift */,
 				314A409027383BEC0058082F /* ContentView.swift */,
@@ -1097,6 +1100,7 @@
 				31128CFE2772F57E0084C9EA /* Poppins-MediumItalic.ttf in Resources */,
 				31128CFD2772F57E0084C9EA /* Poppins-SemiBold.ttf in Resources */,
 				31128CF92772F57E0084C9EA /* Poppins-Medium.ttf in Resources */,
+				4B2D1F0F2E26060C002AFD25 /* GoogleService-Info.plist in Resources */,
 				31128CFA2772F57E0084C9EA /* Poppins-SemiBoldItalic.ttf in Resources */,
 				31128CFC2772F57E0084C9EA /* Poppins-Regular.ttf in Resources */,
 				52EE849E2CB9CD1F00CD864C /* GoogleService-Info.plist in Resources */,
