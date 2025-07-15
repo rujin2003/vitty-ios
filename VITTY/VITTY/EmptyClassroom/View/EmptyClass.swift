@@ -1,3 +1,10 @@
+//
+//  EmptyClassAPIService.swift
+//  VITTY
+//
+//  Created by Rujin Devkota on 2/27/25.
+//
+
 import SwiftUI
 
 struct EmptyClassRoom: View {
@@ -88,83 +95,172 @@ struct EmptyClassRoom: View {
     private var contentView: some View {
         Group {
             if viewModel.isLoading {
-                VStack(spacing: 16) {
-                    ProgressView()
-                        .scaleEffect(1.2)
-                        .tint(.white)
-                    Text("Loading classrooms...")
-                        .foregroundColor(.white.opacity(0.8))
-                        .font(.subheadline)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding()
+                loadingView
+            } else if viewModel.isGenerating {
+                generatingView
             } else if let errorMessage = viewModel.errorMessage {
-                VStack(spacing: 16) {
-                    Image(systemName: "exclamationmark.triangle")
-                        .font(.system(size: 40))
-                        .foregroundColor(.red.opacity(0.8))
-                    Text("Error")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                    Text(errorMessage)
-                        .foregroundColor(.red.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                        .font(.subheadline)
-                    Button("Retry") {
-                        Task {
-                            await viewModel.fetchEmptyClassrooms(slot: selectedSlot, authToken: authViewModel.loggedInBackendUser?.token ?? "")
-                        }
-                    }
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 8)
-                    .background(Color.blue.opacity(0.7))
-                    .cornerRadius(8)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding()
+                errorView(errorMessage)
             } else if viewModel.emptyClassrooms.isEmpty {
-                VStack(spacing: 16) {
-                    Image(systemName: "building.2")
-                        .font(.system(size: 40))
-                        .foregroundColor(.white.opacity(0.6))
-                    Text("No Classrooms Available")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                    Text("There are no empty classrooms for slot \(selectedSlot) at this time.")
-                        .foregroundColor(.white.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                        .font(.subheadline)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding()
+                emptyStateView
             } else if filteredClassrooms.isEmpty && !searchText.isEmpty {
-                VStack(spacing: 16) {
-                    Image(systemName: "magnifyingglass")
-                        .font(.system(size: 40))
-                        .foregroundColor(.white.opacity(0.6))
-                    Text("No Results Found")
-                        .font(.headline)
-                        .foregroundColor(.white)
-                    Text("No classrooms match '\(searchText)'")
-                        .foregroundColor(.white.opacity(0.8))
-                        .multilineTextAlignment(.center)
-                        .font(.subheadline)
-                    Button("Clear Search") {
-                        searchText = ""
-                    }
-                    .foregroundColor(.white)
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 8)
-                    .background(Color.blue.opacity(0.7))
-                    .cornerRadius(8)
-                }
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .padding()
+                noResultsView
             } else {
                 classroomsGrid
             }
         }
+    }
+    
+    private var loadingView: some View {
+        VStack(spacing: 16) {
+            ProgressView()
+                .scaleEffect(1.2)
+                .tint(.white)
+            Text("Loading classrooms...")
+                .foregroundColor(.white.opacity(0.8))
+                .font(.subheadline)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+    }
+    
+    private var generatingView: some View {
+        VStack(spacing: 24) {
+            // Animated hourglass icon
+            Image(systemName: "hourglass")
+                .font(.system(size: 50))
+                .foregroundColor(.blue.opacity(0.7))
+                .rotationEffect(.degrees(viewModel.isGenerating ? 180 : 0))
+                .animation(.easeInOut(duration: 1.5).repeatForever(autoreverses: true), value: viewModel.isGenerating)
+            
+            VStack(spacing: 16) {
+                Text("Preparing Your Data")
+                    .font(.title2)
+                    .fontWeight(.semibold)
+                    .foregroundColor(.white)
+                
+                Text("Our system is currently generating the latest classroom information for slot \(selectedSlot).")
+                    .foregroundColor(.white.opacity(0.8))
+                    .multilineTextAlignment(.center)
+                    .font(.body)
+                    .padding(.horizontal, 20)
+                
+                VStack(spacing: 8) {
+                    Text("This process may take a few moments")
+                        .foregroundColor(.blue.opacity(0.8))
+                        .font(.subheadline)
+                    
+                    Text("Please try reloading in a moment")
+                        .foregroundColor(.white.opacity(0.6))
+                        .font(.caption)
+                }
+                .padding(.top, 8)
+            }
+            
+            Button(action: {
+                viewModel.reload(slot: selectedSlot, authToken: authViewModel.loggedInBackendUser?.token ?? "")
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "arrow.clockwise")
+                        .font(.system(size: 14, weight: .medium))
+                    Text("Reload")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.blue.opacity(0.7))
+                        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                )
+            }
+            .padding(.top, 8)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+    }
+    
+    private func errorView(_ errorMessage: String) -> some View {
+        VStack(spacing: 16) {
+            Image(systemName: "exclamationmark.triangle")
+                .font(.system(size: 40))
+                .foregroundColor(.orange.opacity(0.8))
+            
+            Text("Oops!")
+                .font(.headline)
+                .foregroundColor(.white)
+            
+            Text(errorMessage)
+                .foregroundColor(.white.opacity(0.8))
+                .multilineTextAlignment(.center)
+                .font(.subheadline)
+                .padding(.horizontal)
+            
+            Button(action: {
+                viewModel.reload(slot: selectedSlot, authToken: authViewModel.loggedInBackendUser?.token ?? "")
+            }) {
+                HStack(spacing: 8) {
+                    Image(systemName: "arrow.clockwise")
+                        .font(.system(size: 14, weight: .medium))
+                    Text("Reload")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                }
+                .foregroundColor(.white)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 12)
+                .background(
+                    RoundedRectangle(cornerRadius: 10)
+                        .fill(Color.orange.opacity(0.7))
+                        .shadow(color: .black.opacity(0.2), radius: 4, x: 0, y: 2)
+                )
+            }
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+    }
+    
+    private var emptyStateView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "building.2")
+                .font(.system(size: 40))
+                .foregroundColor(.white.opacity(0.6))
+            Text("No Classrooms Available")
+                .font(.headline)
+                .foregroundColor(.white)
+            Text("There are no empty classrooms for slot \(selectedSlot) at this time.")
+                .foregroundColor(.white.opacity(0.8))
+                .multilineTextAlignment(.center)
+                .font(.subheadline)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
+    }
+    
+    private var noResultsView: some View {
+        VStack(spacing: 16) {
+            Image(systemName: "magnifyingglass")
+                .font(.system(size: 40))
+                .foregroundColor(.white.opacity(0.6))
+            Text("No Results Found")
+                .font(.headline)
+                .foregroundColor(.white)
+            Text("No classrooms match '\(searchText)'")
+                .foregroundColor(.white.opacity(0.8))
+                .multilineTextAlignment(.center)
+                .font(.subheadline)
+            Button("Clear Search") {
+                searchText = ""
+            }
+            .foregroundColor(.white)
+            .padding(.horizontal, 20)
+            .padding(.vertical, 8)
+            .background(Color.blue.opacity(0.7))
+            .cornerRadius(8)
+        }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .padding()
     }
     
     private var classroomsGrid: some View {
