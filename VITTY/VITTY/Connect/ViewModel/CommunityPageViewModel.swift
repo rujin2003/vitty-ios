@@ -4,7 +4,6 @@
 //
 //  Created by Chandram Dutta on 04/01/24.
 //
-//
 
 import Foundation
 import Alamofire
@@ -89,6 +88,9 @@ class CommunityPageViewModel {
                         self.errorCircle = false
                         print("Successfully fetched circles: \(data.data)")
                         
+                       
+                        self.fetchAllCircleMemberData(token: token)
+                        
                     case .failure(let error):
                         self.logger.error("Error fetching circles: \(error)")
                         if self.circles.isEmpty {
@@ -97,6 +99,40 @@ class CommunityPageViewModel {
                     }
                 }
             }
+    }
+    
+    // MARK: - Fetch all circle member data
+    
+    private func fetchAllCircleMemberData(token: String) {
+        let dispatchGroup = DispatchGroup()
+        
+        for circle in circles {
+            dispatchGroup.enter()
+            
+            let url = "\(APIConstants.base_url)circles/\(circle.circleID)"
+            
+            AF.request(url, method: .get, headers: ["Authorization": "Token \(token)"])
+                .validate()
+                .responseDecodable(of: CircleUserResponseTemp.self) { response in
+                    DispatchQueue.main.async {
+                        switch response.result {
+                        case .success(let data):
+                            self.circleMembersDict[circle.circleID] = data.data
+                            print("Successfully fetched members for circle \(circle.circleID): \(data.data)")
+                            
+                        case .failure(let error):
+                            self.logger.error("Error fetching members for circle \(circle.circleID): \(error)")
+                            self.circleMembersDict[circle.circleID] = []
+                        }
+                        
+                        dispatchGroup.leave()
+                    }
+                }
+        }
+        
+        dispatchGroup.notify(queue: .main) {
+            print("Finished fetching all circle member data")
+        }
     }
     
     // MARK: - Circle Requests
@@ -427,6 +463,8 @@ class CommunityPageViewModel {
                         self.errorCircle = false
                         print("Successfully fetched circles after creation: \(data.data)")
                         
+                        // Fetch member data for all circles after successfully fetching circles
+                        self.fetchAllCircleMemberData(token: token)
                         
                         if let createdCircle = self.circles.first(where: { $0.circleName == circleName }) {
                             print("Found created circle with ID: \(createdCircle.circleID)")

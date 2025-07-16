@@ -17,27 +17,24 @@ struct CirclesRow: View {
         communityPageViewModel.circleMembers(for: circle.circleID)
     }
     
-   
+
     private var busyCount: Int {
         circleMembers.filter {
             $0.status != nil && $0.status != "available" && $0.status != "free"
         }.count
     }
     
+    
     private var availableCount: Int {
         circleMembers.filter {
             $0.status == nil || $0.status == "available" || $0.status == "free"
         }.count
     }
-    
-    private var isLoadingMembers: Bool {
-        communityPageViewModel.isLoadingCircleMembers(for: circle.circleID)
-    }
 
     var body: some View {
         HStack {
             
-            //TODO: left to add a circle image right now its a picsum image
+            
             
             CircleImageView(imageURL: "https://picsum.photos/200/300", size: 48)
             
@@ -48,38 +45,28 @@ struct CirclesRow: View {
                     .font(Font.custom("Poppins-SemiBold", size: 18))
                     .foregroundColor(Color.white)
                 
-                if isLoadingMembers {
-                    HStack {
-                        ProgressView()
-                            .scaleEffect(0.7)
-                        Text("Loading...")
-                            .font(Font.custom("Poppins-Regular", size: 12))
-                            .foregroundStyle(Color("Accent"))
-                    }
-                } else {
-                    HStack {
+                HStack {
+                    
+                    if busyCount > 0 {
+                        Image("inclass").resizable().frame(width: 20, height: 20)
+                        Text("\(busyCount) busy").foregroundStyle(Color("Accent"))
                         
-                        if busyCount > 0 {
-                            Image("inclass").resizable().frame(width: 20, height: 20)
-                            Text("\(busyCount) busy").foregroundStyle(Color("Accent"))
-                            
-                            if availableCount > 0 {
-                                Spacer().frame(width: 20)
-                            }
-                        }
-                        
-                      
                         if availableCount > 0 {
-                            Image("available").resizable().frame(width: 20, height: 20)
-                            Text("\(availableCount) available").foregroundStyle(Color("Accent"))
+                            Spacer().frame(width: 20)
                         }
-                        
-                       
-                        if circleMembers.isEmpty && !isLoadingMembers {
-                            Text("No members")
-                                .font(Font.custom("Poppins-Regular", size: 12))
-                                .foregroundStyle(Color("Accent").opacity(0.7))
-                        }
+                    }
+                    
+                   
+                    if availableCount > 0 {
+                        Image("available").resizable().frame(width: 20, height: 20)
+                        Text("\(availableCount) available").foregroundStyle(Color("Accent"))
+                    }
+                    
+                   
+                    if circleMembers.isEmpty {
+                        Text("No members")
+                            .font(Font.custom("Poppins-Regular", size: 12))
+                            .foregroundStyle(Color("Accent").opacity(0.7))
                     }
                 }
             }
@@ -90,17 +77,7 @@ struct CirclesRow: View {
             RoundedRectangle(cornerRadius: 15)
                 .fill(Color("Secondary"))
         )
-        .onAppear {
-            
-            communityPageViewModel.fetchCircleMemberData(
-                from: "\(APIConstants.base_url)circles/\(circle.circleID)",
-                token: authViewModel.loggedInBackendUser?.token ?? "",
-                loading: true,
-                circleID: circle.circleID
-            )
-        }
-        
-        
+      
     }
     
     
@@ -114,6 +91,7 @@ struct CirclesRow: View {
         return cleanedName
     }
 }
+
 struct CircleImageView: View {
     let imageURL: String
     let size: CGFloat
