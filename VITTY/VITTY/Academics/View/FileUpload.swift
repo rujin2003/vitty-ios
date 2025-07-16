@@ -134,6 +134,10 @@ struct FileUploadView: View {
             if !newItems.isEmpty {
                 uploadImages(newItems)
             }
+        }.onChange(of: capturedImage) { _, newImage in
+            if let image = newImage {
+                uploadCapturedImage(image)
+            }
         }
         .fileImporter(
             isPresented: $showDocumentPicker,
