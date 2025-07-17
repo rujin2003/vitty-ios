@@ -142,6 +142,10 @@ struct NoteEditorView: View {
     @State private var isInitialized = false
     @State private var goback = false
     
+    // New state variables for title alert
+    @State private var showTitleAlert = false
+    @State private var noteTitle = ""
+    
     @Environment(\.modelContext) private var modelContext
     let courseCode: String
     let courseName: String
@@ -156,33 +160,38 @@ struct NoteEditorView: View {
         self.courseIns = courseIns
         self.courseSlot = courseSlot
     }
+    
     private func handleBackNavigation() {
-        
-         
-         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-             if presentationMode.wrappedValue.isPresented {
-                 presentationMode.wrappedValue.dismiss()
-             }
-         }
-     }
+        // Check if there are unsaved changes or if it's a new note
+        if hasUnsavedChanges || (existingNote == nil && !isEmpty) {
+            showTitleAlert = true
+        } else {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                if presentationMode.wrappedValue.isPresented {
+                    presentationMode.wrappedValue.dismiss()
+                }
+            }
+        }
+    }
+    
     private func initializeContent() {
         guard !isInitialized else { return }
         
         if let note = existingNote {
+            // Pre-populate the title field with existing note name
+            noteTitle = note.noteName
+            
             if let preloaded = preloadedAttributedString {
-              
                 attributedText = NSMutableAttributedString(attributedString: preloaded)
                 isEmpty = preloaded.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
                 isInitialized = true
             } else {
-               
                 Task { @MainActor in
                     await loadNoteContent(note)
                     isInitialized = true
                 }
             }
         } else {
-            
             attributedText = NSMutableAttributedString()
             isEmpty = true
             isInitialized = true
@@ -191,14 +200,12 @@ struct NoteEditorView: View {
     
     @MainActor
     private func loadNoteContent(_ note: CreateNoteModel) async {
-     
         if let cachedAttributedString = note.cachedAttributedString {
             attributedText = NSMutableAttributedString(attributedString: cachedAttributedString)
             isEmpty = cachedAttributedString.string.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
             return
         }
         
-  
         do {
             guard let data = Data(base64Encoded: note.noteContent) else {
                 print("Failed to decode base64 data")
@@ -223,25 +230,26 @@ struct NoteEditorView: View {
     }
 
     func saveContent() {
-        guard hasUnsavedChanges || existingNote == nil else {
-            handleBackNavigation()
+        showTitleAlert = true
+    }
+    
+    private func saveNoteWithTitle() {
+        guard !noteTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             return
         }
         
         do {
             let data = try NSKeyedArchiver.archivedData(withRootObject: attributedText, requiringSecureCoding: false)
             let dataString = data.base64EncodedString()
-            let title = generateSmartTitle(from: attributedText.string)
 
             if let note = existingNote {
-                note.noteName = title
+                note.noteName = noteTitle
                 note.noteContent = dataString
                 note.createdAt = Date.now
-               
                 CreateNoteModel.clearCache()
             } else {
                 let newNote = CreateNoteModel(
-                    noteName: title,
+                    noteName: noteTitle,
                     userName: authViewModel.loggedInBackendUser?.name ?? "",
                     courseId: courseCode,
                     courseName: courseName,
@@ -285,22 +293,15 @@ struct NoteEditorView: View {
             
             if isInitialized {
                 VStack {
-                 
                     headerView
-                    
-                  
                     textEditorView
-                    
-                  
                     toolbarView
                 }
             } else {
-              
                 ProgressView("Loading...")
                     .foregroundColor(.white)
             }
 
-            
             if showFontPicker {
                 fontPickerOverlay
             }
@@ -321,6 +322,29 @@ struct NoteEditorView: View {
         .navigationBarBackButtonHidden(true)
         .animation(.easeInOut(duration: 0.3), value: showFontPicker)
         .animation(.easeInOut(duration: 0.3), value: showFontSizePicker)
+        .alert("Save Note", isPresented: $showTitleAlert) {
+            TextField("Enter note title", text: $noteTitle)
+                .textInputAutocapitalization(.words)
+            
+            Button("Save") {
+                saveNoteWithTitle()
+            }
+            .disabled(noteTitle.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            
+            Button("Cancel", role: .cancel) {
+                noteTitle = existingNote?.noteName ?? ""
+            }
+            
+            Button("Don't Save", role: .destructive) {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    if presentationMode.wrappedValue.isPresented {
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }
+            }
+        } message: {
+            Text("Please enter a title for your note.")
+        }
     }
     
     // MARK: - View Components
@@ -369,7 +393,6 @@ struct NoteEditorView: View {
     
     private var toolbarView: some View {
         HStack(spacing: 20) {
-          
             Button(action: {
                 showFontPicker.toggle()
                 showFontSizePicker = false
@@ -378,7 +401,6 @@ struct NoteEditorView: View {
                     .foregroundColor(Color("Accent"))
             }
             
-          
             Button(action: {
                 showFontSizePicker.toggle()
                 showFontPicker = false
@@ -393,12 +415,10 @@ struct NoteEditorView: View {
                 }
             }
             
-           
             formatButton(action: toggleBold, icon: "bold", isActive: isBoldActive())
             formatButton(action: toggleItalic, icon: "italic", isActive: isItalicActive())
             formatButton(action: toggleUnderline, icon: "underline", isActive: isUnderlineActive())
 
-        
             ColorPicker("", selection: $selectedColor, supportsOpacity: false)
                 .labelsHidden()
                 .frame(width: 30, height: 30)
@@ -406,7 +426,6 @@ struct NoteEditorView: View {
                     applyAttribute(.foregroundColor, value: UIColor(newColor))
                 }
 
-           
             Button(action: addBulletPoints) {
                 Image(systemName: "list.bullet")
                     .foregroundColor(Color("Accent"))
@@ -505,8 +524,6 @@ struct NoteEditorView: View {
         }
     }
 
-
-    
     func addBulletPoints() {
         guard selectedRange.length > 0 else { return }
 

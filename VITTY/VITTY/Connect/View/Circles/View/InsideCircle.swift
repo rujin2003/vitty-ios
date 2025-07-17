@@ -307,7 +307,8 @@ struct InsideCircle: View {
     var circleName : String
     var circle_id: String
     var circle_join_code : String
-    var circle_role : String 
+    var circle_role : String
+    
     @State var searchText: String = ""
     @State var showLeaveAlert: Bool = false
     @State var showDeleteAlert: Bool = false
@@ -482,6 +483,7 @@ struct InsideCircle: View {
                                 picture: member.picture,
                                 name: member.name,
                                 status: getDisplayStatus(for: member),
+                                
                                 venue: getDisplayVenue(for: member)
                             )
                             .padding(.horizontal)

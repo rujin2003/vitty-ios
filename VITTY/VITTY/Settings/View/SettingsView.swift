@@ -8,6 +8,7 @@ struct SettingsView: View {
     @Query private var timeTables: [TimeTable]
 
     @StateObject private var viewModel = SettingsViewModel()
+    @StateObject private var settingsTipManager = SettingsTipManager() 
 
     @State private var showDaySelection = false
     @State private var selectedDay: String? = nil
@@ -166,6 +167,7 @@ struct SettingsView: View {
                     .scrollContentBackground(.hidden)
                 }
                 
+                // Existing alerts
                 if showResetAlert {
                     ResetSaturdayAlert(
                         onCancel: { showResetAlert = false },
@@ -200,6 +202,10 @@ struct SettingsView: View {
                     )
                     .zIndex(1)
                 }
+                
+                // Add the tooltip overlay - this will show on top of everything
+                SettingsTipOverlay(tipManager: settingsTipManager)
+                    .zIndex(2) // Higher z-index to appear above other overlays
             }
             .navigationBarBackButtonHidden(true)
             .interactiveDismissDisabled(true)
@@ -207,6 +213,7 @@ struct SettingsView: View {
                 viewModel.timetable = timeTables.first
                 viewModel.checkNotificationAuthorization()
                 loadSelectedDay()
+                setupSettingsOnboarding() // Setup tooltip onboarding
             }
             .alert("Notifications Disabled", isPresented: $viewModel.showNotificationDisabledAlert) {
                 Button("OK", role: .cancel) {}
@@ -216,10 +223,17 @@ struct SettingsView: View {
         }
     }
     
-    // MARK: - Sync Timetable Functions
+    // MARK: - Settings Tooltip Setup
+    private func setupSettingsOnboarding() {
+        // Start settings onboarding if not completed, with a slight delay for better UX
+        if !settingsTipManager.hasCompletedSettingsOnboarding {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                settingsTipManager.startOnboarding()
+            }
+        }
+    }
     
-    // MARK: - Updated Sync Timetable Functions for SettingsView
-
+    // MARK: - Sync Timetable Functions
     private func syncTimetable() {
         guard let username = authViewModel.loggedInBackendUser?.username,
               let authToken = authViewModel.loggedInBackendUser?.token else {
@@ -230,7 +244,6 @@ struct SettingsView: View {
         isSyncing = true
         
         Task {
-           
             let syncViewModel = TimeTableView.TimeTableViewModel()
             
             await syncViewModel.forceSync(
@@ -252,7 +265,6 @@ struct SettingsView: View {
         }
     }
 
-    
     private func syncTimetableAlternative() {
         guard let username = authViewModel.loggedInBackendUser?.username,
               let authToken = authViewModel.loggedInBackendUser?.token else {
@@ -285,30 +297,22 @@ struct SettingsView: View {
     
     private func updateLocalTimetable(with remoteTimeTable: TimeTable) {
         guard let currentTimeTable = timeTables.first else {
-            
             insertNewTimetable(remoteTimeTable)
             return
         }
         
-       
         let finalTimeTable = preserveSaturdayCustomization(
             remote: remoteTimeTable,
             local: currentTimeTable
         )
         
         do {
-          
             modelContext.delete(currentTimeTable)
-            
-            
             modelContext.insert(finalTimeTable)
-            
-            
             try modelContext.save()
             
             isSyncing = false
             showSyncMessage("Timetable synced successfully!", success: true)
-            
             
             NotificationCenter.default.post(
                 name: NSNotification.Name("TimetableDidChange"),
@@ -372,7 +376,6 @@ struct SettingsView: View {
     }
     
     // MARK: - Existing Functions
-    
     private func loadSelectedDay() {
         selectedDay = timeTables.first?.saturdaySourceDay
     }
@@ -446,7 +449,6 @@ struct SettingsView: View {
         }
     }
 
-    
     private func copyLecturesToSaturday(from day: String) {
         guard let currentTimeTable = timeTables.first else {
             print("No timetable found")
@@ -470,11 +472,9 @@ struct SettingsView: View {
         )
         
         do {
-            
             modelContext.delete(currentTimeTable)
             print("Deleted existing timetable")
             
-           
             let newSaturdayLectures = lecturesToCopy.map { originalLecture in
                 Lecture(
                     name: originalLecture.name,
@@ -489,7 +489,6 @@ struct SettingsView: View {
             
             print("Created \(newSaturdayLectures.count) new lectures for Saturday")
             
-            
             let newTimeTable = TimeTable(
                 monday: backupData.monday,
                 tuesday: backupData.tuesday,
@@ -501,19 +500,15 @@ struct SettingsView: View {
                 saturdaySourceDay: day
             )
             
-           
             modelContext.insert(newTimeTable)
             print("Inserted new timetable with Saturday lectures")
             
-           
             try modelContext.save()
             
-           
             self.selectedDay = day
             
             print("Successfully recreated timetable with \(day) copied to Saturday")
             print("New Saturday has \(newTimeTable.saturday.count) lectures")
-            
             
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 NotificationCenter.default.post(
@@ -526,7 +521,6 @@ struct SettingsView: View {
             print("Error during timetable recreation: \(error)")
             modelContext.rollback()
             
-           
             print("Attempting to restore backup data...")
             do {
                 let restoredTimeTable = TimeTable(
@@ -557,7 +551,6 @@ struct SettingsView: View {
         
         print("Starting SAFE reset of Saturday classes - DELETE & RECREATE approach")
         
-       
         let backupData = (
             monday: currentTimeTable.monday.map { $0.deepCopy() },
             tuesday: currentTimeTable.tuesday.map { $0.deepCopy() },
@@ -570,11 +563,9 @@ struct SettingsView: View {
         )
         
         do {
-           
             modelContext.delete(currentTimeTable)
             print("Deleted existing timetable")
             
-           
             let newTimeTable = TimeTable(
                 monday: backupData.monday,
                 tuesday: backupData.tuesday,
@@ -586,19 +577,15 @@ struct SettingsView: View {
                 saturdaySourceDay: nil
             )
             
-   
             modelContext.insert(newTimeTable)
             print("Inserted new timetable with empty Saturday")
             
-           
             try modelContext.save()
             
-           
             self.selectedDay = nil
             
             print("Successfully recreated timetable with empty Saturday")
             
-           
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
                 NotificationCenter.default.post(
                     name: NSNotification.Name("TimetableDidChange"),
@@ -610,7 +597,6 @@ struct SettingsView: View {
             print("Error during timetable reset: \(error)")
             modelContext.rollback()
             
-          
             print("Attempting to restore backup data...")
             do {
                 let restoredTimeTable = TimeTable(
@@ -632,7 +618,6 @@ struct SettingsView: View {
             }
         }
     }
-    
 
     private var headerView: some View {
         HStack {
@@ -654,6 +639,7 @@ struct SettingsView: View {
         .padding(.top)
     }
 
+    // MARK: - Supporting Views
     struct SettingsSectionView<Content: View>: View {
         let title: String
         @ViewBuilder let content: () -> Content
@@ -737,7 +723,6 @@ struct SettingsView: View {
 }
 
 // MARK: - Alert Components
-
 struct ResetSaturdayAlert: View {
     let onCancel: () -> Void
     let onReset: () -> Void
@@ -787,7 +772,7 @@ struct ResetSaturdayAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
-            
+            // Prevent dismissal on tap
         }
     }
 }
@@ -852,7 +837,7 @@ struct DeleteUserAlert: View {
         }
         .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
         .onTapGesture {
-            
+            // Prevent dismissal on tap
         }
     }
 }

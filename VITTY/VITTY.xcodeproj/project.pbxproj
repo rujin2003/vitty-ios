@@ -39,6 +39,7 @@
 		4B37F1E42E02AA7800DCEE5F /* ReminderNotifcationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E32E02AA6E00DCEE5F /* ReminderNotifcationManager.swift */; };
 		4B37F1E62E03D7D300DCEE5F /* ExistingHotelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */; };
 		4B37F1E92E04173A00DCEE5F /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */; };
+		4B40E1DA2E27E133004F8447 /* SettingsTololtip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E1D92E27E12B004F8447 /* SettingsTololtip.swift */; };
 		4B40FE5D2E0A917F000BDD07 /* QrCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40FE5C2E0A9179000BDD07 /* QrCode.swift */; };
 		4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */; };
 		4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5977462DF97D5A009CC224 /* RemainderModel.swift */; };
@@ -203,6 +204,7 @@
 		4B37F1E32E02AA6E00DCEE5F /* ReminderNotifcationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReminderNotifcationManager.swift; sourceTree = "<group>"; };
 		4B37F1E52E03D7D300DCEE5F /* ExistingHotelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExistingHotelView.swift; sourceTree = "<group>"; };
 		4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
+		4B40E1D92E27E12B004F8447 /* SettingsTololtip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTololtip.swift; sourceTree = "<group>"; };
 		4B40FE5C2E0A9179000BDD07 /* QrCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrCode.swift; sourceTree = "<group>"; };
 		4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReminder.swift; sourceTree = "<group>"; };
 		4B5977462DF97D5A009CC224 /* RemainderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemainderModel.swift; sourceTree = "<group>"; };
@@ -476,6 +478,14 @@
 				4B37F1E82E04173500DCEE5F /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		4B40E1D82E27E11F004F8447 /* SettingsTooltip */ = {
+			isa = PBXGroup;
+			children = (
+				4B40E1D92E27E12B004F8447 /* SettingsTololtip.swift */,
+			);
+			path = SettingsTooltip;
 			sourceTree = "<group>";
 		};
 		4B74D8752E0BF76B00B390E9 /* Components */ = {
@@ -936,6 +946,7 @@
 		5D1FF2632A32643400B0620A /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				4B40E1D82E27E11F004F8447 /* SettingsTooltip */,
 				4B37F1E72E04172E00DCEE5F /* ViewModel */,
 				5D1FF2642A32643B00B0620A /* View */,
 			);
@@ -1169,6 +1180,7 @@
 				4B40FE5D2E0A917F000BDD07 /* QrCode.swift in Sources */,
 				4B74D87B2E0BFC7E00B390E9 /* FileUploadHelper.swift in Sources */,
 				4B183EE82D7C78B600C9D801 /* Courses.swift in Sources */,
+				4B40E1DA2E27E133004F8447 /* SettingsTololtip.swift in Sources */,
 				5238C7F12B4AAE8700413946 /* FriendRequestView.swift in Sources */,
 				528CF1782B769E64007298A0 /* TimeTableAPIService.swift in Sources */,
 				52D5AB972B6FFC8F00B2E66D /* LoginView.swift in Sources */,
