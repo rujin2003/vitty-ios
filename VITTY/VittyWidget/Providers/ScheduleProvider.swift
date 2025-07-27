@@ -13,7 +13,7 @@ import WidgetKit
 struct Provider: TimelineProvider {
     
     private func getSharedContainer() -> ModelContainer? {
-        let appGroupContainerID = "group.com.gdscvit.vittyioswidget"
+        let appGroupContainerID = "group.com.gdscvit.vittyios.widget"
         
       
         let schema = Schema([TimeTable.self, Remainder.self, CreateNoteModel.self, UploadedFile.self])
@@ -33,7 +33,7 @@ struct Provider: TimelineProvider {
             return nil
         }
     }
-    
+
     
     // MARK: - Time Parsing and Validation
     
