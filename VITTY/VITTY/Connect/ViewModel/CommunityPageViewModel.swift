@@ -468,15 +468,15 @@ class CommunityPageViewModel {
    
     func createCircle(name: String, token: String, completion: @escaping (Result<String, Error>) -> Void) {
         
-        guard let encodedName = name.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) else {
-            let error = NSError(domain: "CreateCircleError", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid circle name"])
-            completion(.failure(error))
-            return
-        }
+        let url = "\(APIConstants.base_urlv3)circles/create"
         
-        let url = "\(APIConstants.base_urlv3)circles/create/\(encodedName)"
+        let parameters = ["circleName": name]
         
-        AF.request(url, method: .post, headers: ["Authorization": "Token \(token)"])
+        AF.request(url,
+                   method: .post,
+                   parameters: parameters,
+                   encoding: JSONEncoding.default,
+                   headers: ["Authorization": "Token \(token)"])
             .validate()
             .responseDecodable(of: CreateCircleResponse.self) { response in
                 DispatchQueue.main.async {
@@ -485,7 +485,6 @@ class CommunityPageViewModel {
                         if data.detail.lowercased().contains("successfully") {
                             self.logger.info("Successfully created circle: \(name)")
                             
-                          
                             self.fetchCircleDataWithCompletion(
                                 from: "\(APIConstants.base_urlv3)circles",
                                 token: token,
@@ -506,7 +505,6 @@ class CommunityPageViewModel {
                 }
             }
     }
-
    
     private func fetchCircleDataWithCompletion(from url: String, token: String, circleName: String, completion: @escaping (Result<String, Error>) -> Void) {
         
