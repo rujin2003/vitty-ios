@@ -6,6 +6,7 @@ import UIKit
 struct UserProfileSidebar: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Binding var isPresented: Bool
+    @Binding var showLogoutAlert: Bool 
 
     @Environment(\.modelContext) private var modelContext
     @State private var isLoggingOut: Bool = false
@@ -45,7 +46,6 @@ struct UserProfileSidebar: View {
                 Divider().background(Color.clear)
                 
                 if(authViewModel.loggedInBackendUser?.campus == "vellore"){
-                    
                     NavigationLink {
                         EmptyClassRoom()
                     } label: {
@@ -99,27 +99,11 @@ struct UserProfileSidebar: View {
                 
                 Divider().background(Color.clear)
                 
-               
-                
                 Spacer()
                 
+               
                 Button {
-                    Task{
-                        await performLogout()
-                    }
-//                    authViewModel.signOut()
-                    
-//                    do{
-//                        try modelContext.delete(model:TimeTable.self)
-//                        try modelContext.delete(model:Remainder.self)
-//                        try modelContext.delete(model:CreateNoteModel.self)
-//                        try modelContext.delete(model:UploadedFile.self)
-//                        try modelContext.save()
-//                    }catch{
-//                         print("Failed to load data")
-//                    }
-                    
-                    
+                    showLogoutAlert = true
                 } label: {
                     HStack {
                         Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -140,45 +124,6 @@ struct UserProfileSidebar: View {
         .animation(.easeInOut(duration: 0.3), value: isPresented)
         .sheet(isPresented: $showSupportDialog) {
             SupportDialog()
-        }
-    }
-    
-    // MARK: - Ghost Mode Functions
-    
-  
-  
-    private func performLogout() async {
-        isLoggingOut = true
-        
-     
-        await MainActor.run {
-            authViewModel.signOut()
-        }
-        
-        
-        await clearLocalData()
-        
-   
-        await MainActor.run {
-            isLoggingOut = false
-            isPresented = false
-        }
-    }
-    
-    private func clearLocalData() async {
-        do {
-           
-            await Task.detached { [modelContext] in
-                do {
-                    try modelContext.delete(model: TimeTable.self)
-                    try modelContext.delete(model: Remainder.self)
-                    try modelContext.delete(model: CreateNoteModel.self)
-                    try modelContext.delete(model: UploadedFile.self)
-                    try modelContext.save()
-                } catch {
-                     print("Failed to delete local data: \(error)")
-                }
-            }.value
         }
     }
 }
@@ -218,7 +163,7 @@ struct SupportDialog: View {
                     .ignoresSafeArea()
                 
                 VStack(spacing: 0) {
-                    // Header with Schedule title and close button
+                   
                     HStack {
                         Text("Get Support")
                             .font(.custom("Poppins-Bold", size: 24))
@@ -593,5 +538,103 @@ struct SimulatorEmailAlert: View {
                     onDismiss()
                 }
         )
+    }
+}
+struct LogoutConfirmationAlert: View {
+    let onCancel: () -> Void
+    let onLogout: () -> Void
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            VStack(spacing: 16) {
+              
+                Image(systemName: "exclamationmark.triangle")
+                    .font(.system(size: 30))
+                    .foregroundColor(.orange)
+                    .padding(.top, 8)
+                
+                
+                Text("Log Out?")
+                    .font(.custom("Poppins-SemiBold", size: 18))
+                    .foregroundColor(.white)
+                
+               
+                VStack(spacing: 8) {
+                    Text("Logging out will delete:")
+                        .font(.custom("Poppins-Regular", size: 14))
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                    
+                    VStack(alignment: .leading, spacing: 4) {
+                        HStack {
+                            Image(systemName: "bell.slash")
+                                .font(.system(size: 12))
+                                .foregroundColor(.red)
+                            Text("All your reminders")
+                                .font(.custom("Poppins-Regular", size: 13))
+                                .foregroundColor(.white.opacity(0.8))
+                        }
+                        
+                        HStack {
+                            Image(systemName: "doc")
+                                .font(.system(size: 12))
+                                .foregroundColor(.red)
+                            Text("All uploaded files")
+                                .font(.custom("Poppins-Regular", size: 13))
+                                .foregroundColor(.white.opacity(0.8))
+                        }
+                        
+                        HStack {
+                            Image(systemName: "note.text")
+                                .font(.system(size: 12))
+                                .foregroundColor(.red)
+                            Text("All your notes")
+                                .font(.custom("Poppins-Regular", size: 13))
+                                .foregroundColor(.white.opacity(0.8))
+                        }
+                        
+                      
+                    }
+                    .padding(.horizontal, 8)
+                }
+                
+                Text("This action cannot be undone.")
+                    .font(.custom("Poppins-Regular", size: 12))
+                    .foregroundColor(.red)
+                    .padding(.top, 4)
+                
+               
+                HStack(spacing: 12) {
+                    Button(action: onCancel) {
+                        Text("Cancel")
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .padding(.vertical, 12)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.gray.opacity(0.3))
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    
+                    Button(action: onLogout) {
+                        Text("Log Out")
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .padding(.vertical, 12)
+                            .frame(maxWidth: .infinity)
+                            .background(Color.red)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                }
+                .padding(.top, 8)
+            }
+            .padding(24)
+            .background(Color("Background"))
+            .cornerRadius(16)
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            Spacer()
+        }
+        .background(Color.black.opacity(0.5).edgesIgnoringSafeArea(.all))
     }
 }

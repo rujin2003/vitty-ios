@@ -267,12 +267,16 @@ extension AuthViewModel {
 
 
 
+
 struct HomeView: View {
     @Environment(AuthViewModel.self) private var authViewModel
+    @Environment(\.modelContext) private var modelContext
     @State private var selectedPage = 1
     @State private var showProfileSidebar: Bool = false
     @State private var isCreatingGroup = false
     @State private var showCampusDialog = false
+    @State private var showLogoutAlert = false
+    @State private var isLoggingOut = false
     @StateObject private var tipManager = CustomTipManager()
     
     @EnvironmentObject private var navigationCoordinator: NavigationCoordinator
@@ -293,9 +297,28 @@ struct HomeView: View {
                 profileSidebar
                 CustomTipOverlay(tipManager: tipManager, selectedTab: $selectedPage)
                 
-               
+                // Campus dialog
                 if showCampusDialog {
                     CampusSelectionDialog(isPresented: $showCampusDialog)
+                }
+                
+               
+                if showLogoutAlert {
+                    LogoutConfirmationAlert(
+                        onCancel: {
+                            showLogoutAlert = false
+                        },
+                        onLogout: {
+                            showLogoutAlert = false
+                            showProfileSidebar = false
+                            Task {
+                                await performLogout()
+                            }
+                        }
+                        
+                    )
+                    .transition(.opacity)
+                    .animation(.easeInOut(duration: 0.3), value: showLogoutAlert)
                 }
             }
             .ignoresSafeArea(edges: .bottom)
@@ -320,9 +343,45 @@ struct HomeView: View {
         }
     }
     
+    // Move the logout functionality to HomeView
+    private func performLogout() async {
+        isLoggingOut = true
+        
+        await MainActor.run {
+            authViewModel.signOut()
+        }
+        
+        await clearLocalData()
+        
+        await MainActor.run {
+            isLoggingOut = false
+        }
+    }
+    
+    private func clearLocalData() async {
+        do {
+            await Task.detached { [modelContext] in
+                do {
+                    try modelContext.delete(model: TimeTable.self)
+                    try modelContext.delete(model: Remainder.self)
+                    try modelContext.delete(model: CreateNoteModel.self)
+                    try modelContext.delete(model: UploadedFile.self)
+                    try modelContext.save()
+                    
+                    // Log successful deletion
+                    await MainActor.run {
+                        print(" Successfully cleared all local data")
+                    }
+                } catch {
+                    await MainActor.run {
+                        print("Failed to delete local data: \(error.localizedDescription)")
+                    }
+                }
+            }.value
+        }
+    }
     
     private func checkCampusStatus() {
-       
         if authViewModel.shouldShowCampusDialog {
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 showCampusDialog = true
@@ -330,7 +389,6 @@ struct HomeView: View {
         }
     }
     
- 
     private var topBar: some View {
         HStack {
             Text(pageTitle)
@@ -347,7 +405,6 @@ struct HomeView: View {
         .padding(.bottom, 8)
     }
     
-    // MARK: - Page Title
     private var pageTitle: String {
         switch selectedPage {
         case 3: return "Academics"
@@ -356,7 +413,6 @@ struct HomeView: View {
         }
     }
     
-   
     private var profileButton: some View {
         ZStack {
             if !showProfileSidebar {
@@ -375,7 +431,6 @@ struct HomeView: View {
             }
         }
     }
-    
 
     private var mainContent: some View {
         ZStack {
@@ -393,7 +448,6 @@ struct HomeView: View {
         .padding(.top, 4)
     }
     
- 
     @ViewBuilder
     private var profileSidebar: some View {
         if showProfileSidebar {
@@ -408,13 +462,16 @@ struct HomeView: View {
 
             HStack {
                 Spacer()
-                UserProfileSidebar(isPresented: $showProfileSidebar)
-                    .frame(width: UIScreen.main.bounds.width * 0.75)
-                    .transition(.move(edge: .trailing))
+                // Pass the logout alert binding to the sidebar
+                UserProfileSidebar(
+                    isPresented: $showProfileSidebar,
+                    showLogoutAlert: $showLogoutAlert
+                )
+                .frame(width: UIScreen.main.bounds.width * 0.75)
+                .transition(.move(edge: .trailing))
             }
         }
     }
-    
     
     private func setupOnboarding() {
         if !tipManager.hasCompletedOnboarding {
@@ -425,9 +482,10 @@ struct HomeView: View {
     }
     
     private func handleTabChange(_ newTab: Int) {
-         print("Switched to tab: \(newTab)")
+        print("Switched to tab: \(newTab)")
     }
 }
+
 
 
 extension AppUser {
