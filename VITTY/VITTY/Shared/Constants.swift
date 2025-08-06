@@ -9,7 +9,6 @@ import Foundation
 
 class Constants {
 	static let url =
-//    "https://visiting-eba-vitty-d61856bb.koyeb.app/api/v3/"
-    "https://api-vitty.dscvit.com/api/v3/"
+   "https://api-vitty.dscvit.com/api/v3/"
 }
 

@@ -1,6 +1,7 @@
 import SwiftUI
 import SwiftData
 
+
 struct SettingsView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @Environment(\.dismiss) private var dismiss
@@ -183,10 +184,8 @@ struct SettingsView: View {
                                     Spacer()
                                 }
                                 .padding(.vertical, 6)
-                                .onTapGesture {
-                                    if let url = URL(string: "mailto:dscvit.vitty@gmail.com") {
-                                        UIApplication.shared.open(url)
-                                    }
+                               .onTapGesture {
+                                    sendSupportEmail()
                                 }
                             }
                         }
@@ -677,6 +676,160 @@ struct SettingsView: View {
             }
         }
     }
+
+    private func sendSupportEmail() {
+        let emailSubject = "VITTY iOS App - Bug Report"
+        let emailBody = createBugReportTemplate()
+        
+        let encodedSubject = emailSubject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let encodedBody = emailBody.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        let mailtoURL = "mailto:dscvit.vitty@gmail.com?subject=\(encodedSubject)&body=\(encodedBody)"
+        
+        if let url = URL(string: mailtoURL) {
+            if UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url)
+                print("SUPPORT EMAIL: Opening mail app with bug report template")
+            } else {
+                print("SUPPORT EMAIL: Mail app not available")
+            }
+        } else {
+            print(" SUPPORT EMAIL: Failed to create mailto URL")
+        }
+    }
+
+    private func createBugReportTemplate() -> String {
+        let userInfo = getUserInfo()
+        let deviceInfo = getDeviceInfo()
+        let appInfo = getAppInfo()
+        
+        return """
+    Hello VITTY Support Team,
+
+    I'm reporting a bug in the VITTY iOS app. Please find the details below:
+
+    **User Information:**
+    - Username: \(userInfo.username)
+    - Full Name: \(userInfo.fullName)
+    - Email: \(userInfo.email)
+    - Campus: \(userInfo.campus)
+
+    **Device Information:**
+    - Device Model: \(deviceInfo.deviceModel)
+    - iOS Version: \(deviceInfo.iosVersion)
+    - App Version: \(appInfo.version)
+    - Build Number: \(appInfo.buildNumber)
+    - Device Language: \(deviceInfo.language)
+    - Time Zone: \(deviceInfo.timeZone)
+
+    **Bug Report:**
+
+    **Describe the bug**
+    A clear and concise description of what the bug is.
+
+    **To Reproduce**
+    Steps to reproduce the behavior:
+    1. Go to '...'
+    2. Click on '....'
+    3. Scroll down to '....'
+    4. See error
+
+    **Expected behavior**
+    A clear and concise description of what you expected to happen.
+
+    **Screenshots**
+    If applicable, add screenshots to help explain your problem.
+
+    **Additional context**
+    Add any other context about the problem here.
+
+    ---
+    This email was generated automatically from the VITTY iOS app.
+    Report submitted on: \(getCurrentDateTime())
+    """
+    }
+
+    private func getUserInfo() -> (username: String, fullName: String, email: String, campus: String) {
+        let username = authViewModel.loggedInBackendUser?.username ?? "N/A"
+        let fullName = authViewModel.loggedInBackendUser?.name ?? "N/A"
+        let email = authViewModel.loggedInFirebaseUser?.email ?? "N/A"
+        let campus = authViewModel.loggedInBackendUser?.campus?.capitalized ?? "N/A"
+        
+        return (username, fullName, email, campus)
+    }
+
+    private func getDeviceInfo() -> (deviceModel: String, iosVersion: String, language: String, timeZone: String) {
+        let device = UIDevice.current
+        let deviceModel = getDeviceModel()
+        let iosVersion = "\(device.systemName) \(device.systemVersion)"
+        let language = Locale.current.language.languageCode?.identifier ?? "Unknown"
+        let timeZone = TimeZone.current.identifier
+        
+        return (deviceModel, iosVersion, language, timeZone)
+    }
+
+    private func getDeviceModel() -> String {
+        var systemInfo = utsname()
+        uname(&systemInfo)
+        let machineMirror = Mirror(reflecting: systemInfo.machine)
+        let identifier = machineMirror.children.reduce("") { identifier, element in
+            guard let value = element.value as? Int8, value != 0 else { return identifier }
+            return identifier + String(UnicodeScalar(UInt8(value)))
+        }
+        
+        return getReadableDeviceName(from: identifier)
+    }
+
+    private func getReadableDeviceName(from identifier: String) -> String {
+        switch identifier {
+        case "iPhone8,1": return "iPhone 6s"
+        case "iPhone8,2": return "iPhone 6s Plus"
+        case "iPhone9,1", "iPhone9,3": return "iPhone 7"
+        case "iPhone9,2", "iPhone9,4": return "iPhone 7 Plus"
+        case "iPhone10,1", "iPhone10,4": return "iPhone 8"
+        case "iPhone10,2", "iPhone10,5": return "iPhone 8 Plus"
+        case "iPhone10,3", "iPhone10,6": return "iPhone X"
+        case "iPhone11,2": return "iPhone XS"
+        case "iPhone11,4", "iPhone11,6": return "iPhone XS Max"
+        case "iPhone11,8": return "iPhone XR"
+        case "iPhone12,1": return "iPhone 11"
+        case "iPhone12,3": return "iPhone 11 Pro"
+        case "iPhone12,5": return "iPhone 11 Pro Max"
+        case "iPhone13,1": return "iPhone 12 mini"
+        case "iPhone13,2": return "iPhone 12"
+        case "iPhone13,3": return "iPhone 12 Pro"
+        case "iPhone13,4": return "iPhone 12 Pro Max"
+        case "iPhone14,4": return "iPhone 13 mini"
+        case "iPhone14,5": return "iPhone 13"
+        case "iPhone14,2": return "iPhone 13 Pro"
+        case "iPhone14,3": return "iPhone 13 Pro Max"
+        case "iPhone14,7": return "iPhone 14"
+        case "iPhone14,8": return "iPhone 14 Plus"
+        case "iPhone15,2": return "iPhone 14 Pro"
+        case "iPhone15,3": return "iPhone 14 Pro Max"
+        case "iPhone15,4": return "iPhone 15"
+        case "iPhone15,5": return "iPhone 15 Plus"
+        case "iPhone16,1": return "iPhone 15 Pro"
+        case "iPhone16,2": return "iPhone 15 Pro Max"
+        case "i386", "x86_64", "arm64": return "Simulator"
+        default: return identifier
+        }
+    }
+
+    private func getAppInfo() -> (version: String, buildNumber: String) {
+        let version = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "Unknown"
+        let buildNumber = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "Unknown"
+        
+        return (version, buildNumber)
+    }
+
+    private func getCurrentDateTime() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.timeZone = TimeZone.current
+        return formatter.string(from: Date())
+    }
+
 
 
     private var headerView: some View {

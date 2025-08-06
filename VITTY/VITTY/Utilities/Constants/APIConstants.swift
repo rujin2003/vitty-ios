@@ -11,7 +11,7 @@ import Foundation
 
 struct APIConstants {
 	static let base_url = "https://api-vitty.dscvit.com/api/v2/"
-    
+    static let server_url = "https://api-vitty.dscvit.com"
     static let base_urlv3 = "https://api-vitty.dscvit.com/api/v3/"
     
     static let createCircle = "circles/create/"

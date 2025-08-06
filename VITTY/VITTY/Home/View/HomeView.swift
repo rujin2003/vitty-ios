@@ -39,8 +39,8 @@ class CampusUpdateService {
         guard let httpResponse = response as? HTTPURLResponse else {
             throw URLError(.badServerResponse)
         }
-        print("http status code : \(httpResponse.statusCode)")
-        print("information : \(httpResponse.description)")
+         print("http status code : \(httpResponse.statusCode)")
+         print("information : \(httpResponse.description)")
         
         guard httpResponse.statusCode == 200 else {
             throw URLError(.badServerResponse)
@@ -425,7 +425,7 @@ struct HomeView: View {
     }
     
     private func handleTabChange(_ newTab: Int) {
-        print("Switched to tab: \(newTab)")
+         print("Switched to tab: \(newTab)")
     }
 }
 

@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import OSLog
 
 struct EmptyClassRoom: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @StateObject private var viewModel = EmptyClassroomViewModel()
     @State private var selectedSlot: String = "A1"
     @State private var searchText: String = ""
+    @State private var showReportAlert: Bool = false
+    @State private var reportedClassroom: String = ""
     @Environment(\.dismiss) private var dismiss
 
     let slots = ["A1", "B1", "C1", "D1", "E1", "F1", "G1", "A2", "B2", "C2", "D2", "E2", "F2", "G2"]
@@ -44,6 +47,23 @@ struct EmptyClassRoom: View {
                         await viewModel.fetchEmptyClassrooms(slot: selectedSlot, authToken: authViewModel.loggedInBackendUser?.token ?? "")
                     }
                 }
+                
+                if showReportAlert {
+                    ReportClassroomAlert(
+                        selectedSlot: selectedSlot,
+                        classrooms: viewModel.emptyClassrooms,
+                        onCancel: {
+                            showReportAlert = false
+                            reportedClassroom = ""
+                        },
+                        onReport: { classroom in
+                            reportedClassroom = classroom
+                            sendReportEmail(for: classroom)
+                            showReportAlert = false
+                        }
+                    )
+                    .zIndex(1)
+                }
             }.navigationBarBackButtonHidden(true)
         }
     }
@@ -65,6 +85,14 @@ struct EmptyClassRoom: View {
                 .fontWeight(.bold)
                 .foregroundColor(.white)
             Spacer()
+            
+            Button(action: {
+                showReportAlert = true
+            }) {
+                Image(systemName: "exclamationmark.triangle")
+                    .foregroundColor(Color("Accent"))
+                    .font(.title2)
+            }
         }
         .padding(.horizontal)
         .padding(.top, 10)
@@ -278,8 +306,7 @@ struct EmptyClassRoom: View {
             .animation(.easeInOut(duration: 0.3), value: filteredClassrooms)
         }
     }
-    
-    // MARK: - Helper Properties and Methods
+
     
     private var gridColumns: [GridItem] {
         [GridItem(.flexible()), GridItem(.flexible())]
@@ -288,10 +315,84 @@ struct EmptyClassRoom: View {
     private func handleSlotSelection(_ slot: String) {
         guard selectedSlot != slot else { return }
         selectedSlot = slot
-        searchText = "" // Clear search when changing slots
+        searchText = "" 
         Task {
             await viewModel.fetchEmptyClassrooms(slot: slot, authToken: authViewModel.loggedInBackendUser?.token ?? "")
         }
+    }
+    
+    private func sendReportEmail(for classroom: String) {
+        let logger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "EmptyClassroomReport")
+        
+        
+        guard let currentUser = authViewModel.loggedInBackendUser else {
+            logger.error("REPORT ERROR: No authenticated user found")
+            return
+        }
+                
+        let currentDate = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
+        let subject = "False Classroom Data Report - \(classroom)"
+        
+        let body = """
+        Dear VITTY Support Team,
+        
+        I would like to report incorrect classroom data:
+        
+        REPORT DETAILS:
+        - Reported Classroom: \(classroom)
+        - Time Slot: \(selectedSlot)
+        - Date & Time: \(currentDate)
+        - Campus: \(currentUser.campus?.capitalized ?? "Unknown")
+        
+        USER INFORMATION:
+        - Username: \(currentUser.username)
+        - Name: \(currentUser.name)
+        - Email: \(authViewModel.loggedInFirebaseUser?.email ?? "N/A")
+        
+        ISSUE DESCRIPTION:
+        The classroom "\(classroom)" is listed as empty for slot \(selectedSlot), but it appears to be occupied or incorrectly marked.
+        
+        Please verify and update the classroom availability data.
+        
+        Thank you for your attention to this matter.
+        
+        Best regards,
+        \(currentUser.name)
+        VITTY iOS App
+        """
+        
+        
+        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        let encodedBody = body.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
+        
+        if encodedSubject.isEmpty || encodedBody.isEmpty {
+            logger.error("Failed to encode email content - Subject empty: \(encodedSubject.isEmpty), Body empty: \(encodedBody.isEmpty)")
+            return
+        }
+        
+        
+        guard let url = URL(string: "mailto:dscvit.vitty@gmail.com?subject=\(encodedSubject)&body=\(encodedBody)") else {
+            logger.error("Failed to create mailto URL")
+            return
+        }
+        
+        print("mailto URL created: \(url.absoluteString.prefix(100))...")
+        
+        if UIApplication.shared.canOpenURL(url) {
+            print("  Mail app is available, attempting to open...")
+            
+            UIApplication.shared.open(url) { success in
+                if success {
+                    print("  Mail app opened successfully")
+                } else {
+                    logger.error("Failed to open mail app")
+                }
+            }
+        } else {
+            logger.error("Mail app is not available on this device")
+        }
+        
+
     }
 }
 
@@ -382,5 +483,124 @@ struct SlotFilterButton: View {
                 .scaleEffect(isSelected ? 1.05 : 1.0)
         }
         .animation(.easeInOut(duration: 0.2), value: isSelected)
+    }
+}
+
+struct ReportClassroomAlert: View {
+    let selectedSlot: String
+    let classrooms: [String]
+    let onCancel: () -> Void
+    let onReport: (String) -> Void
+    
+    @State private var selectedClassroom: String = ""
+    
+    var body: some View {
+        VStack {
+            Spacer()
+            
+            VStack(spacing: 20) {
+                VStack(spacing: 8) {
+                    Image(systemName: "exclamationmark.triangle.fill")
+                        .font(.system(size: 40))
+                        .foregroundColor(Color("Accent"))
+                    
+                    Text("Report Incorrect Data")
+                        .font(.custom("Poppins-Bold", size: 18))
+                        .foregroundColor(.white)
+                    
+                    Text("Select the classroom that is incorrectly marked as empty for slot \(selectedSlot)")
+                        .font(.custom("Poppins-Regular", size: 14))
+                        .foregroundColor(.white.opacity(0.8))
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 8)
+                }
+                
+                if classrooms.isEmpty {
+                    Text("No classrooms available to report")
+                        .font(.custom("Poppins-Regular", size: 14))
+                        .foregroundColor(.white.opacity(0.6))
+                        .padding()
+                } else {
+                    VStack(spacing: 8) {
+                        Text("Select Classroom:")
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        
+                        ScrollView {
+                            LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 8) {
+                                ForEach(classrooms, id: \.self) { classroom in
+                                    Button(action: {
+                                        selectedClassroom = classroom
+                                    }) {
+                                        Text(classroom)
+                                            .font(.custom("Poppins-Medium", size: 12))
+                                            .foregroundColor(selectedClassroom == classroom ? .black : .white)
+                                            .padding(.vertical, 8)
+                                            .padding(.horizontal, 12)
+                                            .frame(maxWidth: .infinity)
+                                            .background(
+                                                RoundedRectangle(cornerRadius: 8)
+                                                    .fill(selectedClassroom == classroom ? Color("Accent") : Color("Secondary"))
+                                                    .stroke(Color("Accent").opacity(0.5), lineWidth: selectedClassroom == classroom ? 2 : 1)
+                                            )
+                                    }
+                                }
+                            }
+                        }
+                        .frame(maxHeight: 150)
+                    }
+                    .padding(.horizontal, 8)
+                }
+                
+                HStack(spacing: 12) {
+                    Button(action: onCancel) {
+                        Text("Cancel")
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .foregroundColor(.white.opacity(0.8))
+                            .padding(.vertical, 12)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(Color("Secondary").opacity(0.6))
+                            )
+                    }
+                    
+                    Button(action: {
+                        if !selectedClassroom.isEmpty {
+                            onReport(selectedClassroom)
+                        }
+                    }) {
+                        Text("Send Report")
+                            .font(.custom("Poppins-Medium", size: 14))
+                            .foregroundColor(.black)
+                            .padding(.vertical, 12)
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 10)
+                                    .fill(selectedClassroom.isEmpty ? Color("Secondary").opacity(0.3) : Color("Accent"))
+                            )
+                    }
+                    .disabled(selectedClassroom.isEmpty)
+                }
+            }
+            .padding(24)
+            .background(
+                RoundedRectangle(cornerRadius: 16)
+                    .fill(Color("Background"))
+                    .stroke(Color("Accent").opacity(0.3), lineWidth: 1)
+            )
+            .padding(.horizontal, 30)
+            .transition(.scale.combined(with: .opacity))
+            
+            Spacer()
+        }
+        .background(
+            Color.black.opacity(0.5)
+                .ignoresSafeArea()
+                .onTapGesture {
+                    onCancel()
+                }
+        )
     }
 }
