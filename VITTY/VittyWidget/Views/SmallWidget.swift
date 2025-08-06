@@ -21,7 +21,7 @@ struct DueSmallWidgetView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-           
+            Spacer().frame(height: 2)
             HStack {
                 Text(entry.widgetTitle)
                     .font(.system(size: 12, weight: .bold))

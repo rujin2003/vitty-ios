@@ -118,7 +118,6 @@ struct DueMediumWidgetView: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-          
             Spacer().frame(height: 5)
             WidgetTitle(title: entry.widgetTitle, fontSize: 12.0)
           

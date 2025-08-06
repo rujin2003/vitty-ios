@@ -587,6 +587,9 @@ struct EmptyStateView: View {
         .padding(.top, 60)
     }
 }
+
+
+
 struct CompactFileCard: View {
     let file: UploadedFile
     let onDelete: (() -> Void)?
@@ -604,24 +607,30 @@ struct CompactFileCard: View {
     
     var body: some View {
         VStack(spacing: 8) {
-           
+            // Fixed image display
             if file.isImage && !imageLoadError {
                 Group {
                     if let image = fileImage {
                         Image(uiImage: image)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
+                            .frame(height: 80)
+                            .clipped()
+                            .cornerRadius(8)
                     } else if isLoading {
                         Rectangle()
                             .fill(Color.gray.opacity(0.3))
+                            .frame(height: 80)
                             .overlay(
                                 ProgressView()
                                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
                                     .scaleEffect(0.8)
                             )
+                            .cornerRadius(8)
                     } else {
                         Rectangle()
                             .fill(Color.red.opacity(0.3))
+                            .frame(height: 80)
                             .overlay(
                                 VStack(spacing: 4) {
                                     Image(systemName: "exclamationmark.triangle")
@@ -632,11 +641,9 @@ struct CompactFileCard: View {
                                         .foregroundColor(.red)
                                 }
                             )
+                            .cornerRadius(8)
                     }
                 }
-                .frame(height: 80)
-                .clipped()
-                .cornerRadius(8)
             } else {
                 Rectangle()
                     .fill(getFileTypeColor(file.fileType).opacity(0.2))
@@ -656,7 +663,7 @@ struct CompactFileCard: View {
                     .cornerRadius(8)
             }
             
-            
+            // File info
             VStack(alignment: .leading, spacing: 2) {
                 Text(file.fileName)
                     .font(.caption)
@@ -685,7 +692,7 @@ struct CompactFileCard: View {
             }
         }
         .sheet(isPresented: $showFileViewer) {
-            EnhancedFileViewerSheet(file: file)
+            ZoomableImageViewer(file: file) // Use the new zoomable viewer
         }
         .confirmationDialog("File Options", isPresented: $showActionSheet, titleVisibility: .visible) {
             Button("Share") {
@@ -801,6 +808,141 @@ struct CompactFileCard: View {
         }
     }
 }
+
+// MARK: - New Zoomable Image Viewer
+struct ZoomableImageViewer: View {
+    let file: UploadedFile
+    @State private var fileImage: UIImage?
+    @State private var isLoading = true
+    @State private var imageLoadError = false
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationView {
+            ZStack {
+                Color.black.ignoresSafeArea()
+                
+                if isLoading {
+                    ProgressView("Loading...")
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .foregroundColor(.white)
+                } else if let image = fileImage {
+                    ZoomableScrollView {
+                        Image(uiImage: image)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                    }
+                } else {
+                    VStack(spacing: 16) {
+                        Image(systemName: "exclamationmark.triangle")
+                            .font(.system(size: 48))
+                            .foregroundColor(.red)
+                        Text("Failed to load image")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                        Text("The image file could not be found or loaded")
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                    }
+                    .padding()
+                }
+            }
+            .navigationTitle(file.fileName)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(
+                leading: Button("Done") {
+                    dismiss()
+                }.foregroundColor(.white)
+            )
+        }
+        .onAppear {
+            loadFullImage()
+        }
+    }
+    
+    private func loadFullImage() {
+        isLoading = true
+        imageLoadError = false
+        
+        Task {
+            // Try to load the full resolution image first, then fallback to thumbnail
+            let imagePaths = [file.localPath, file.thumbnailPath].compactMap { $0 }
+            var loadedImage: UIImage?
+            
+            for path in imagePaths {
+                if let data = FileManagerHelper.shared.loadFileWithFallback(from: path, courseCode: file.courseCode),
+                   let image = UIImage(data: data) {
+                    loadedImage = image
+                    break
+                }
+            }
+            
+            await MainActor.run {
+                if let image = loadedImage {
+                    self.fileImage = image
+                    self.imageLoadError = false
+                } else {
+                    self.imageLoadError = true
+                }
+                self.isLoading = false
+            }
+        }
+    }
+}
+
+// MARK: - Zoomable ScrollView for pinch-to-zoom functionality
+struct ZoomableScrollView<Content: View>: UIViewRepresentable {
+    private var content: Content
+    
+    init(@ViewBuilder content: () -> Content) {
+        self.content = content()
+    }
+    
+    func makeUIView(context: Context) -> UIScrollView {
+        let scrollView = UIScrollView()
+        scrollView.delegate = context.coordinator
+        scrollView.maximumZoomScale = 5.0
+        scrollView.minimumZoomScale = 1.0
+        scrollView.showsVerticalScrollIndicator = false
+        scrollView.showsHorizontalScrollIndicator = false
+        
+        let hostingController = UIHostingController(rootView: content)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.addSubview(hostingController.view)
+        
+        NSLayoutConstraint.activate([
+            hostingController.view.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor),
+            hostingController.view.topAnchor.constraint(equalTo: scrollView.topAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            hostingController.view.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            hostingController.view.heightAnchor.constraint(equalTo: scrollView.heightAnchor)
+        ])
+        
+        context.coordinator.hostingController = hostingController
+        return scrollView
+    }
+    
+    func updateUIView(_ scrollView: UIScrollView, context: Context) {
+        context.coordinator.hostingController?.rootView = content
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator()
+    }
+    
+    class Coordinator: NSObject, UIScrollViewDelegate {
+        var hostingController: UIHostingController<Content>?
+        
+        func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+            return hostingController?.view
+        }
+    }
+}
+
+
+
+
 
 // MARK: - Error Handling
 enum NoteLoadingError: Error {

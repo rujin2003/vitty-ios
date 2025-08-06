@@ -10,15 +10,9 @@ import SwiftData
 
 struct RemindersProvider: TimelineProvider {
     
-    private func getSharedContainer() -> ModelContainer? {
-        let appGroupContainerID = "\(AppConstants.VITTYappgroup)"
-        let config = ModelConfiguration(appGroupContainerID)
-        
-        return try? ModelContainer(for: TimeTable.self, Remainder.self, configurations: config)
-    }
-    
+  
     private func fetchRemindersForDate(_ date: Date) -> [Remainder] {
-        guard let container = getSharedContainer() else { return [] }
+        guard let container = GetSchemas.getSharedContainer() else { return [] }
         let context = ModelContext(container)
         
         let calendar = Calendar.current
@@ -43,7 +37,7 @@ struct RemindersProvider: TimelineProvider {
     }
     
     private func fetchUpcomingReminders(startingFrom date: Date, days: Int = 7) -> [Remainder] {
-        guard let container = getSharedContainer() else { return [] }
+        guard let container = GetSchemas.getSharedContainer() else { return [] }
         let context = ModelContext(container)
         
         let calendar = Calendar.current

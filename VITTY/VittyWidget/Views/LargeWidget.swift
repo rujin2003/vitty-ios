@@ -14,6 +14,7 @@ struct LargeDueWidgetView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+            Spacer().frame(height: 5)
             WidgetTitle(title: entry.widgetTitle, fontSize: 16.0)
 
             if !entry.isEmpty {

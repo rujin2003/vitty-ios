@@ -10,6 +10,7 @@ import SwiftUI
 import WidgetKit
 
 struct VittyWidgetControl: ControlWidget {
+    
     static let kind: String = "com.gdscvit.vittyios.widget"
 
     var body: some ControlWidgetConfiguration {

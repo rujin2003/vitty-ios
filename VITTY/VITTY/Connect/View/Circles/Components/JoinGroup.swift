@@ -13,7 +13,6 @@ struct JoinGroup: View {
     let screenWidth = UIScreen.main.bounds.width
 
     @Binding var groupCode: String
-    @State private var isScanning = false
     @State private var scannedCode: String = ""
     @State private var showingAlert = false
     @State private var alertMessage = ""
@@ -87,23 +86,18 @@ struct JoinGroup: View {
                 }
 
                 Button(action: {
-                    isScanning = true
+                    openCameraApp()
                 }) {
                     VStack {
-                        if isScanning {
-                            QRScannerView(scannedCode: $scannedCode, isScanning: $isScanning)
-                                .frame(width: screenWidth * 0.8, height: screenHeight * 0.25)
-                        } else {
-                            Image(systemName: "qrcode.viewfinder")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 100, height: 100)
-                                .foregroundColor(Color.white)
+                        Image(systemName: "qrcode.viewfinder")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 100, height: 100)
+                            .foregroundColor(Color.white)
 
-                            Text("Tap to scan QR code")
-                                .font(.system(size: 14))
-                                .foregroundColor(.gray)
-                        }
+                        Text("Tap to open camera")
+                            .font(.system(size: 14))
+                            .foregroundColor(.gray)
                     }
                     .frame(width: screenWidth * 0.8, height: screenHeight * 0.25)
                     .background(Color.black.opacity(0.3))
@@ -143,11 +137,6 @@ struct JoinGroup: View {
             }
             .presentationDetents([.height(screenHeight * 0.65)])
             .background(Color("Secondary"))
-            .onChange(of: scannedCode) { oldValue, newValue in
-                if !newValue.isEmpty {
-                    handleScannedCode(newValue)
-                }
-            }
 
             if showToast {
                 VStack {
@@ -164,7 +153,6 @@ struct JoinGroup: View {
                 
                 localGroupCode = code
                 groupCode = code
-                
                 
                 joinCircle()
             }
@@ -186,25 +174,24 @@ struct JoinGroup: View {
         }
     }
 
-    // MARK: - Handle Scanned Code
-    private func handleScannedCode(_ code: String) {
-        print("Scanned code: \(code)")
-        
-        
-        if code.contains("vitty://join") {
-            if let url = URL(string: code) {
-                handleDeepLink(url)
-            }
-        } else {
-          
-            localGroupCode = code
-            groupCode = code
-            
-          
-            joinCircle()
+    // MARK: - Open Camera App
+    
+    private func openCameraApp() {
+        guard let url = URL(string: "camera:") else {
+            showToast(message: "Camera not available", isError: true)
+            return
         }
         
-        isScanning = false
+        if UIApplication.shared.canOpenURL(url) {
+            UIApplication.shared.open(url)
+        } else {
+            
+            if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
+                showToast(message: "Please open Camera app manually", isError: false)
+            } else {
+                showToast(message: "Camera app not available", isError: true)
+            }
+        }
     }
     
     // MARK: - Handle Deep Link
@@ -223,7 +210,6 @@ struct JoinGroup: View {
             localGroupCode = code
             groupCode = code
             
-        
             joinCircle()
         }
     }
@@ -245,7 +231,6 @@ struct JoinGroup: View {
         isJoining = true
         UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
 
-      
         let urlString = "\(APIConstants.base_url)circles/join?code=\(localGroupCode)"
         guard let url = URL(string: urlString) else {
             showToast(message: "Error: Invalid URL", isError: true)
@@ -284,7 +269,6 @@ struct JoinGroup: View {
                     let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
                     impactFeedback.impactOccurred()
 
-                    
                     communityPageViewModel.fetchCircleData(
                         from: "\(APIConstants.base_url)circles",
                         token: token,
@@ -298,7 +282,6 @@ struct JoinGroup: View {
                         dismiss()
                     }
                 } else {
-                   
                     if let data = data {
                         print("Error response data: \(String(data: data, encoding: .utf8) ?? "No data")")
                         
@@ -374,141 +357,5 @@ struct ToastView: View {
                 }
             }
         }
-    }
-}
-
-// MARK: - QR Scanner Components
-struct QRScannerView: UIViewControllerRepresentable {
-    @Binding var scannedCode: String
-    @Binding var isScanning: Bool
-    
-    func makeUIViewController(context: Context) -> QRScannerViewController {
-        let controller = QRScannerViewController()
-        controller.delegate = context.coordinator
-        return controller
-    }
-    
-    func updateUIViewController(_ uiViewController: QRScannerViewController, context: Context) {}
-    
-    func makeCoordinator() -> Coordinator {
-        Coordinator(self)
-    }
-    
-    class Coordinator: NSObject, QRScannerDelegate {
-        let parent: QRScannerView
-        
-        init(_ parent: QRScannerView) {
-            self.parent = parent
-        }
-        
-        func didScanCode(_ code: String) {
-            parent.scannedCode = code
-            parent.isScanning = false
-        }
-        
-        func didFailWithError(_ error: Error) {
-            parent.isScanning = false
-        }
-    }
-}
-
-protocol QRScannerDelegate: AnyObject {
-    func didScanCode(_ code: String)
-    func didFailWithError(_ error: Error)
-}
-
-class QRScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
-    weak var delegate: QRScannerDelegate?
-    
-    private var captureSession: AVCaptureSession!
-    private var previewLayer: AVCaptureVideoPreviewLayer!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        setupCamera()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        if captureSession?.isRunning == false {
-            DispatchQueue.global(qos: .userInitiated).async {
-                self.captureSession.startRunning()
-            }
-        }
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        
-        if captureSession?.isRunning == true {
-            captureSession.stopRunning()
-        }
-    }
-    
-    private func setupCamera() {
-        captureSession = AVCaptureSession()
-        
-        guard let videoCaptureDevice = AVCaptureDevice.default(for: .video) else {
-            delegate?.didFailWithError(NSError(domain: "QRScanner", code: -1, userInfo: [NSLocalizedDescriptionKey: "Camera not available"]))
-            return
-        }
-        
-        let videoInput: AVCaptureDeviceInput
-        
-        do {
-            videoInput = try AVCaptureDeviceInput(device: videoCaptureDevice)
-        } catch {
-            delegate?.didFailWithError(error)
-            return
-        }
-        
-        if captureSession.canAddInput(videoInput) {
-            captureSession.addInput(videoInput)
-        } else {
-            delegate?.didFailWithError(NSError(domain: "QRScanner", code: -2, userInfo: [NSLocalizedDescriptionKey: "Could not add video input"]))
-            return
-        }
-        
-        let metadataOutput = AVCaptureMetadataOutput()
-        
-        if captureSession.canAddOutput(metadataOutput) {
-            captureSession.addOutput(metadataOutput)
-            
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-            metadataOutput.metadataObjectTypes = [.qr]
-        } else {
-            delegate?.didFailWithError(NSError(domain: "QRScanner", code: -3, userInfo: [NSLocalizedDescriptionKey: "Could not add metadata output"]))
-            return
-        }
-        
-        previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.frame = view.layer.bounds
-        previewLayer.videoGravity = .resizeAspectFill
-        view.layer.addSublayer(previewLayer)
-        
-        DispatchQueue.global(qos: .userInitiated).async {
-            self.captureSession.startRunning()
-        }
-    }
-    
-    func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-        captureSession.stopRunning()
-        
-        if let metadataObject = metadataObjects.first {
-            guard let readableObject = metadataObject as? AVMetadataMachineReadableCodeObject else { return }
-            guard let stringValue = readableObject.stringValue else { return }
-            
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            delegate?.didScanCode(stringValue)
-        }
-    }
-    
-    override var prefersStatusBarHidden: Bool {
-        return true
-    }
-    
-    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        return .portrait
     }
 }

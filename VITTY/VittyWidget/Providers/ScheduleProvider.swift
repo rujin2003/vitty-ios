@@ -12,27 +12,7 @@ import WidgetKit
 
 struct Provider: TimelineProvider {
     
-    private func getSharedContainer() -> ModelContainer? {
-        let appGroupContainerID = "\(AppConstants.VITTYappgroup)"
-        
-      
-        let schema = Schema([TimeTable.self, Remainder.self, CreateNoteModel.self, UploadedFile.self])
-        
-        let config = ModelConfiguration(
-            appGroupContainerID,
-            schema: schema,
-            isStoredInMemoryOnly: false,
-            allowsSave: true
-        )
-        
-        do {
-          
-            return try ModelContainer(for: schema, configurations: config)
-        } catch {
-            print("Failed to create shared container: \(error)")
-            return nil
-        }
-    }
+   
 
     
     // MARK: - Time Parsing and Validation
@@ -93,7 +73,7 @@ struct Provider: TimelineProvider {
     // MARK: - Data Fetching Methods
     
     private func fetchAllTodaysClasses() -> [Classes] {
-        guard let container = getSharedContainer() else { return [] }
+        guard let container = GetSchemas.getSharedContainer() else { return [] }
         let context = ModelContext(container)
         
         let descriptor = FetchDescriptor<TimeTable>()
