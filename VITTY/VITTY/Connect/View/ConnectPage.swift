@@ -5,7 +5,7 @@
 //  Created by Rujin Devkota on 2/27/25.
 
 import SwiftUI
-
+import Alamofire
 enum SheetType: Identifiable {
     case addCircleOptions
     case createGroup
@@ -21,7 +21,6 @@ enum SheetType: Identifiable {
         }
     }
 }
-
 
 
 struct ConnectPage: View {
@@ -43,7 +42,6 @@ struct ConnectPage: View {
     @State private var isAddFriendsViewPresented = false
     @State private var selectedTab = 0
     @State private var hasLoadedInitialData = false
-    @State private var hasCheckedServer = false
     
     var body: some View {
         ZStack {
@@ -74,9 +72,7 @@ struct ConnectPage: View {
             
             if isCircleView == false {
                 Button(action: {
-                    checkServerAndExecute {
-                        isShowingRequestView.toggle()
-                    }
+                    isShowingRequestView.toggle()
                 }) {
                     ZStack {
                         
@@ -109,9 +105,7 @@ struct ConnectPage: View {
                 .offset(x: UIScreen.main.bounds.width*0.4228, y: UIScreen.main.bounds.height*0.38901*(-1))
             } else {
                 Button(action: {
-                    checkServerAndExecute {
-                        showCircleMenu = true
-                    }
+                    showCircleMenu = true
                 }) {
                     Image(systemName: "ellipsis")
                         .foregroundColor(.white)
@@ -132,7 +126,6 @@ struct ConnectPage: View {
                         }
                     },
                     onContinue: {
-                      
                         serverStatusManager.hideMaintenanceAlert()
                     }
                 )
@@ -143,19 +136,13 @@ struct ConnectPage: View {
                 if showCircleMenu {
                     ConnectCircleMenuView(
                         onCreateGroup: {
-                            checkServerAndExecute {
-                                activeSheet = .createGroup
-                            }
+                            activeSheet = .createGroup
                         },
                         onJoinGroup: {
-                            checkServerAndExecute {
-                                activeSheet = .joinGroup
-                            }
+                            activeSheet = .joinGroup
                         },
                         onGroupRequests: {
-                            checkServerAndExecute {
-                                activeSheet = .groupRequests
-                            }
+                            activeSheet = .groupRequests
                         },
                         onCancel: {
                             showCircleMenu = false
@@ -180,43 +167,20 @@ struct ConnectPage: View {
             if shouldNavigate {
                 selectedTab = 0
             }
-            checkServerAndExecute {
-                communityPageViewModel.fetchCircleData(
-                    from: "\(APIConstants.base_urlv3)circles",
-                    token: authViewModel.loggedInBackendUser?.token ?? "",
-                    loading: true
-                )
-            }
+            communityPageViewModel.fetchCircleData(
+                from: "\(APIConstants.base_urlv3)circles",
+                token: authViewModel.loggedInBackendUser?.token ?? "",
+                loading: true
+            )
         }
         .onAppear {
-            if !hasCheckedServer {
-                checkServerAndLoadData()
-            }
-        }
-    }
-    
-    // MARK: - Helper Methods
-    
-    private func checkServerAndLoadData() {
-        hasCheckedServer = true
-        serverStatusManager.checkServerStatus { isServerUp in
-            if isServerUp || !serverStatusManager.showMaintenanceAlert {
+            if !hasLoadedInitialData {
                 loadInitialData()
             }
         }
     }
     
-    private func checkServerAndExecute(_ action: @escaping () -> Void) {
-        if serverStatusManager.isServerDown {
-            serverStatusManager.showMaintenanceAlert = true
-        } else {
-            serverStatusManager.checkServerStatus { isServerUp in
-                if isServerUp {
-                    action()
-                }
-            }
-        }
-    }
+    // MARK: - Helper Methods
     
     private func loadInitialData() {
         if navigationCoordinator.shouldNavigateToCircles {
@@ -255,6 +219,15 @@ struct ConnectPage: View {
         }
         
         hasLoadedInitialData = true
+    }
+    
+    // Call this method when any API call in your ViewModels fails
+    func handleAPIError(_ error: AFError) {
+        serverStatusManager.handleServerError(error) { isServerUp in
+            if !isServerUp {
+                // Server is down, the maintenance alert will be shown automatically
+            }
+        }
     }
 }
 struct ConnectCircleMenuView: View {

@@ -216,7 +216,7 @@ struct FriendsTimeTableView: View {
     }
 }
 
-// MARK: - Friends Timetable ViewModel
+
 extension FriendsTimeTableView {
     @Observable
     class FriendsTimeTableViewModel {
@@ -297,9 +297,11 @@ extension FriendsTimeTableView {
                     authToken: authToken
                 )
                 
-                // Extract the timetable from the response
+               
                 let friendTimeTable = friendResponse.timetable.data
                
+                print("timetable of friend: ")
+                print("\(friendTimeTable)")
                 if isTimeTableEmpty(friendTimeTable) {
                     logger.info("Friend's timetable is empty")
                     self.timeTable = friendTimeTable
@@ -349,9 +351,8 @@ enum APIError: Error {
     case unauthorized
 }
 
-// MARK: - Friend Response Models
 struct FriendResponse: Codable {
-    let campus: String
+    let campus: String?
     let email: String
     let friendStatus: String
     let friendsCount: Int
@@ -368,7 +369,6 @@ struct FriendResponse: Codable {
         case mutualFriendsCount = "mutual_friends_count"
     }
 }
-
 struct FriendTimetableWrapper: Codable {
     let data: TimeTable
 }

@@ -830,7 +830,7 @@ struct ZoomableImageViewer: View {
                     ZoomableScrollView {
                         Image(uiImage: image)
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
+                            .aspectRatio(contentMode: .fill)
                     }
                 } else {
                     VStack(spacing: 16) {

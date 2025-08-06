@@ -4,7 +4,6 @@
 //
 //  Created by Rujin Devkota on 8/4/25.
 //
-
 import Foundation
 import Alamofire
 import SwiftUI
@@ -21,56 +20,74 @@ class ServerStatusManager {
         category: String(describing: ServerStatusManager.self)
     )
     
+    func shouldCheckServerStatus(for error: AFError) -> Bool {
+        if let responseCode = error.responseCode {
+            return responseCode >= 500
+        }
+        
+        if case .sessionTaskFailed(let sessionError) = error {
+            let nsError = sessionError as NSError
+            if nsError.domain == NSURLErrorDomain {
+                switch nsError.code {
+                case NSURLErrorNotConnectedToInternet,
+                     NSURLErrorNetworkConnectionLost,
+                     NSURLErrorTimedOut,
+                     NSURLErrorCannotFindHost,
+                     NSURLErrorCannotConnectToHost:
+                    return true
+                default:
+                    return false
+                }
+            }
+        }
+        
+        return false
+    }
 
     func checkServerStatus(completion: @escaping (Bool) -> Void) {
         isCheckingServer = true
-        
         let url = APIConstants.base_url
-        
-        AF.request(url, method: .get)
-            .validate()
-            .responseString { response in
+
+        let request = AF.request(url, method: .head)
+            .validate(statusCode: 200..<400)
+            .response { response in
                 DispatchQueue.main.async {
                     self.isCheckingServer = false
-                    
+
                     switch response.result {
-                    case .success(let responseString):
+                    case .success:
+                        self.isServerDown = false
+                        self.showMaintenanceAlert = false
+                        completion(true)
+
+                    case .failure(_):
+                        let isInternetAvailable = NetworkReachabilityManager()?.isReachable ?? false
                         
-                        let isServerUp = responseString.contains("Welcome to VITTY API!🎉")
-                        self.isServerDown = !isServerUp
-                        
-                        if !isServerUp {
+                        if isInternetAvailable {
+                            self.logger.warning("Server unreachable or returned unexpected status")
+                            self.isServerDown = true
                             self.showMaintenanceAlert = true
-                            self.logger.warning("Server is under maintenance")
+                        } else {
+                            self.logger.warning("No internet connection")
+                            self.isServerDown = true
+                            self.showMaintenanceAlert = true
                         }
-                        
-                        completion(isServerUp)
-                        
-                    case .failure(let error):
-                        self.logger.error("Server check failed: \(error)")
-                        self.isServerDown = true
-                        self.showMaintenanceAlert = true
+
                         completion(false)
                     }
                 }
             }
     }
-
     
-    // function for testing
-//    func checkServerStatus(completion: @escaping (Bool) -> Void) {
-//        isCheckingServer = true
-//        
-//       
-//        DispatchQueue.main.async {
-//            self.isCheckingServer = false
-//            self.isServerDown = false
-//            self.showMaintenanceAlert = false
-//            
-//            
-//            completion(true)
-//        }
-//    }
+    func handleServerError(_ error: AFError, completion: @escaping (Bool) -> Void) {
+        if shouldCheckServerStatus(for: error) {
+            logger.warning("API call failed with server error, checking server status")
+            checkServerStatus(completion: completion)
+        } else {
+            logger.info("API call failed but not due to server issues")
+            completion(false)
+        }
+    }
     
     func hideMaintenanceAlert() {
         showMaintenanceAlert = false
@@ -81,7 +98,6 @@ class ServerStatusManager {
     }
 }
 
-// MARK: - Maintenance Alert View
 struct MaintenanceAlertView: View {
     @Binding var isPresented: Bool
     let onRetry: () -> Void
@@ -93,7 +109,6 @@ struct MaintenanceAlertView: View {
                 .edgesIgnoringSafeArea(.all)
             
             VStack(spacing: 20) {
-                
                 HStack {
                     Spacer()
                     Button(action: {
@@ -106,7 +121,6 @@ struct MaintenanceAlertView: View {
                     }
                 }
                 
-                
                 RoundedRectangle(cornerRadius: 16)
                     .fill(Color.gray.opacity(0.3))
                     .frame(width: 80, height: 80)
@@ -116,11 +130,9 @@ struct MaintenanceAlertView: View {
                             .font(.system(size: 32))
                     )
                 
-          
                 Text("Server Maintenance")
                     .font(.custom("Poppins-SemiBold", size: 24))
                     .foregroundColor(.white)
-                
                 
                 Text("The server is currently under maintenance. Some features may be temporarily unavailable.")
                     .font(.custom("Poppins-Regular", size: 16))
@@ -128,7 +140,6 @@ struct MaintenanceAlertView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
                 
-                // Buttons
                 HStack(spacing: 15) {
                     Button(action: {
                         onRetry()
@@ -160,7 +171,6 @@ struct MaintenanceAlertView: View {
                 }
                 .padding(.horizontal, 20)
                 
-              
                 Text("Thank you for your patience")
                     .font(.custom("Poppins-Regular", size: 14))
                     .foregroundColor(.gray)
@@ -173,3 +183,4 @@ struct MaintenanceAlertView: View {
         }
     }
 }
+
