@@ -38,7 +38,7 @@ Open in Xcode and run the app in simulator.
 		<td style="text-align: center;">
 		Rujin Devkota
 		<p align="center">
-			<img src = "https://dscvit.com/images/dsc-logo-square.svg" width="150" height="150" alt="Rujin Devkota">
+			<img src = "https://i.postimg.cc/0Nj3rH28/IMG-3710.avif" width="150" height="150" alt="Rujin Devkota">
 		</p>
 			<p align="center">
 				<a href = "https://github.com/rujin2003">
