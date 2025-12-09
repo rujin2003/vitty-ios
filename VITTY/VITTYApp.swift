@@ -35,10 +35,17 @@ struct VITTYApp: App {
         setupFirebase()
         NotificationManager.shared.requestAuthorization()
         
+        // Register App Intents for Siri
+        registerAppIntents()
       
         if ProcessInfo.processInfo.environment["LAUNCHED_FROM_WIDGET"] != nil {
             self._isLaunchedFromWidget = State(initialValue: true)
         }
+    }
+    
+    private func registerAppIntents() {
+        // App Intents are automatically discovered, but we can verify they're available
+        // The intents will be available to Siri once the app is installed
     }
 
     var body: some Scene {
