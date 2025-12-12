@@ -46,34 +46,95 @@ class ServerStatusManager {
 
     func checkServerStatus(completion: @escaping (Bool) -> Void) {
         isCheckingServer = true
-        let url = APIConstants.base_url
-
-        let request = AF.request(url, method: .head)
-            .validate(statusCode: 200..<400)
+        // Use a GET request to a simple endpoint instead of HEAD to base URL
+        // This is more reliable as many servers don't properly support HEAD requests
+        let url = "\(APIConstants.base_url)users/"
+        
+    
+        let configuration = URLSessionConfiguration.default
+        configuration.timeoutIntervalForRequest = 10
+        configuration.timeoutIntervalForResource = 10
+        let session = Session(configuration: configuration)
+        
+        session.request(url, method: .get, parameters: nil, encoding: URLEncoding.default)
+            .validate(statusCode: 200..<500)
             .response { response in
                 DispatchQueue.main.async {
                     self.isCheckingServer = false
 
                     switch response.result {
                     case .success:
+                        self.logger.info("Server status check successful")
                         self.isServerDown = false
                         self.showMaintenanceAlert = false
                         completion(true)
 
-                    case .failure(_):
-                        let isInternetAvailable = NetworkReachabilityManager()?.isReachable ?? false
-                        
-                        if isInternetAvailable {
-                            self.logger.warning("Server unreachable or returned unexpected status")
-                            self.isServerDown = true
-                            self.showMaintenanceAlert = true
+                    case .failure(let error):
+                      
+                        if let responseCode = error.responseCode {
+                            if responseCode >= 500 {
+                                // Actual server error - server might be down
+                                self.logger.warning("Server returned 5xx error: \(responseCode)")
+                                let isInternetAvailable = NetworkReachabilityManager()?.isReachable ?? false
+                                
+                                if isInternetAvailable {
+                                    self.isServerDown = true
+                                    self.showMaintenanceAlert = true
+                                    completion(false)
+                                } else {
+                                    // No internet - allow offline mode even if we got a 5xx
+                                    // Users can still view cached timetable
+                                    self.logger.warning("5xx error but no internet - allowing offline mode")
+                                    self.isServerDown = false
+                                    self.showMaintenanceAlert = false
+                                    completion(true) // Allow offline mode
+                                }
+                            } else {
+                                // 4xx errors mean server is up, just authentication/authorization issues
+                                // This is fine - server is responding
+                                self.logger.info("Server responded with \(responseCode) - server is up")
+                                self.isServerDown = false
+                                self.showMaintenanceAlert = false
+                                completion(true)
+                            }
                         } else {
-                            self.logger.warning("No internet connection")
-                            self.isServerDown = true
-                            self.showMaintenanceAlert = true
+                          
+                            let isInternetAvailable = NetworkReachabilityManager()?.isReachable ?? false
+                            
+                            if isInternetAvailable {
+                              
+                                self.logger.warning("Network request failed but internet is available: \(error.localizedDescription)")
+                                
+                                if case .sessionTaskFailed(let sessionError) = error {
+                                    let nsError = sessionError as NSError
+                                    if nsError.domain == NSURLErrorDomain {
+                                        switch nsError.code {
+                                        case NSURLErrorTimedOut,
+                                             NSURLErrorCannotFindHost,
+                                             NSURLErrorCannotConnectToHost:
+                                           
+                                            self.isServerDown = true
+                                            self.showMaintenanceAlert = true
+                                            completion(false)
+                                            return
+                                        default:
+                                            break
+                                        }
+                                    }
+                                }
+                                
+                                self.isServerDown = false
+                                self.showMaintenanceAlert = false
+                                completion(true)
+                            } else {
+                                // No internet connection - allow offline mode
+                                // Users can still view cached timetable, only network features will be unavailable
+                                self.logger.warning("No internet connection - allowing offline mode")
+                                self.isServerDown = false
+                                self.showMaintenanceAlert = false
+                                completion(true) // Allow users to proceed in offline mode
+                            }
                         }
-
-                        completion(false)
                     }
                 }
             }

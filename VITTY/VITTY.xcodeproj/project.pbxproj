@@ -41,14 +41,7 @@
 		4B40E1DA2E27E133004F8447 /* SettingsTololtip.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E1D92E27E12B004F8447 /* SettingsTololtip.swift */; };
 		4B40E1DC2E28D0C0004F8447 /* EmptyTimeTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40E1DB2E28D0B9004F8447 /* EmptyTimeTable.swift */; };
 		4B40FE5D2E0A917F000BDD07 /* QrCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B40FE5C2E0A9179000BDD07 /* QrCode.swift */; };
-		4B4138A92EE8788600D9AB84 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 4B4138A22EE8788600D9AB84 /* Info.plist */; };
-		4B4138AD2EE8788600D9AB84 /* GetFirstClassTomorrowIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B41389D2EE8788600D9AB84 /* GetFirstClassTomorrowIntent.swift */; };
-		4B4138AE2EE8788600D9AB84 /* VittyIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4B4138A62EE8788600D9AB84 /* VittyIntents.intentdefinition */; };
-		4B4138AF2EE8788600D9AB84 /* GetLastClassTomorrowIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B41389E2EE8788600D9AB84 /* GetLastClassTomorrowIntent.swift */; };
-		4B4138B02EE8788600D9AB84 /* GetNextClassIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B41389F2EE8788600D9AB84 /* GetNextClassIntent.swift */; };
-		4B4138B12EE8788600D9AB84 /* IntentHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4138A32EE8788600D9AB84 /* IntentHelper.swift */; };
-		4B4138B22EE8788600D9AB84 /* GetTomorrowClassCountIntent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4138A02EE8788600D9AB84 /* GetTomorrowClassCountIntent.swift */; };
-		4B4138B32EE8788600D9AB84 /* VittyIntentsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4138A72EE8788600D9AB84 /* VittyIntentsApp.swift */; };
+		4B41394E2EEB1D1A00D9AB84 /* VittyIntent.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 4B41394D2EEB1D1A00D9AB84 /* VittyIntent.intentdefinition */; };
 		4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */; };
 		4B5977472DF97D5C009CC224 /* RemainderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5977462DF97D5A009CC224 /* RemainderModel.swift */; };
 		4B5977482DFAC034009CC224 /* RemainderModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B5977462DF97D5A009CC224 /* RemainderModel.swift */; };
@@ -221,14 +214,11 @@
 		4B40E1D92E27E12B004F8447 /* SettingsTololtip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsTololtip.swift; sourceTree = "<group>"; };
 		4B40E1DB2E28D0B9004F8447 /* EmptyTimeTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyTimeTable.swift; sourceTree = "<group>"; };
 		4B40FE5C2E0A9179000BDD07 /* QrCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QrCode.swift; sourceTree = "<group>"; };
-		4B41389D2EE8788600D9AB84 /* GetFirstClassTomorrowIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetFirstClassTomorrowIntent.swift; sourceTree = "<group>"; };
-		4B41389E2EE8788600D9AB84 /* GetLastClassTomorrowIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetLastClassTomorrowIntent.swift; sourceTree = "<group>"; };
-		4B41389F2EE8788600D9AB84 /* GetNextClassIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetNextClassIntent.swift; sourceTree = "<group>"; };
-		4B4138A02EE8788600D9AB84 /* GetTomorrowClassCountIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GetTomorrowClassCountIntent.swift; sourceTree = "<group>"; };
-		4B4138A22EE8788600D9AB84 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4B4138A32EE8788600D9AB84 /* IntentHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntentHelper.swift; sourceTree = "<group>"; };
-		4B4138A62EE8788600D9AB84 /* VittyIntents.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = VittyIntents.intentdefinition; sourceTree = "<group>"; };
-		4B4138A72EE8788600D9AB84 /* VittyIntentsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VittyIntentsApp.swift; sourceTree = "<group>"; };
+		4B41394A2EEA9B8A00D9AB84 /* NextclassIntent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NextclassIntent.swift; sourceTree = "<group>"; };
+		4B41394B2EEA9DA600D9AB84 /* ClassesCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClassesCount.swift; sourceTree = "<group>"; };
+		4B41394C2EEB1A8400D9AB84 /* VittyShortcuts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VittyShortcuts.swift; sourceTree = "<group>"; };
+		4B41394D2EEB1D1A00D9AB84 /* VittyIntent.intentdefinition */ = {isa = PBXFileReference; lastKnownFileType = file.intentdefinition; path = VittyIntent.intentdefinition; sourceTree = "<group>"; };
+		4B41394F2EEB20FB00D9AB84 /* VittyIntentsExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VittyIntentsExtension.swift; sourceTree = "<group>"; };
 		4B47CD7A2D7DCB8400A46FEF /* CreateReminder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateReminder.swift; sourceTree = "<group>"; };
 		4B5977462DF97D5A009CC224 /* RemainderModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemainderModel.swift; sourceTree = "<group>"; };
 		4B74D8722E0BDF1E00B390E9 /* CourseFile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CourseFile.swift; sourceTree = "<group>"; };
@@ -434,6 +424,7 @@
 		314A408227383BEC0058082F = {
 			isa = PBXGroup;
 			children = (
+				4B41394D2EEB1D1A00D9AB84 /* VittyIntent.intentdefinition */,
 				4BC853C52DF6F71B0092B2E2 /* VittyWidgetExtension.entitlements */,
 				4B1A500E2E3E61530060314D /* GoogleService-Info.plist */,
 				4BD77EA12EBBCE050027F234 /* GoogleService-Info.plist */,
@@ -521,14 +512,10 @@
 		4B4138A82EE8788600D9AB84 /* VittyIntents */ = {
 			isa = PBXGroup;
 			children = (
-				4B41389D2EE8788600D9AB84 /* GetFirstClassTomorrowIntent.swift */,
-				4B41389E2EE8788600D9AB84 /* GetLastClassTomorrowIntent.swift */,
-				4B41389F2EE8788600D9AB84 /* GetNextClassIntent.swift */,
-				4B4138A02EE8788600D9AB84 /* GetTomorrowClassCountIntent.swift */,
-				4B4138A22EE8788600D9AB84 /* Info.plist */,
-				4B4138A32EE8788600D9AB84 /* IntentHelper.swift */,
-				4B4138A62EE8788600D9AB84 /* VittyIntents.intentdefinition */,
-				4B4138A72EE8788600D9AB84 /* VittyIntentsApp.swift */,
+				4B41394F2EEB20FB00D9AB84 /* VittyIntentsExtension.swift */,
+				4B41394C2EEB1A8400D9AB84 /* VittyShortcuts.swift */,
+				4B41394B2EEA9DA600D9AB84 /* ClassesCount.swift */,
+				4B41394A2EEA9B8A00D9AB84 /* NextclassIntent.swift */,
 			);
 			path = VittyIntents;
 			sourceTree = "<group>";
@@ -1155,7 +1142,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				31128CFB2772F57E0084C9EA /* OFL.txt in Resources */,
-				4B4138A92EE8788600D9AB84 /* Info.plist in Resources */,
 				31128D0E277302AC0084C9EA /* Poppins-Bold.ttf in Resources */,
 				31128CFE2772F57E0084C9EA /* Poppins-MediumItalic.ttf in Resources */,
 				31128CFD2772F57E0084C9EA /* Poppins-SemiBold.ttf in Resources */,
@@ -1184,6 +1170,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5238C7EB2B4A9D8C00413946 /* FriendRequestViewModel.swift in Sources */,
+				4B41394E2EEB1D1A00D9AB84 /* VittyIntent.intentdefinition in Sources */,
 				5D72EDDD2AB990BB00704BF5 /* AuthRequestBody.swift in Sources */,
 				528D32232C18C679007C9106 /* BackgroundView.swift in Sources */,
 				520BA6452B48013200124850 /* SuggestedFriendsView.swift in Sources */,
@@ -1248,13 +1235,6 @@
 				4B47CD7B2D7DCB8B00A46FEF /* CreateReminder.swift in Sources */,
 				4B8097552E2B7B6300FF2F63 /* UpdateManager.swift in Sources */,
 				317715DE279F1431009A532E /* IndexedCollection.swift in Sources */,
-				4B4138AD2EE8788600D9AB84 /* GetFirstClassTomorrowIntent.swift in Sources */,
-				4B4138AE2EE8788600D9AB84 /* VittyIntents.intentdefinition in Sources */,
-				4B4138AF2EE8788600D9AB84 /* GetLastClassTomorrowIntent.swift in Sources */,
-				4B4138B02EE8788600D9AB84 /* GetNextClassIntent.swift in Sources */,
-				4B4138B12EE8788600D9AB84 /* IntentHelper.swift in Sources */,
-				4B4138B22EE8788600D9AB84 /* GetTomorrowClassCountIntent.swift in Sources */,
-				4B4138B32EE8788600D9AB84 /* VittyIntentsApp.swift in Sources */,
 				4B7DA5E72D71AC54007354A3 /* CirclesRow.swift in Sources */,
 				4B7DA5E52D70B2CA007354A3 /* Circles.swift in Sources */,
 				525F759D2B809F8400E3B418 /* LectureDetailView.swift in Sources */,
@@ -1481,7 +1461,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"VITTY/Preview Content\"";
-				DEVELOPMENT_TEAM = C7RX29D33F;
+				DEVELOPMENT_TEAM = 2TS98F9X52;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = VITTY/Info.plist;

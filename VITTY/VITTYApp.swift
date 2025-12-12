@@ -10,6 +10,7 @@ import OSLog
 import SwiftUI
 import SwiftData
 import TipKit
+import Intents
 
 @main
 struct VITTYApp: App {
@@ -35,7 +36,7 @@ struct VITTYApp: App {
         setupFirebase()
         NotificationManager.shared.requestAuthorization()
         
-        // Register App Intents for Siri
+       
         registerAppIntents()
       
         if ProcessInfo.processInfo.environment["LAUNCHED_FROM_WIDGET"] != nil {
@@ -51,10 +52,12 @@ struct VITTYApp: App {
     var body: some Scene {
         WindowGroup {
             ZStack {
+                
                 ContentView()
                     .preferredColorScheme(.dark)
                     .environmentObject(navigationCoordinator)
                     .task {
+                        
                         try? Tips.configure([.displayFrequency(.immediate), .datastoreLocation(.applicationDefault)])
                         
                         
@@ -117,7 +120,7 @@ struct VITTYApp: App {
             fatalError("Failed to create model container: \(error)")
         }
     }
-    
+ 
     // MARK: - Widget Launch Handling
     
     private func handleWidgetLaunch() async {
@@ -126,7 +129,7 @@ struct VITTYApp: App {
         
         try? await Task.sleep(nanoseconds: 500_000_000)
         
-
+            
         await MainActor.run {
             NotificationCenter.default.post(
                 name: Notification.Name("RefreshTimetableFromWidget"),

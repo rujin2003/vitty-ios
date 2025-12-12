@@ -10,13 +10,16 @@ import SwiftUI
 struct InstructionView: View {
     @Environment(AuthViewModel.self) private var authViewModel
     @State private var serverStatusManager = ServerStatusManager()
+    @State private var retryCount = 0
+    @State private var allowProceed = false
+    private let maxRetries = 3
     
     var body: some View {
         NavigationStack {
             ZStack {
                 BackgroundView()
                 
-                if serverStatusManager.isServerDown {
+                if serverStatusManager.isServerDown && !allowProceed {
                    
                     VStack(spacing: 30) {
                         Spacer()
@@ -54,8 +57,13 @@ struct InstructionView: View {
                         
                        
                         Button(action: {
+                            retryCount += 1
                             serverStatusManager.retryServerCheck { isUp in
-                                
+                                if !isUp && retryCount >= maxRetries {
+                                    // After max retries, allow user to proceed
+                                    allowProceed = true
+                                    serverStatusManager.isServerDown = false
+                                }
                             }
                         }) {
                             HStack {
@@ -77,6 +85,23 @@ struct InstructionView: View {
                         .disabled(serverStatusManager.isCheckingServer)
                         .padding(.horizontal, 40)
                         
+                        // Show "Continue Anyway" button after max retries
+                        if retryCount >= maxRetries {
+                            Button(action: {
+                                allowProceed = true
+                                serverStatusManager.isServerDown = false
+                            }) {
+                                Text("Continue Anyway")
+                                    .font(.custom("Poppins-Medium", size: 16))
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity)
+                                    .padding(.vertical, 16)
+                                    .background(Color.blue.opacity(0.7))
+                                    .cornerRadius(12)
+                            }
+                            .padding(.horizontal, 40)
+                            .padding(.top, 10)
+                        }
                       
                         Button(action: {
                             exit(0)
@@ -189,11 +214,15 @@ struct InstructionView: View {
                 }
                 .foregroundStyle(.white)
             }
-            .navigationTitle(serverStatusManager.isServerDown ? "" : "Sync Timetable")
+            .navigationTitle((serverStatusManager.isServerDown && !allowProceed) ? "" : "Sync Timetable")
             .onAppear {
-                
+                retryCount = 0
+                allowProceed = false
                 serverStatusManager.checkServerStatus { isUp in
-                    
+                    // If check fails initially, don't block - allow retry
+                    if !isUp {
+                        retryCount = 0
+                    }
                 }
             }
         }
